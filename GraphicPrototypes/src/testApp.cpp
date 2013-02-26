@@ -29,6 +29,7 @@ void testApp::draw(){
 	texture->draw(p1, p2);
 
 	ofNoFill();
+	ofSetColor(255);
 	ofCircle(p1, 5);
 	ofCircle(p2, 5);
 	ofLine(p1, p2);
