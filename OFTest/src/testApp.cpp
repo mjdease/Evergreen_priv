@@ -1,18 +1,38 @@
 #include "testApp.h"
+#define WINDOW_WIDTH 600
+#define WINDOW_HEIGHT 600
+#define MAX_PARTICLES 2000
 
 //--------------------------------------------------------------
 void testApp::setup(){
+	ofBackground(0,0,0);
+	ofEnableSmoothing();
+	ofNoFill();
+	ofSetWindowShape(WINDOW_WIDTH, WINDOW_HEIGHT);
+	ofSetFrameRate(60);
 
+	//particles = new Particle*[MAX_PARTICLES];
+
+	for( int i=0; i<MAX_PARTICLES; i++){
+		//particles[i] = new Particle(WINDOW_WIDTH, WINDOW_HEIGHT);
+		particleVector.push_back(Particle(WINDOW_WIDTH, WINDOW_HEIGHT));
+	}
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-
+	for( int i=0; i<MAX_PARTICLES; i++){
+		//particles[i]->update();
+		particleVector[i].update();
+	}
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-
+	for( int i=0; i<MAX_PARTICLES; i++){
+		//particles[i]->draw();
+		particleVector[i].draw();
+	}
 }
 
 //--------------------------------------------------------------
