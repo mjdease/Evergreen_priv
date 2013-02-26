@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "EverTexture.h"
+#include "BranchTexture.h"
 
 class testApp : public ofBaseApp{
 
@@ -19,4 +21,10 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+		//EverTexture* texture;
+		BranchTexture* texture;
+		float rotation;
+
+		ofPoint p1;
+		ofPoint p2;
 };

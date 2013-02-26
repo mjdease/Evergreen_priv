@@ -2,17 +2,36 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-
+	ofSetFrameRate(60);
+	ofSetWindowShape(600, 600);
+	rotation = 0;
+	texture = new BranchTexture("texture.bmp");
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
+	/*
+	rotation++;
+	*/
 
+	cout << ofGetFrameRate() << "\n";
+
+	p1 = ofPoint(100,600/2);
+	p2 = ofPoint(mouseX, mouseY);
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	/*for(int i=0; i<1000; i++){
+		texture->draw(ofPoint(mouseX, mouseY), ofPoint(0,0));//mouseX + i,mouseY + i%100,rotation + i);
+	}*/
 
+	texture->draw(p1, p2);
+
+	ofNoFill();
+	ofCircle(p1, 5);
+	ofCircle(p2, 5);
+	ofLine(p1, p2);
 }
 
 //--------------------------------------------------------------
