@@ -3,14 +3,10 @@
 
 BranchTexture::BranchTexture(string src):EverTexture(src)
 {
-<<<<<<< HEAD
-	resolution = 100;
-	amplitude = 9;
-=======
 	resolution = 5;
 	amplitude = 100;
 	randomOffset = ofRandom(0, 100);
->>>>>>> Updated BranchTextures with transform stuff
+	ofLoadImage(texture, src);
 }
 
 void BranchTexture::draw(ofPoint p1, ofPoint p2){
@@ -24,33 +20,16 @@ void BranchTexture::draw(ofPoint p1, ofPoint p2){
 	float pX = 0;
 	float pY = 0;
 
-<<<<<<< HEAD
-	for(float i = 0; i <= resolution; i++) {
-		float x = i/resolution;
-		
-
-		ofVec2f temp = vect * x;
-
-		float p2X = temp.x + p1.x;
-		float p2Y = temp.y + p1.y + amplitude*sinf(x*PI*2);
-		
-		if(i > 0)
-			ofLine(pX, pY, p2X, p2Y);
-		//ofCircle(temp.x + p1.x,temp.y + p1.y + amplitude*sinf(x*PI*2), 2);
-
-		pX = p2X;
-		pY = p2Y;
-	}
-
-	// EverTexture::draw(p2.x,p2.y ,100, 100, angle);
-=======
 	ofPushMatrix();
 	ofTranslate(p1.x, p1.y);
 	ofRotate(angle);
 	ofRect(0, -100/2, ((p2-p1).length()),100);
+
+	ofSetColor(255);
+	texture.draw(ofPoint(0,0), ofPoint(100,0), ofPoint(100,100), ofPoint(0,100));//(0, -100/2, ((p2-p1).length()),100);
+
 	//image.draw(0, 0);
 	ofPopMatrix();
->>>>>>> Updated BranchTextures with transform stuff
 }
 
 void BranchTexture::setResolution(int resolution) {
