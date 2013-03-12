@@ -25,6 +25,9 @@
     <ClCompile Include="src\Environment\EverWeather.cpp">
       <Filter>src\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="src\Environment\EverEnvironment.cpp">
+      <Filter>src\Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -57,6 +60,9 @@
       <Filter>src\Tree</Filter>
     </ClInclude>
     <ClInclude Include="src\Environment\EverWeather.h">
+      <Filter>src\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Environment\EverEnvironment.h">
       <Filter>src\Environment</Filter>
     </ClInclude>
   </ItemGroup>

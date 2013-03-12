@@ -101,6 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\DisplayManager.cpp" />
+    <ClCompile Include="src\Environment\EverEnvironment.cpp" />
     <ClCompile Include="src\Environment\EverWeather.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PhysicalController.cpp" />
@@ -111,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DisplayManager.h" />
+    <ClInclude Include="src\Environment\EverEnvironment.h" />
     <ClInclude Include="src\Environment\EverWeather.h" />
     <ClInclude Include="src\PhysicalController.h" />
     <ClInclude Include="src\testApp.h" />
