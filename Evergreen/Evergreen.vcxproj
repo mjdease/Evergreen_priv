@@ -100,11 +100,23 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\DisplayManager.cpp" />
+    <ClCompile Include="src\Environment\EverWeather.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PhysicalController.cpp" />
     <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="src\Tree\EverBranch.cpp" />
+    <ClCompile Include="src\Tree\EverLeaf.cpp" />
+    <ClCompile Include="src\Tree\EverTree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DisplayManager.h" />
+    <ClInclude Include="src\Environment\EverWeather.h" />
+    <ClInclude Include="src\PhysicalController.h" />
     <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="src\Tree\EverBranch.h" />
+    <ClInclude Include="src\Tree\EverLeaf.h" />
+    <ClInclude Include="src\Tree\EverTree.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\libs\openFrameworksCompiled\project\vs2010\openframeworksLib.vcxproj">

@@ -1,21 +1,63 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<ItemGroup>
-		<ClCompile Include="src\testApp.cpp">
-			<Filter>src</Filter>
-		</ClCompile>
-		<ClCompile Include="src\main.cpp">
-			<Filter>src</Filter>
-		</ClCompile>
-	</ItemGroup>
-	<ItemGroup>
-		<Filter Include="src">
-			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
-		</Filter>
-	</ItemGroup>
-	<ItemGroup>
-		<ClInclude Include="src\testApp.h">
-			<Filter>src</Filter>
-		</ClInclude>
-	</ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\testApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicalController.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DisplayManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tree\EverTree.cpp">
+      <Filter>src\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tree\EverBranch.cpp">
+      <Filter>src\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tree\EverLeaf.cpp">
+      <Filter>src\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Environment\EverWeather.cpp">
+      <Filter>src\Environment</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Tree">
+      <UniqueIdentifier>{2b25cc14-c62e-44e7-ba69-5e8d85f853de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Environment">
+      <UniqueIdentifier>{a113993b-df37-486f-b0f7-11b50dc222ee}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\testApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicalController.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DisplayManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tree\EverTree.h">
+      <Filter>src\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tree\EverBranch.h">
+      <Filter>src\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tree\EverLeaf.h">
+      <Filter>src\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Environment\EverWeather.h">
+      <Filter>src\Environment</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
