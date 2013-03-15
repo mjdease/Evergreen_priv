@@ -9,6 +9,7 @@ public:
 
 	void setImage(string src);
 
+	virtual void draw(float height);
 	void draw(float x, float y);
 	void draw(float x, float y, float w, float h);
 	void draw(float x, float y, float w, float h, float rotation);

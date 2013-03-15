@@ -10,6 +10,10 @@ void EverTexture::setImage(string src){
 	image.loadImage(src);
 }
 
+void EverTexture::draw(float height){
+	printf("IMPLEMENT THIS CLASS");
+}
+
 void EverTexture::draw(float x, float y){
 	image.draw(x, y);
 }
