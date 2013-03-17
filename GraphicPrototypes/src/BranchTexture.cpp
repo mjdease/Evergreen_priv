@@ -1,35 +1,81 @@
 #include "BranchTexture.h"
 
-
 BranchTexture::BranchTexture(string src):EverTexture(src)
 {
-	resolution = 5;
-	amplitude = 100;
+	branchWidth = 50;
+	resolution = 10;
 	randomOffset = ofRandom(0, 100);
 	ofLoadImage(texture, src);
+	this->src = src;
+
+	// offset must be higher than amplitude
+	amplitude = 25;
+	offset = 30;
 }
 
 void BranchTexture::draw(ofPoint p1, ofPoint p2){
 	float angle = ofRadToDeg(atan2f((p2.y-p1.y),(p2.x-p1.x)));
 	
+	ofTexture texture;
+	ofLoadImage(texture,src);
+
 	ofSetColor(255,100,100);
 	ofFill();
-	// ofRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
 	
-	ofVec2f vect = p2 - p1;
+	ofVec2f mouseline = p2 - p1;
 	float pX = 0;
 	float pY = 0;
+	float pY_mouse = 0;
 
-	ofPushMatrix();
-	ofTranslate(p1.x, p1.y);
-	ofRotate(angle);
-	ofRect(0, -100/2, ((p2-p1).length()),100);
+	for(float i = 0; i <= resolution; i++) {
+		
+		float percent = i/resolution;
+		
+		ofVec2f temp = mouseline * percent;
 
-	ofSetColor(255);
-	texture.draw(ofPoint(0,0), ofPoint(100,0), ofPoint(100,100), ofPoint(0,100));//(0, -100/2, ((p2-p1).length()),100);
+		float pX2 = temp.length();
 
-	//image.draw(0, 0);
-	ofPopMatrix();
+		float wave = amplitude*ofNoise(percent*5 + randomOffset);
+		float pY2 = wave;
+		float pY2_mouse = 0;
+		
+		float height1 = abs(pY-pY_mouse);
+		float height2 = abs(pY2-pY2_mouse);
+		float delta = height2-height1;
+
+		ofSetColor(255);
+
+		ofPushMatrix();
+			ofTranslate(p1.x, p1.y);
+			ofRotate(angle);
+
+			texture.bind();
+
+			// texture coordinates go CW
+			glBegin(GL_QUADS);
+				
+				glVertex3f(pX, -height1 + branchWidth, 0);
+				glTexCoord2f(width, height);
+				
+				glVertex3f(pX, -height1, 0);
+				glTexCoord2f(0, height);
+				
+				glVertex3f(pX2, -height2, 0);
+				glTexCoord2f(0.0f, 0.0f);
+				
+				glVertex3f(pX2, -height2 + branchWidth, 0);
+				glTexCoord2f(width, 0.0f);
+
+			glEnd();
+
+			texture.unbind();
+
+		ofPopMatrix();
+		pX = pX2;
+		pY = pY2;
+		pY_mouse = pY2_mouse;
+	}
+	
 }
 
 void BranchTexture::setResolution(int resolution) {
@@ -41,46 +87,6 @@ void BranchTexture::draw(float x1, float y1, float x2, float y2){
 	EverTexture::draw(x2,y2 ,100, 100, angle);
 }
 
-
 BranchTexture::~BranchTexture(void)
 {
 }
-
-
-
-//void BranchTexture::draw(ofPoint p1, ofPoint p2){
-//	float angle = ofRadToDeg(atan2f((p2.y-p1.y),(p2.x-p1.x)));
-//	
-//	ofSetColor(255,100,100);
-//	ofFill();
-//	// ofRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
-//	
-//	ofVec2f vect = p2 - p1;
-//	float pX = 0;
-//	float pY = 0;
-//
-//	path.clear();
-//	path.moveTo(p1);
-//
-//	for(float i = 0; i <= resolution; i++) {
-//		float x = i/resolution;
-//		
-//
-//		ofVec2f temp = vect * x;
-//
-//		float p2X = temp.x + p1.x;
-//		float p2Y = temp.y + p1.y + amplitude*ofNoise(x + randomOffset);
-//		
-//		if(i > 0)
-//			path.lineTo(p2X, p2Y);
-//			//ofLine(pX, pY, p2X, p2Y);
-//		//ofCircle(temp.x + p1.x,temp.y + p1.y + amplitude*sinf(x*PI*2), 2);
-//
-//		//pX = p2X;
-//		//pY = p2Y;
-//	}
-//	path.close();
-//	path.draw();
-//
-//	// EverTexture::draw(p2.x,p2.y ,100, 100, angle);
-//}

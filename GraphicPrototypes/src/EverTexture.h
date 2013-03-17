@@ -9,14 +9,16 @@ public:
 
 	void setImage(string src);
 
-	virtual void draw(float height);
+	virtual void draw(float offset);
 	void draw(float x, float y);
 	void draw(float x, float y, float w, float h);
 	void draw(float x, float y, float w, float h, float rotation);
 	void draw(float x, float y, float rotation);
 
-private:
+protected:
 	string src;
 	ofImage image;
+	float width;
+	float height;
 };
 

@@ -8,9 +8,11 @@ EverTexture::EverTexture(string src)
 void EverTexture::setImage(string src){
 	this->src = src;
 	image.loadImage(src);
+	width = image.width;
+	height = image.height;
 }
 
-void EverTexture::draw(float height){
+void EverTexture::draw(float offset){
 	printf("IMPLEMENT THIS CLASS");
 }
 

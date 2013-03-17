@@ -101,13 +101,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BranchTexture.cpp" />
+    <ClCompile Include="src\DisplayManager.cpp" />
     <ClCompile Include="src\EverTexture.cpp" />
+    <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BranchTexture.h" />
+    <ClInclude Include="src\DisplayManager.h" />
     <ClInclude Include="src\EverTexture.h" />
+    <ClInclude Include="src\Layer.h" />
     <ClInclude Include="src\testApp.h" />
   </ItemGroup>
   <ItemGroup>

@@ -9,10 +9,12 @@ public:
 	float startWidth;
 	float endWidth;
 
+	float branchWidth;
 	int resolution;
 	int randomOffset;
 	float amplitude;
 	void setResolution(int resolution);
+	int offset;
 
 	BranchTexture(string src);
 	~BranchTexture(void);

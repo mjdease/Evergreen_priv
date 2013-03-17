@@ -2,17 +2,21 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	ofSetFrameRate(60);
-	ofSetWindowShape(600, 600);
+	ofSetFrameRate(30);
+	ofSetWindowShape(1280, 800);
 	rotation = 0;
-	texture = new BranchTexture("texture.bmp");
+	branchTx = new BranchTexture("bark.bmp");
+	
+	displayMan = new DisplayManager();
+	//displayMan->addtoLayer(testTx, 2);
+
+	//ofLoadImage(testTex,"texture.bmp");
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-	/*
-	rotation++;
-	*/
+
+	//rotation++;
 
 	cout << ofGetFrameRate() << "\n";
 
@@ -22,11 +26,9 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	/*for(int i=0; i<1000; i++){
-		texture->draw(ofPoint(mouseX, mouseY), ofPoint(0,0));//mouseX + i,mouseY + i%100,rotation + i);
-	}*/
-
-	texture->draw(p1, p2);
+	
+	//displayManager->drawLayers();
+	branchTx->draw(p1, p2);
 
 	ofNoFill();
 	ofSetColor(255);

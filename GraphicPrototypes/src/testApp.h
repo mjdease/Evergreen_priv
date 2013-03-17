@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "EverTexture.h"
 #include "BranchTexture.h"
+#include "DisplayManager.h"
+#include "Layer.h"
 
 class testApp : public ofBaseApp{
 
@@ -10,6 +12,7 @@ class testApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+		ofTexture testTx;
 
 		void keyPressed  (int key);
 		void keyReleased(int key);
@@ -21,9 +24,12 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-		//EverTexture* texture;
-		BranchTexture* texture;
+		// EverTexture* texture;
+		BranchTexture* branchTx;
 		float rotation;
+
+		// Display manager
+		DisplayManager* displayMan;
 
 		ofPoint p1;
 		ofPoint p2;
