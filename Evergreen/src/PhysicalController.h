@@ -4,12 +4,12 @@
 class PhysicalController{
 public:
 	PhysicalController(string serial);
+	void PhysicalController::updateArduino();
 
 private:
 	ofArduino ard;
 	bool isSetup;
 
 	void PhysicalController::setupArduino(const int & version);
-	void PhysicalController::updateArduino();
 };
 
