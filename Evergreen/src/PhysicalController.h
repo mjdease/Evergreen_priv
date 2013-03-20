@@ -1,8 +1,15 @@
 #pragma once
-class PhysicalController
-{
+#include "ofMain.h"
+
+class PhysicalController{
 public:
-	PhysicalController(void);
-	~PhysicalController(void);
+	PhysicalController(string serial);
+
+private:
+	ofArduino ard;
+	bool isSetup;
+
+	void PhysicalController::setupArduino(const int & version);
+	void PhysicalController::updateArduino();
 };
 
