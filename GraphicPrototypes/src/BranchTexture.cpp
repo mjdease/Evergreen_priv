@@ -35,8 +35,8 @@ void BranchTexture::draw(ofPoint p1, ofPoint p2){
 		float wave = amplitude*ofNoise(percent * 5, randomOffset);
 
 		if(i == 0){
-			q1 = ofPoint(percent * length, -*startWidth/2-widthDelta*percent);
-			q2 = ofPoint(percent * length, *startWidth/2+widthDelta*percent);
+			q1 = ofPoint(percent * length - 3, -*startWidth/2-widthDelta*percent);
+			q2 = ofPoint(percent * length - 3, *startWidth/2+widthDelta*percent);
 			continue;
 		}
 		
@@ -49,9 +49,9 @@ void BranchTexture::draw(ofPoint p1, ofPoint p2){
 			ofRotate(angle);
 			drawTexture(q2, q4, q1, q3);
 		ofPopMatrix();
-
-		q1 = q3;
-		q2 = q4;
+		
+		q1 = ofPoint(q3.x-3, q3.y);
+		q2 = ofPoint(q4.x-3, q4.y);
 	}
 }
 

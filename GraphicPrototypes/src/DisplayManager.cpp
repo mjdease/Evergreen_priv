@@ -6,22 +6,22 @@ DisplayManager::DisplayManager(void)
 }
 
 void DisplayManager::addtoLayer(EverTexture* tx, int layerNumber) {
-	layer[layerNumber]->addtoDraw(tx);
+	layers[layerNumber]->addtoDraw(tx);
 }
 
 int DisplayManager::newLayer() {
 	Layer* temp = new Layer();
-	layer.push_back(temp);
-	return (layer.size() - 1);
+	layers.push_back(temp);
+	return (layers.size() - 1);
 }
 
 void DisplayManager::drawLayer(int layerIndex) {
 	// draw a layer
-	layer[layerIndex]->draw();
+	layers[layerIndex]->draw();
 }
 
 void DisplayManager::draw() {
-	for(int i = 0; i < 3; i++) {
+	for(int i = 0; i < layers.size(); i++) {
 		drawLayer(i);
 	}
 }

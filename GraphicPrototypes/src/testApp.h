@@ -35,4 +35,6 @@ class testApp : public ofBaseApp{
 
 		ofPoint p1;
 		ofPoint p2;
+
+		float time;
 };

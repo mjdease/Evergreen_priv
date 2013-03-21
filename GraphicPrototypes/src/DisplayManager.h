@@ -16,7 +16,7 @@ public:
 	// 0 = back, 1 = mid, 2 = foreground
 
 	//Layer layer[3];
-	vector<Layer*> layer;
+	vector<Layer*> layers;
 
 	DisplayManager(void);
 	~DisplayManager(void);

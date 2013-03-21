@@ -11,6 +11,8 @@ void testApp::setup(){
 	branchTx->loadTexture("bark.bmp");
 	
 	displayMan = new DisplayManager();
+	displayMan->newLayer();
+	time = 0;
 	//displayMan->addtoLayer(testTx, 2);
 
 	//ofLoadImage(testTex,"texture.bmp");
@@ -25,6 +27,11 @@ void testApp::update(){
 
 	p1 = ofPoint(100,600/2);
 	p2 = ofPoint(mouseX, mouseY);
+	branchTx->setStartEnd(p1, p2);
+
+	displayMan->layers[0]->setOffset(sinf(time)*20);
+
+	time+=0.1;
 }
 
 //--------------------------------------------------------------
@@ -32,8 +39,9 @@ void testApp::draw(){
 	
 	//displayManager->drawLayers();
 	//branchTx->draw(p1, p2);
-	branchTx->draw(p1, p2);
-
+	//branchTx->draw(p1, p2);
+	displayMan->addtoLayer(branchTx, 0);
+	displayMan->draw();
 }
 
 //--------------------------------------------------------------
