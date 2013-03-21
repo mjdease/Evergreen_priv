@@ -10,9 +10,6 @@
     <ClCompile Include="src\PhysicalController.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\DisplayManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Tree\EverTree.cpp">
       <Filter>src\Tree</Filter>
     </ClCompile>
@@ -28,6 +25,12 @@
     <ClCompile Include="src\Environment\EverEnvironment.cpp">
       <Filter>src\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="src\Draw\EverTexture.cpp">
+      <Filter>src\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Draw\BranchTexture.cpp">
+      <Filter>src\Draw</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -39,15 +42,15 @@
     <Filter Include="src\Environment">
       <UniqueIdentifier>{a113993b-df37-486f-b0f7-11b50dc222ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Draw">
+      <UniqueIdentifier>{cb8ac12e-900c-4f34-b52b-cb37893f9c09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\testApp.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\PhysicalController.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DisplayManager.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Tree\EverTree.h">
@@ -64,6 +67,12 @@
     </ClInclude>
     <ClInclude Include="src\Environment\EverEnvironment.h">
       <Filter>src\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Draw\BranchTexture.h">
+      <Filter>src\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Draw\EverTexture.h">
+      <Filter>src\Draw</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
