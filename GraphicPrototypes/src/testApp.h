@@ -23,6 +23,8 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		float startWidth, endWidth;
 		
 		// EverTexture* texture;
 		BranchTexture* branchTx;

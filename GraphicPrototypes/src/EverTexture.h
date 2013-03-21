@@ -5,19 +5,22 @@ class EverTexture
 {
 public:
 	EverTexture(string src);
+	EverTexture(void);
 	~EverTexture(void);
 
-	void setImage(string src);
 
 	virtual void draw(float offset);
 	void draw(float x, float y);
 	void draw(float x, float y, float w, float h);
 	void draw(float x, float y, float w, float h, float rotation);
 	void draw(float x, float y, float rotation);
+	void drawTexture(ofPoint p1, ofPoint p2, ofPoint p3, ofPoint p4);
+	void loadTexture(string src);
 
 protected:
 	string src;
 	ofImage image;
+	ofTexture texture;
 	float width;
 	float height;
 };

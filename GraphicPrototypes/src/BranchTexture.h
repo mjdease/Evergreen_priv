@@ -4,22 +4,24 @@
 class BranchTexture : public EverTexture
 {
 public:
+	void draw(float offset);
 	void draw(ofPoint p1, ofPoint p2);
-	void draw(float x1, float y1, float x2, float y2);
-	float startWidth;
-	float endWidth;
-
-	float branchWidth;
-	int resolution;
-	int randomOffset;
-	float amplitude;
+	void setStartEnd(ofPoint start, ofPoint end);
 	void setResolution(int resolution);
-	int offset;
+	void setAmplitude(float amp);
+	void setWidths(float* startWidth, float* endWidth);
 
+	BranchTexture(float* startHeight, float* endHeight);
 	BranchTexture(string src);
 	~BranchTexture(void);
+	int resolution;
+
 private:
-	ofPath path;
-	ofTexture texture;
+	float* startWidth;
+	float* endWidth;
+
+	float randomOffset;
+	float amplitude;
+	ofPoint point1, point2;
 };
 
