@@ -100,9 +100,13 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\DisplayManager.cpp" />
     <ClCompile Include="src\Draw\BranchTexture.cpp" />
     <ClCompile Include="src\Draw\EverTexture.cpp" />
+    <ClCompile Include="src\Draw\GrassTexture.cpp" />
+    <ClCompile Include="src\Draw\Layer.cpp" />
     <ClCompile Include="src\Environment\EverEnvironment.cpp" />
+    <ClCompile Include="src\Environment\EverGround.cpp" />
     <ClCompile Include="src\Environment\EverWeather.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PhysicalController\PhysicalController.cpp" />
@@ -113,9 +117,13 @@
     <ClCompile Include="src\Tree\EverTree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DisplayManager.h" />
     <ClInclude Include="src\Draw\BranchTexture.h" />
     <ClInclude Include="src\Draw\EverTexture.h" />
+    <ClInclude Include="src\Draw\GrassTexture.h" />
+    <ClInclude Include="src\Draw\Layer.h" />
     <ClInclude Include="src\Environment\EverEnvironment.h" />
+    <ClInclude Include="src\Environment\EverGround.h" />
     <ClInclude Include="src\Environment\EverWeather.h" />
     <ClInclude Include="src\PhysicalController\PhysicalController.h" />
     <ClInclude Include="src\PhysicalController\QuadEncoder.h" />

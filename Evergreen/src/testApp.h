@@ -1,6 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
+#include "Tree/EverTree.h"
+#include "DisplayManager.h"
+#include "PhysicalController/PhysicalController.h"
 
 class testApp : public ofBaseApp{
 
@@ -18,5 +21,12 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+		
+		float wind;
+
+		EverTree* tree;
+		
+		DisplayManager* displayManager;
+		PhysicalController* physicalController;
 		
 };

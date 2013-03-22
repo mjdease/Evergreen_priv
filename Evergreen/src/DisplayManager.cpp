@@ -1,8 +1,9 @@
 #include "DisplayManager.h"
 
-DisplayManager::DisplayManager(void)
+DisplayManager::DisplayManager(void):parallax(0.5)
 {
-
+	offsetClick = 0;
+	clickAmount = 10;
 }
 
 void DisplayManager::addtoLayer(EverTexture* tx, int layerNumber) {
@@ -21,8 +22,21 @@ void DisplayManager::drawLayer(int layerIndex) {
 }
 
 void DisplayManager::draw() {
-	for(int i = 0; i < layers.size(); i++) {
+	for(int i = layers.size()-1; i >= 0; i--) {
 		drawLayer(i);
+	}
+}
+
+void DisplayManager::setOffsetClick(int offsetClick){
+	this->offsetClick += offsetClick;
+	setOffset(offsetClick * clickAmount);
+}
+
+void DisplayManager::setOffset(float offset){
+	this->offset = offset;
+
+	for(int i = 0; i < layers.size(); i++) {
+		layers[i]->setOffset(offset / (parallax * i + 1));
 	}
 }
 
