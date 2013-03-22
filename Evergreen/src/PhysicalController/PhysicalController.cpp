@@ -20,13 +20,16 @@ PhysicalController::PhysicalController(string serial){
 	isButtonPressed = false;
 	isButtonEvent = false;
 
-	ard.connect(serial, 57600);
+	isSetup	= false;
+}
+
+void PhysicalController::init(){
+	ard.connect("COM4", 57600);
 
 	// listen for EInitialized notification. this indicates that
 	// the arduino is ready to receive commands and it is safe to
 	// call setupArduino()
 	ofAddListener(ard.EInitialized, this, &PhysicalController::setupArduino);
-	isSetup	= false;
 }
 
 void PhysicalController::setupArduino(const int & version){
@@ -42,7 +45,7 @@ void PhysicalController::setupArduino(const int & version){
 	ard.sendDigitalPinMode(windLeftPin, ARD_INPUT);
 	ard.sendDigitalPinMode(windRightPin, ARD_INPUT);
 
-	wheel = QuadEncoder(ard, rotaryPin1, rotaryPin2);
+	wheel = QuadEncoder(&ard, rotaryPin1, rotaryPin2);
 
 	ofAddListener(ard.EDigitalPinChanged, this, &PhysicalController::digitalPinChanged);
 }
@@ -50,9 +53,10 @@ void PhysicalController::setupArduino(const int & version){
 void PhysicalController::updateArduino(){
 	// update the arduino, get any data or messages.
 	ard.update();
-
+	
 	// do not send anything until the arduino has been set up
 	if (isSetup) {
+		ard.sendDigital(buttonLedPin, buttonLedState);
 		wheelChange = wheel.tick();
 
 		int leftReedVal = ard.getDigital(windLeftPin);
@@ -120,6 +124,8 @@ int PhysicalController::getScroll(){
 		return -1;
 	case '>':
 		return 1;
+	default:
+		return 0;
 	}
 }
 //0..1 magnitude of the wind blowing in from the left side
@@ -149,11 +155,11 @@ void PhysicalController::digitalPinChanged(const int & pinNum) {
 			if(reading == ARD_LOW){
 				isButtonEvent = true;
 				isButtonPressed = true;
-				ard.sendDigital(buttonLedPin, ARD_HIGH);
+				buttonLedState = ARD_HIGH;
 			}
 			if(reading == ARD_HIGH){
 				isButtonPressed = false;
-				ard.sendDigital(buttonLedPin, ARD_LOW);
+				buttonLedState = ARD_LOW;
 			}
 		}
 		break;

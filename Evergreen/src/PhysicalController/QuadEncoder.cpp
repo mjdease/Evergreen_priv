@@ -6,20 +6,19 @@
  * Updated by Scottapotamas scott@26oclock.com for arduino 1.0 ice
  * Updated by Matt Dease for open frameworks
  */
-
 #include "QuadEncoder.h"
 
 QuadEncoder::QuadEncoder(){
 
 }
 
-QuadEncoder::QuadEncoder(ofArduino ard, int pin1, int pin2)
+QuadEncoder::QuadEncoder(ofArduino* arduino, int pin1, int pin2)
 {
-	QuadEncoder::ard = ard;
-	QuadEncoder::ard.sendDigitalPinMode(pin1, ARD_INPUT);
-	QuadEncoder::ard.sendDigitalPinMode(pin2, ARD_INPUT);
-	QuadEncoder::ard.sendDigital(pin1, ARD_HIGH);
-	QuadEncoder::ard.sendDigital(pin2, ARD_HIGH);
+	ard = arduino;
+	ard->sendDigitalPinMode(pin1, ARD_INPUT);
+	ard->sendDigitalPinMode(pin2, ARD_INPUT);
+	ard->sendDigital(pin1, ARD_HIGH);
+	ard->sendDigital(pin2, ARD_HIGH);
 	_inputPin1=pin1;
 	_inputPin2=pin2;
 	_val1=1;
@@ -35,8 +34,8 @@ QuadEncoder::QuadEncoder(ofArduino ard, int pin1, int pin2)
 char QuadEncoder::tick()
 {  
   _moved = false;
-  _val1 = ard.getDigital(_inputPin1);
-  _val2 = ard.getDigital(_inputPin2);
+  _val1 = ard->getDigital(_inputPin1);
+  _val2 = ard->getDigital(_inputPin2);
     // Detect changes
   if ( _val1 != _oldVal1 || _val2 != _oldVal2) {
     _oldVal1=_val1;

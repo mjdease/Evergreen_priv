@@ -10,11 +10,11 @@
 class QuadEncoder
 {
   public:
-	QuadEncoder::QuadEncoder();
-    QuadEncoder(ofArduino ard, int pin1, int pin2);
+	QuadEncoder();
+    QuadEncoder(ofArduino* arduino, int pin1, int pin2);
     char tick();
   private:
-	ofArduino ard;
+	ofArduino* ard;
 	bool _moved;
     int _inputPin1;
     int _inputPin2;
