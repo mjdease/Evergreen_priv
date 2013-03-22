@@ -28,11 +28,14 @@ private:
 	QuadEncoder wheel;
 
 	bool isSetup, isButtonPressed, isButtonEvent;
-	int buttonLedState, buttonState, pButtonState;
+	int buttonLedState, buttonState, pButtonState, pLeftReedVal, pRightReedVal;
 	char wheelChange;
-	long lastButtonChangeTime, debounceDelay;
+	long lastButtonChangeTime, debounceDelay, pLeftTime, pRightTime;
+	float leftWind, rightWind;
 
 	void PhysicalController::setupArduino(const int & version);
 	void PhysicalController::digitalPinChanged(const int & pinNum);
+	float PhysicalController::msToMin(float millliseconds);
+	float PhysicalController::constrain(float x, float low, float high);
 };
 
