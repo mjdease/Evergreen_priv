@@ -4,16 +4,35 @@ enum LayerTypes {FOREGROUND, MIDGROUND, BACKGROUND};
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	ofSetFrameRate(60);
+	//ofSetFrameRate(60);
 	ofSetWindowShape(1280, 800);
 	wind = 0;
-	
+	//physicalController = new PhysicalController();
+	//physicalController->init("COM4");
+
 	displayManager = new DisplayManager();
 	displayManager->newLayer();
 	displayManager->newLayer();
 	displayManager->newLayer();
 
 	tree = new EverTree(displayManager);
+	tree->setPosition(ofVec2f(640.0f, 580.0f));
+
+	ground = new EverGround(displayManager);
+
+	midground = new SimpleTexture("environment/midground.png");
+	midground->setPosition(0,0);
+
+	background = new SimpleTexture("environment/background/mountains.png");
+	background->setPosition(0,0);
+
+	sky = new SimpleTexture("environment/sky.png");
+	sky->setPosition(0,-2200);
+
+	for(int i=0; i<10; i++){
+		clouds[i] = new EverCloud();
+	}
+
 	//physicalController = new PhysicalController();
 }
 
@@ -27,19 +46,43 @@ void testApp::update(){
 	//displayManager->setOffsetClick(physicalController->getScroll());
 
 	tree->update();
-	printf("%f\n", ofGetFrameRate());
+
+	if(wind > 5){
+		ground->health += 0.05;
+	}
+	ground->health-=0.001;
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	ground->draw();
 	tree->draw();
+	
+	displayManager->addtoLayer(midground, MIDGROUND);
+	
+	for(int i=0; i<10; i++){
+		displayManager->addtoLayer(clouds[i], MIDGROUND);
+	}
+
+	displayManager->addtoLayer(sky, BACKGROUND);
+	displayManager->addtoLayer(background, BACKGROUND);
+
 	displayManager->draw();
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	wind += 1;
-	tree->setSway(wind);
+	
+	if(key == 32){
+		wind += 1;
+	}
+
+	if(key == 357){
+		displayManager->setOffsetClick(1);
+	}
+	else if(key == 359){
+		displayManager->setOffsetClick(-1);
+	}
 }
 
 //--------------------------------------------------------------
@@ -49,7 +92,6 @@ void testApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
-	tree->setPosition(ofVec2f((float)x, (float)y));
 }
 
 //--------------------------------------------------------------

@@ -3,7 +3,7 @@
 const ofVec3f EverTree::X_DIRECTION(1,0,0);
 const ofVec3f EverTree::Y_DIRECTION(0,1,0);
 const float EverTree::MAX_CHILDREN = 9;
-const float EverTree::BRANCH_SEPERATION = 0.20;
+const float EverTree::BRANCH_SEPERATION = 0.30;
 const string EverTree::TEXTURE_SRC = "bark.bmp";
 
 EverTree::EverTree(DisplayManager* manager):GROWTH_RATE(0.1),length(0),swayAmount(0),numChildren(0), time(0)

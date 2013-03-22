@@ -1,119 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\testApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\EverTree.cpp">
-      <Filter>src\Tree</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\EverBranch.cpp">
-      <Filter>src\Tree</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tree\EverLeaf.cpp">
-      <Filter>src\Tree</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Environment\EverWeather.cpp">
-      <Filter>src\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Environment\EverEnvironment.cpp">
-      <Filter>src\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Draw\EverTexture.cpp">
-      <Filter>src\Draw</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Draw\BranchTexture.cpp">
-      <Filter>src\Draw</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-    <ClCompile Include="src\PhysicalController\QuadEncoder.cpp">
-      <Filter>src\PhysicalController</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PhysicalController\PhysicalController.cpp">
-      <Filter>src\PhysicalController</Filter>
-=======
-    <ClCompile Include="src\DisplayManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Draw\Layer.cpp">
-      <Filter>src\Draw</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Environment\EverGround.cpp">
-      <Filter>src\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Draw\GrassTexture.cpp">
-      <Filter>src\Draw</Filter>
->>>>>>> Stashed changes
-    </ClCompile>
+    <ClCompile Include="src\DisplayManager.cpp" />
+    <ClCompile Include="src\Draw\BranchTexture.cpp" />
+    <ClCompile Include="src\Draw\EverTexture.cpp" />
+    <ClCompile Include="src\Draw\GrassTexture.cpp" />
+    <ClCompile Include="src\Draw\Layer.cpp" />
+    <ClCompile Include="src\Environment\EverEnvironment.cpp" />
+    <ClCompile Include="src\Environment\EverGround.cpp" />
+    <ClCompile Include="src\Environment\EverWeather.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PhysicalController\PhysicalController.cpp" />
+    <ClCompile Include="src\PhysicalController\QuadEncoder.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="src\Tree\EverBranch.cpp" />
+    <ClCompile Include="src\Tree\EverLeaf.cpp" />
+    <ClCompile Include="src\Tree\EverTree.cpp" />
+    <ClCompile Include="src\Draw\SimpleTexture.cpp" />
+    <ClCompile Include="src\Environment\EverFlower.cpp" />
+    <ClCompile Include="src\Environment\EverCloud.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Tree">
-      <UniqueIdentifier>{2b25cc14-c62e-44e7-ba69-5e8d85f853de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Environment">
-      <UniqueIdentifier>{a113993b-df37-486f-b0f7-11b50dc222ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Draw">
-      <UniqueIdentifier>{cb8ac12e-900c-4f34-b52b-cb37893f9c09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\PhysicalController">
-      <UniqueIdentifier>{1a9cd482-7c94-45c0-ad56-40c2fb8ecdc4}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\testApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\EverTree.h">
-      <Filter>src\Tree</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\EverBranch.h">
-      <Filter>src\Tree</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tree\EverLeaf.h">
-      <Filter>src\Tree</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Environment\EverWeather.h">
-      <Filter>src\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Environment\EverEnvironment.h">
-      <Filter>src\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Draw\BranchTexture.h">
-      <Filter>src\Draw</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Draw\EverTexture.h">
-      <Filter>src\Draw</Filter>
-    </ClInclude>
-<<<<<<< Updated upstream
-    <ClInclude Include="src\PhysicalController\QuadEncoder.h">
-      <Filter>src\PhysicalController</Filter>
-    </ClInclude>
-    <ClInclude Include="src\PhysicalController\PhysicalController.h">
-      <Filter>src\PhysicalController</Filter>
-    </ClInclude>
+    <ClInclude Include="src\DisplayManager.h" />
+    <ClInclude Include="src\Draw\BranchTexture.h" />
+    <ClInclude Include="src\Draw\EverTexture.h" />
+    <ClInclude Include="src\Draw\GrassTexture.h" />
+    <ClInclude Include="src\Draw\Layer.h" />
+    <ClInclude Include="src\Environment\EverEnvironment.h" />
+    <ClInclude Include="src\Environment\EverGround.h" />
+    <ClInclude Include="src\Environment\EverWeather.h" />
+    <ClInclude Include="src\PhysicalController\PhysicalController.h" />
+    <ClInclude Include="src\PhysicalController\QuadEncoder.h" />
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="src\Tree\EverBranch.h" />
+    <ClInclude Include="src\Tree\EverLeaf.h" />
+    <ClInclude Include="src\Tree\EverTree.h" />
+    <ClInclude Include="src\Draw\SimpleTexture.h" />
+    <ClInclude Include="src\Environment\EverFlower.h" />
+    <ClInclude Include="src\Environment\EverCloud.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-=======
-    <ClInclude Include="src\DisplayManager.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Draw\Layer.h">
-      <Filter>src\Draw</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Environment\EverGround.h">
-      <Filter>src\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Draw\GrassTexture.h">
-      <Filter>src\Draw</Filter>
-    </ClInclude>
->>>>>>> Stashed changes
   </ItemGroup>
 </Project>

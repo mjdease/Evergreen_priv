@@ -1,7 +1,12 @@
 #include "EverGround.h"
 
-EverGround::EverGround(void) {
+EverGround::EverGround(DisplayManager* manager) {
+	health = 1;
+	numFlowers = 0;
+
 	float opacOffset = 0.1;
+	displayManager = manager;
+
 	numLayers = 2;
 	deadLayer = new GrassTexture("environment/foreground/grass_0.png");
 	deadLayer->setPosition(0,0);
@@ -26,6 +31,18 @@ void EverGround::draw(){
 	for(int i=0; i<numLayers; i++) {
 		displayManager->addtoLayer(grassLayers[i], 0);
 		grassLayers[i]->setPosition(0, ofGetHeight() - grassLayers[i]->getHeight());
+	}
+
+	addFlowers();
+	for(int i=0; i<numFlowers; i++){
+		displayManager->addtoLayer(flowers[i], 0);
+	}
+}
+
+void EverGround::addFlowers(){
+	if(health > 0.5 && numFlowers < 100 && ofRandomuf() < 0.01){
+		flowers[numFlowers] = new EverFlower(ofPoint(ofRandom(900), 600 + ofRandom(200)));
+		numFlowers++;
 	}
 }
 

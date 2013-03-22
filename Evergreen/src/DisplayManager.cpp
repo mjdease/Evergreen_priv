@@ -27,9 +27,10 @@ void DisplayManager::draw() {
 	}
 }
 
-void DisplayManager::setOffsetClick(int offsetClick){
-	this->offsetClick += offsetClick;
-	setOffset(offsetClick * clickAmount);
+void DisplayManager::setOffsetClick(int click){
+	this->offsetClick += click;
+	offsetClick = ((offsetClick < 0)?0:offsetClick);
+	setOffset(this->offsetClick * clickAmount);
 }
 
 void DisplayManager::setOffset(float offset){

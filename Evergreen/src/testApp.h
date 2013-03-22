@@ -2,8 +2,11 @@
 
 #include "ofMain.h"
 #include "Tree/EverTree.h"
+#include "Environment/EverGround.h"
+#include "Environment/EverCloud.h"
 #include "DisplayManager.h"
 #include "PhysicalController/PhysicalController.h"
+#include "Draw/SimpleTexture.h"
 
 class testApp : public ofBaseApp{
 
@@ -25,6 +28,11 @@ class testApp : public ofBaseApp{
 		float wind;
 
 		EverTree* tree;
+		EverGround* ground;
+		SimpleTexture* midground;
+		SimpleTexture* background;
+		SimpleTexture* sky;
+		EverCloud* clouds[100];
 		
 		DisplayManager* displayManager;
 		PhysicalController* physicalController;
