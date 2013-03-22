@@ -9,6 +9,7 @@ PhysicalController::PhysicalController(string serial){
 	pButtonState = ARD_HIGH;
 	lastButtonChangeTime = 0;
 	debounceDelay = 50;
+	wheelChange = '-';
 	
 	isButtonPressed = false;
 	isButtonEvent = false;
@@ -35,6 +36,8 @@ void PhysicalController::setupArduino(const int & version){
 	ard.sendDigitalPinMode(windLeftPin, ARD_INPUT);
 	ard.sendDigitalPinMode(windRightPin, ARD_INPUT);
 
+	wheel = QuadEncoder(ard, rotaryPin1, rotaryPin2);
+
 	ofAddListener(ard.EDigitalPinChanged, this, &PhysicalController::digitalPinChanged);
 }
 
@@ -44,7 +47,7 @@ void PhysicalController::updateArduino(){
 	
 	// do not send anything until the arduino has been set up
 	if (isSetup) {
-        // do stuff here
+        wheelChange = wheel.tick();
 	}
 }
 
@@ -59,7 +62,14 @@ bool PhysicalController::getButtonPress(){
 //any integer, sign indicates direction -> + is scrolling down, - is scrolling up.
 //a quick flick of the wheel generates ~8 step changes (so +/-8) - may want to scale this value to reduce sensitivity
 int PhysicalController::getScroll(){
-	return 5;
+	switch(wheelChange){
+	case '-':
+		return 0;
+	case '<':
+		return -1;
+	case '>':
+		return 1;
+	}
 }
 //0..1 magnitude of the wind blowing in from the left side
 float PhysicalController::getLeftWind(){

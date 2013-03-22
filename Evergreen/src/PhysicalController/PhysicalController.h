@@ -1,5 +1,6 @@
 #pragma once
 #include "ofMain.h"
+#include "QuadEncoder.h"
 
 class PhysicalController{
 public:
@@ -8,8 +9,7 @@ public:
 	void PhysicalController::updateArduino();
 	//true only when button changes from up to down -- will be true only once per button press
 	bool PhysicalController::getButtonPress();
-	//any integer, sign indicates direction -> + is scrolling down, - is scrolling up.
-	//a quick flick of the wheel generates ~8 step changes (so +/-8) - may want to scale this value to reduce sensitivity
+	//-1, 0, 1 -> + is scrolling down, - is scrolling up.
 	int PhysicalController::getScroll();
 	//0..1 magnitude of the wind blowing in from the left side
 	float PhysicalController::getLeftWind();
@@ -25,8 +25,11 @@ private:
 	static const int windRightPin = 9;
 
 	ofArduino ard;
+	QuadEncoder wheel;
+
 	bool isSetup, isButtonPressed, isButtonEvent;
 	int buttonLedState, buttonState, pButtonState;
+	char wheelChange;
 	long lastButtonChangeTime, debounceDelay;
 
 	void PhysicalController::setupArduino(const int & version);

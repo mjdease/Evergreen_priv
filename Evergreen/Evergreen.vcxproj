@@ -105,7 +105,8 @@
     <ClCompile Include="src\Environment\EverEnvironment.cpp" />
     <ClCompile Include="src\Environment\EverWeather.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\PhysicalController.cpp" />
+    <ClCompile Include="src\PhysicalController\PhysicalController.cpp" />
+    <ClCompile Include="src\PhysicalController\QuadEncoder.cpp" />
     <ClCompile Include="src\testApp.cpp" />
     <ClCompile Include="src\Tree\EverBranch.cpp" />
     <ClCompile Include="src\Tree\EverLeaf.cpp" />
@@ -116,7 +117,8 @@
     <ClInclude Include="src\Draw\EverTexture.h" />
     <ClInclude Include="src\Environment\EverEnvironment.h" />
     <ClInclude Include="src\Environment\EverWeather.h" />
-    <ClInclude Include="src\PhysicalController.h" />
+    <ClInclude Include="src\PhysicalController\PhysicalController.h" />
+    <ClInclude Include="src\PhysicalController\QuadEncoder.h" />
     <ClInclude Include="src\testApp.h" />
     <ClInclude Include="src\Tree\EverBranch.h" />
     <ClInclude Include="src\Tree\EverLeaf.h" />
@@ -126,6 +128,9 @@
     <ProjectReference Include="..\..\..\libs\openFrameworksCompiled\project\vs2010\openframeworksLib.vcxproj">
       <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
