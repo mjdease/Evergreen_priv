@@ -102,7 +102,9 @@
   <ItemGroup>
     <ClCompile Include="src\BranchTexture.cpp" />
     <ClCompile Include="src\DisplayManager.cpp" />
+    <ClCompile Include="src\EverGround.cpp" />
     <ClCompile Include="src\EverTexture.cpp" />
+    <ClCompile Include="src\GrassTexture.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />
@@ -110,7 +112,9 @@
   <ItemGroup>
     <ClInclude Include="src\BranchTexture.h" />
     <ClInclude Include="src\DisplayManager.h" />
+    <ClInclude Include="src\EverGround.h" />
     <ClInclude Include="src\EverTexture.h" />
+    <ClInclude Include="src\GrassTexture.h" />
     <ClInclude Include="src\Layer.h" />
     <ClInclude Include="src\testApp.h" />
   </ItemGroup>
