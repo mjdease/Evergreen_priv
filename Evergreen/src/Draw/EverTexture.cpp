@@ -1,11 +1,11 @@
 #include "EverTexture.h"
 
-EverTexture::EverTexture(string src):opacity(255)
+EverTexture::EverTexture(string src)
 {
 	loadTexture(src);
 }
 
-EverTexture::EverTexture():opacity(255){
+EverTexture::EverTexture(){
 
 }
 
@@ -23,36 +23,24 @@ void EverTexture::draw(float offset){
 }
 
 void EverTexture::draw(float x, float y){
-	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, opacity);
 	image.draw(x, y);
-	ofDisableAlphaBlending();
 }
 void EverTexture::draw(float x, float y, float w, float h){
-	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, opacity);
 	image.draw(x, y, w, h);
-	ofDisableAlphaBlending();
 }
 void EverTexture::draw(float x, float y, float w, float h, float rotation){
-	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, opacity);
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 	glRotatef(rotation, 0, 0, 1);
 	image.draw(-w/2, -h/2, w, h);
 	glPopMatrix();
-	ofDisableAlphaBlending();
 }
 void EverTexture::draw(float x, float y, float rotation){
-	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, opacity);
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 	glRotatef(rotation, 0, 0, 1);
 	image.draw(-image.width/2, -image.height/2);
 	glPopMatrix();
-	ofDisableAlphaBlending();
 
 	/*ofPushMatrix();
 	ofTranslate(x, y);
@@ -62,8 +50,7 @@ void EverTexture::draw(float x, float y, float rotation){
 }
 
 void EverTexture::drawTexture(ofPoint p1, ofPoint p2, ofPoint p3, ofPoint p4){
-	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, opacity);
+	ofSetColor(255);
 	texture.bind();
 
 	// texture coordinates go CW
@@ -84,19 +71,8 @@ void EverTexture::drawTexture(ofPoint p1, ofPoint p2, ofPoint p3, ofPoint p4){
 	glEnd();
 
 	texture.unbind();
-	ofDisableAlphaBlending();
-}
-
-void EverTexture::setOpacity(float alpha){
-	opacity = alpha;
-}
-
-float EverTexture::getWidth(){
-	return width;
-}
-
-float EverTexture::getHeight(){
-	return height;
+	ofNoFill();
+	//ofRect(p1, p4.x-p1.x, p4.y-p1.y); // DEBUG
 }
 
 EverTexture::~EverTexture(void)

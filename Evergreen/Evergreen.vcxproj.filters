@@ -28,25 +28,11 @@
     <ClCompile Include="src\Draw\BranchTexture.cpp">
       <Filter>src\Draw</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <ClCompile Include="src\PhysicalController\QuadEncoder.cpp">
       <Filter>src\PhysicalController</Filter>
     </ClCompile>
     <ClCompile Include="src\PhysicalController\PhysicalController.cpp">
       <Filter>src\PhysicalController</Filter>
-=======
-    <ClCompile Include="src\DisplayManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Draw\Layer.cpp">
-      <Filter>src\Draw</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Environment\EverGround.cpp">
-      <Filter>src\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Draw\GrassTexture.cpp">
-      <Filter>src\Draw</Filter>
->>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +77,6 @@
     <ClInclude Include="src\Draw\EverTexture.h">
       <Filter>src\Draw</Filter>
     </ClInclude>
-<<<<<<< Updated upstream
     <ClInclude Include="src\PhysicalController\QuadEncoder.h">
       <Filter>src\PhysicalController</Filter>
     </ClInclude>
@@ -101,19 +86,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-=======
-    <ClInclude Include="src\DisplayManager.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Draw\Layer.h">
-      <Filter>src\Draw</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Environment\EverGround.h">
-      <Filter>src\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Draw\GrassTexture.h">
-      <Filter>src\Draw</Filter>
-    </ClInclude>
->>>>>>> Stashed changes
   </ItemGroup>
 </Project>

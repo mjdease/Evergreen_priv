@@ -13,22 +13,7 @@ const float EverBranch::BASE_ANGLE = 90.0f;
 const int EverBranch::BRANCH_SEPERATION = 7;
 const string EverBranch::TEXTURE_SRC = "bark.bmp";
 
-EverBranch::EverBranch(void): parent(NULL), MAX_CHILDREN(5), GROWTH_RATE(0.05f), BIRTHRATE(0.0025f), MAIN_LIMB(true), MAX_CHILD_BEND(25.0f), MIN_CHILD_BEND(5.0f), SWAY_AMOUNT(1.0f)
-{
-	init();
-	rotationMatrix.makeRotationMatrix(BASE_ANGLE, 0,0,1);
-	clockwise = ((BASE_ANGLE < 0) ? true : false);
-}
-
-EverBranch::EverBranch(DisplayManager* manager):
-	parent(NULL), MAX_CHILDREN(5),
-	GROWTH_RATE(0.05f),
-	BIRTHRATE(0.0025f),
-	MAIN_LIMB(true),
-	MAX_CHILD_BEND(25.0f),
-	MIN_CHILD_BEND(5.0f),
-	SWAY_AMOUNT(1.0f),
-	displayManager(manager)
+EverBranch::EverBranch(void): parent(NULL), MAX_CHILDREN(5), GROWTH_RATE(0.05), BIRTHRATE(0.0025), MAIN_LIMB(true), MAX_CHILD_BEND(25.0f), MIN_CHILD_BEND(5.0f), SWAY_AMOUNT(1.0f)
 {
 	init();
 	rotationMatrix.makeRotationMatrix(BASE_ANGLE, 0,0,1);
@@ -113,15 +98,12 @@ void EverBranch::update(){
 		weight += children[i]->weight;
 	}
 
-	texture->setStartEnd(position, endPosition);
-
 	time += SWAY_AMOUNT/5 + 1;
-	if(time > 99999999){time = 0;}
 }
 
 void EverBranch::draw(){
-	//texture->draw(position, endPosition);
-	displayManager->addtoLayer(texture, 0);
+	texture->draw(position, endPosition);
+	//texture->addToDrawStack(3);
 
 	for(int i=0; i<numChildren; i++){
 		children[i]->draw();
@@ -145,11 +127,6 @@ void EverBranch::setRotationMatrix(ofMatrix4x4 rotation){
 	rotationMatrix = rotation;
 }
 
-void EverBranch::setBranchAngle(float angle){
-	branchBaseMatrix.makeRotationMatrix(angle, 0,0,1);
-	clockwise = ((angle < 0) ? true : false);
-}
-
 void EverBranch::setSwayAmount(float sway){
 	SWAY_AMOUNT = sway;
 
@@ -170,7 +147,6 @@ void EverBranch::newChild(){
 	temp->MIN_CHILD_BEND = MIN_CHILD_BEND * MIN_BEND_DECAY;
 	temp->SWAY_AMOUNT = SWAY_AMOUNT * SWAY_DECAY;
 	temp->clockwise = clockwise;
-	temp->displayManager = displayManager;
 	if(numChildren == 0){
 		temp->ATTACH_POINT = 1;
 		temp->MAIN_LIMB = true;

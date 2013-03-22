@@ -1,5 +1,6 @@
 #pragma once
 #include "../ofMain.h"
+//#include "../DisplayManager.h"
 
 class EverTexture
 {
@@ -16,10 +17,7 @@ public:
 	void draw(float x, float y, float rotation);
 	void drawTexture(ofPoint p1, ofPoint p2, ofPoint p3, ofPoint p4);
 	void loadTexture(string src);
-	void setOpacity(float alpha);
-
-	float getHeight();
-	float getWidth();
+	//void addToDrawStack(int layer);
 
 protected:
 	string src;
@@ -27,6 +25,6 @@ protected:
 	ofTexture texture;
 	float width;
 	float height;
-	float opacity;
+
 };
 
