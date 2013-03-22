@@ -1,6 +1,7 @@
 #pragma once
 #include "../ofMain.h"
 #include "../Draw/BranchTexture.h"
+#include "../DisplayManager.h"
 
 class EverBranch
 {
@@ -30,6 +31,7 @@ public:
 	int numChildren;
 	BranchTexture* texture;
 	void newChild();
+	DisplayManager* displayManager;
 
 	bool clockwise;
 	float weight;
@@ -39,6 +41,7 @@ public:
 	ofVec3f direction;
 	float length;
 	float angle;
+	ofMatrix4x4 branchBaseMatrix;
 	ofMatrix4x4 adjustmentMatrix;
 	ofMatrix4x4 baseMatrix; // For angle relative to the parent
 	ofMatrix4x4 rotationMatrix; // For angle of the parent
@@ -54,8 +57,10 @@ public:
 	void setPosition(ofVec2f position);
 	void setRotationMatrix(ofMatrix4x4 rotation);
 	void setSwayAmount(float sway);
+	void setBranchAngle(float angle);
 	
 	EverBranch(void);
+	EverBranch(DisplayManager* manager);
 	EverBranch(EverBranch* parent);
 	void init();
 	float time;
