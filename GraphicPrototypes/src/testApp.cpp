@@ -13,8 +13,9 @@ void testApp::setup(){
 	displayMan = new DisplayManager();
 	displayMan->newLayer();
 	time = 0;
-	//displayMan->addtoLayer(testTx, 2);
+	ground = new EverGround();
 
+	//displayMan->addtoLayer(testTx, 2);
 	//ofLoadImage(testTex,"texture.bmp");
 }
 
@@ -22,12 +23,12 @@ void testApp::setup(){
 void testApp::update(){
 
 	//rotation++;
-
 	//cout << ofGetFrameRate() << "\n";
 
 	p1 = ofPoint(100,600/2);
 	p2 = ofPoint(mouseX, mouseY);
 	branchTx->setStartEnd(p1, p2);
+	ground->health = (float)mouseX / 1280.0;
 
 	displayMan->layers[0]->setOffset(sinf(time)*20);
 
@@ -40,8 +41,11 @@ void testApp::draw(){
 	//displayManager->drawLayers();
 	//branchTx->draw(p1, p2);
 	//branchTx->draw(p1, p2);
+
 	displayMan->addtoLayer(branchTx, 0);
 	displayMan->draw();
+
+	ground->draw();
 }
 
 //--------------------------------------------------------------

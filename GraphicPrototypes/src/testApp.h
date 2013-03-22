@@ -5,6 +5,7 @@
 #include "BranchTexture.h"
 #include "DisplayManager.h"
 #include "Layer.h"
+#include "EverGround.h"
 
 class testApp : public ofBaseApp{
 
@@ -35,6 +36,8 @@ class testApp : public ofBaseApp{
 
 		ofPoint p1;
 		ofPoint p2;
+
+		EverGround* ground;
 
 		float time;
 };
