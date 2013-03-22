@@ -43,11 +43,17 @@ void EverGround::addFlowers(){
 	if(health > 0.5 && numFlowers < 100 && ofRandomuf() < 0.01){
 		flowers[numFlowers] = new EverFlower(ofPoint(ofRandom(900), 600 + ofRandom(200)));
 		numFlowers++;
+
+		tree->adjustGrowthRate(-0.001);
 	}
 }
 
 void EverGround::setHealth(float health){
 	this->health = health;
+}
+
+void EverGround::setTree(EverTree* tree){
+	this->tree = tree;
 }
 
 EverGround::~EverGround(void)

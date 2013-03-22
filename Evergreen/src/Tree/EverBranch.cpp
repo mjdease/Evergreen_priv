@@ -183,3 +183,11 @@ void EverBranch::newChild(){
 
 	numChildren++;
 }
+
+void EverBranch::adjustGrowthRate(float adjust){
+	GROWTH_RATE += adjust;
+
+	for(int i=0; i<numChildren; i++){
+		children[i]->adjustGrowthRate(adjust * GROWTH_DECAY);
+	}
+}

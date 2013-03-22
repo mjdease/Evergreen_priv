@@ -42,6 +42,7 @@ public:
 	void reproduce();
 
 	void setDirection();
+	void adjustGrowthRate(float adjust);
 	void setSway(float sway);
 	
 	void setPosition(ofVec2f);

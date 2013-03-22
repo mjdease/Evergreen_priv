@@ -19,6 +19,7 @@ void testApp::setup(){
 	tree->setPosition(ofVec2f(640.0f, 580.0f));
 
 	ground = new EverGround(displayManager);
+	ground->setTree(tree);
 
 	midground = new SimpleTexture("environment/midground.png");
 	midground->setPosition(0,0);

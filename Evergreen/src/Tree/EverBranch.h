@@ -58,6 +58,7 @@ public:
 	void setRotationMatrix(ofMatrix4x4 rotation);
 	void setSwayAmount(float sway);
 	void setBranchAngle(float angle);
+	void adjustGrowthRate(float adjust);
 	
 	EverBranch(void);
 	EverBranch(DisplayManager* manager);

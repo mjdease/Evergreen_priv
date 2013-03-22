@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "../Draw/GrassTexture.h"
+#include "../Tree/EverTree.h"
 #include "EverFlower.h"
 #include "../DisplayManager.h"
 
@@ -19,10 +20,14 @@ public:
 	int numFlowers;
 	EverFlower* flowers[100];
 
+	EverTree* tree;
+
 	void setHealth(float health);
 
 	void addFlowers();
 	void draw();
+
+	void setTree(EverTree* tree);
 
 	EverGround(DisplayManager* manager);
 	~EverGround(void);

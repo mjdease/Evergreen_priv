@@ -118,3 +118,11 @@ void EverTree::newChild(){
 
 	numChildren++;
 }
+
+void EverTree::adjustGrowthRate(float adjust){
+	GROWTH_RATE += adjust;
+
+	for(int i=0; i<numChildren; i++){
+		branch[i]->adjustGrowthRate(adjust);
+	}
+}
