@@ -1,10 +1,6 @@
 #include "PhysicalController.h"
 
 PhysicalController::PhysicalController(){
-
-}
-
-PhysicalController::PhysicalController(string serial){
 	buttonLedState = ARD_HIGH;
 	pButtonState = ARD_HIGH;
 	lastButtonChangeTime = 0;
@@ -23,8 +19,8 @@ PhysicalController::PhysicalController(string serial){
 	isSetup	= false;
 }
 
-void PhysicalController::init(){
-	ard.connect("COM4", 57600);
+void PhysicalController::init(string serial){
+	ard.connect(serial, 57600);
 
 	// listen for EInitialized notification. this indicates that
 	// the arduino is ready to receive commands and it is safe to

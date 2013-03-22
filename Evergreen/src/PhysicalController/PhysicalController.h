@@ -5,8 +5,7 @@
 class PhysicalController{
 public:
 	PhysicalController();
-	PhysicalController(string serial);
-	void PhysicalController::init();
+	void PhysicalController::init(string serial);
 	void PhysicalController::updateArduino();
 	//true only when button changes from up to down -- will be true only once per button press
 	bool PhysicalController::getButtonPress();
