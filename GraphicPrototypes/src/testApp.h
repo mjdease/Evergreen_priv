@@ -6,6 +6,8 @@
 #include "DisplayManager.h"
 #include "Layer.h"
 #include "EverGround.h"
+#include "EverFlower.h"
+#include "EverCloud.h"
 
 class testApp : public ofBaseApp{
 
@@ -38,6 +40,8 @@ class testApp : public ofBaseApp{
 		ofPoint p2;
 
 		EverGround* ground;
+		EverFlower* flower;
+		EverCloud* cloud;
 
 		float time;
 };

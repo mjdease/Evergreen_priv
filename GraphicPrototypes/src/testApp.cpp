@@ -14,6 +14,8 @@ void testApp::setup(){
 	displayMan->newLayer();
 	time = 0;
 	ground = new EverGround();
+	flower = new EverFlower(ofPoint(550,550));
+	cloud = new EverCloud();
 
 	//displayMan->addtoLayer(testTx, 2);
 	//ofLoadImage(testTex,"texture.bmp");
@@ -44,7 +46,9 @@ void testApp::draw(){
 
 	displayMan->addtoLayer(branchTx, 0);
 	displayMan->draw();
-
+	
+	cloud->draw();
+	flower->draw(0);
 	ground->draw();
 }
 
