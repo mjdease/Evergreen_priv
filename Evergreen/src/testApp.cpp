@@ -7,8 +7,8 @@ void testApp::setup(){
 	//ofSetFrameRate(60);
 	ofSetWindowShape(1280, 800);
 	wind = 0;
-	//physicalController = new PhysicalController();
-	//physicalController->init("COM4");
+	physicalController = new PhysicalController();
+	physicalController->init("COM4");
 
 	displayManager = new DisplayManager();
 	displayManager->newLayer();
@@ -33,18 +33,17 @@ void testApp::setup(){
 	for(int i=0; i<10; i++){
 		clouds[i] = new EverCloud();
 	}
-
-	//physicalController = new PhysicalController();
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
-	//physicalController->updateArduino();
+	physicalController->updateArduino();
 
-	//wind = (physicalController->getLeftWind() + physicalController->getRightWind()) * 15;
+	wind = (physicalController->getLeftWind() + physicalController->getRightWind()) * 15;
+
 	tree->setSway(wind);
 
-	//displayManager->setOffsetClick(physicalController->getScroll());
+	displayManager->setOffsetClick(physicalController->getScroll());
 
 	tree->update();
 
@@ -73,22 +72,20 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	
-	if(key == 32){
-		wind += 1;
-	}
-
-	if(key == 357){
-		displayManager->setOffsetClick(1);
-	}
-	else if(key == 359){
-		displayManager->setOffsetClick(-1);
-	}
+	//up arrow = scroll wheel away from user
+	//down arrow = scroll wheel towards user
+	//enter = button press (don't hold the key)
+	//right arrow = adds easterly wind (from the left windmill)
+	//left arrow = adds westerly wind (from the right windmill)
+	//F1 = increases sunniness
+	//F2 = increases shakiness
+	//F3 = changes through plant type
+	physicalController->debugKeyPress(key);
 }
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-
+	physicalController->debugKeyReleased(key);
 }
 
 //--------------------------------------------------------------

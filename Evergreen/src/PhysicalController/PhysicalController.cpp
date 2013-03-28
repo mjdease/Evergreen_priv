@@ -1,3 +1,5 @@
+#define DEBUG false
+
 #include "PhysicalController.h"
 
 PhysicalController::PhysicalController(){
@@ -12,11 +14,19 @@ PhysicalController::PhysicalController(){
 	pRightTime = 0;
 	leftWind = 0;
 	rightWind = 0;
+	sunniness = 0;
+	shakiness = 0;
+	plantType = 0;
 
 	isButtonPressed = false;
 	isButtonEvent = false;
 
 	isSetup	= false;
+
+	//INIT DEBUG
+	if(DEBUG){
+		isKeyDown = false;
+	}
 }
 
 void PhysicalController::init(string serial){
@@ -51,7 +61,7 @@ void PhysicalController::updateArduino(){
 	ard.update();
 	
 	// do not send anything until the arduino has been set up
-	if (isSetup) {
+	if (!DEBUG && isSetup) {
 		ard.sendDigital(buttonLedPin, buttonLedState);
 		wheelChange = wheel.tick();
 
@@ -100,6 +110,17 @@ void PhysicalController::updateArduino(){
 		pLeftReedVal = leftReedVal;
 		pRightReedVal = rightReedVal;
 	}
+	else if(DEBUG){
+		if(!isKeyDown){
+			wheelChange = '-';
+			isButtonPressed = false;
+			buttonLedState = ARD_LOW;
+			rightWind = constrain(rightWind -= 0.005, 0, 1);
+			leftWind = constrain(leftWind -= 0.005, 0, 1);
+			sunniness = constrain(sunniness -= 0.001, 0, 1);
+			shakiness = constrain(shakiness -= 0.01, 0, 1);
+		}
+	}
 }
 
 //true only when button changes from up to down -- will be true only once per button press
@@ -126,21 +147,35 @@ int PhysicalController::getScroll(){
 }
 //0..1 magnitude of the wind blowing in from the left side
 float PhysicalController::getLeftWind(){
-	if(pLeftTime - ofGetElapsedTimeMillis() > 2000){
+	if(!DEBUG && pLeftTime - ofGetElapsedTimeMillis() > 2000){
 		return 0;
 	}
 	return leftWind;
 }
 //0..1 magnitude of the wind blowing in from the right side
 float PhysicalController::getRightWind(){
-	if(pRightTime - ofGetElapsedTimeMillis() > 2000){
+	if(!DEBUG && pRightTime - ofGetElapsedTimeMillis() > 2000){
 		return 0;
 	}
 	return rightWind;
 }
 
+//0..1 magnitude of the sunniness
+float PhysicalController::getSunniness(){
+	return sunniness;
+}
+
+//0..1 magnitude of the shakiness
+float PhysicalController::getShakiness(){
+	return shakiness;
+}
+
+//0 - nothing, stuff should die. 1 - grass. 2 - flowers. 3 - thorn bushes.
+int PhysicalController::getPlantType(){
+	return plantType;
+}
+
 void PhysicalController::digitalPinChanged(const int & pinNum) {
-	//cout << "digital pin: " + ofToString(pinNum) << endl; 
 	switch(pinNum){
 	case buttonPin:
 		int reading = ard.getDigital(buttonPin);
@@ -170,3 +205,43 @@ float PhysicalController::msToMin(float millliseconds){
 float PhysicalController::constrain(float x, float low, float high) {  
     return x < low ? low : x > high ? high : x;  
 } 
+
+//DEBUG
+void PhysicalController::debugKeyPress(int key){
+	if(!DEBUG) return;
+	isKeyDown = true;
+	switch(key){
+	case OF_KEY_UP:
+		wheelChange = '<';
+		break;
+	case OF_KEY_DOWN:
+		wheelChange = '>';
+		break;
+	case OF_KEY_RETURN:
+		isButtonEvent = true;
+		isButtonPressed = true;
+		buttonLedState = ARD_HIGH;
+		break;
+	case OF_KEY_RIGHT:
+		leftWind = constrain(leftWind += 0.01, 0, 1);
+		break;
+	case OF_KEY_LEFT:
+		rightWind = constrain(rightWind += 0.01, 0, 1);
+		break;
+	case OF_KEY_F1:
+		sunniness = constrain(sunniness += 0.01, 0, 1);
+		break;
+	case OF_KEY_F2:
+		shakiness = constrain(shakiness += 0.01, 0, 1);
+		break;
+	case OF_KEY_F3:
+		plantType += 1;
+		plantType %= 4;
+		break;
+	}
+}
+
+void PhysicalController::debugKeyReleased(int key){
+	if(!DEBUG) return;
+	isKeyDown = false;
+}

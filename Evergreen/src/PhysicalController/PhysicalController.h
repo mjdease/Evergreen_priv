@@ -15,6 +15,16 @@ public:
 	float PhysicalController::getLeftWind();
 	//0..1 magnitude of the wind blowing in from the right side
 	float PhysicalController::getRightWind();
+	//0..1 magnitude of the sunniness
+	float PhysicalController::getSunniness();
+	//0..1 magnitude of the shakiness
+	float PhysicalController::getShakiness();
+	//0 - nothing, stuff should die. 1 - grass. 2 - flowers. 3 - thorn bushes.
+	int PhysicalController::getPlantType();
+
+	//DEBUG
+	void PhysicalController::debugKeyPress(int key);
+	void PhysicalController::debugKeyReleased(int key);
 
 private:
 	static const int buttonLedPin = 4;
@@ -28,14 +38,17 @@ private:
 	QuadEncoder wheel;
 
 	bool isSetup, isButtonPressed, isButtonEvent;
-	int buttonLedState, buttonState, pButtonState, pLeftReedVal, pRightReedVal;
+	int buttonLedState, buttonState, pButtonState, pLeftReedVal, pRightReedVal, plantType;
 	char wheelChange;
 	long lastButtonChangeTime, debounceDelay, pLeftTime, pRightTime;
-	float leftWind, rightWind;
+	float leftWind, rightWind, sunniness, shakiness;
 
 	void PhysicalController::setupArduino(const int & version);
 	void PhysicalController::digitalPinChanged(const int & pinNum);
 	float PhysicalController::msToMin(float millliseconds);
 	float PhysicalController::constrain(float x, float low, float high);
+	
+	//DEBUG
+	bool isKeyDown;
 };
 
