@@ -1,5 +1,6 @@
 #pragma once
 #include "ofMain.h"
+#include "ofxSimpleSerial.h"
 #include "QuadEncoder.h"
 
 class PhysicalController{

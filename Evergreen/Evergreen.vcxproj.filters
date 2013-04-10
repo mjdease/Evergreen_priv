@@ -19,6 +19,7 @@
     <ClCompile Include="src\Draw\SimpleTexture.cpp" />
     <ClCompile Include="src\Environment\EverFlower.cpp" />
     <ClCompile Include="src\Environment\EverCloud.cpp" />
+    <ClCompile Include="src\addons\ofxSimpleSerial\src\ofxSimpleSerial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DisplayManager.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="src\Draw\SimpleTexture.h" />
     <ClInclude Include="src\Environment\EverFlower.h" />
     <ClInclude Include="src\Environment\EverCloud.h" />
+    <ClInclude Include="src\addons\ofxSimpleSerial\src\ofxSimpleSerial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
