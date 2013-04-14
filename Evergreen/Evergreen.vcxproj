@@ -59,7 +59,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Matt\Documents\of_v0073_vs2010_release\apps\myApps\Evergreen\src\addons\ofxSimpleSerial\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -100,6 +100,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\addons\ofxSimpleSerial\src\ofxSimpleSerial.cpp" />
     <ClCompile Include="src\DisplayManager.cpp" />
     <ClCompile Include="src\Draw\BranchTexture.cpp" />
     <ClCompile Include="src\Draw\EverTexture.cpp" />
@@ -120,6 +121,7 @@
     <ClCompile Include="src\Tree\EverTree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\addons\ofxSimpleSerial\src\ofxSimpleSerial.h" />
     <ClInclude Include="src\DisplayManager.h" />
     <ClInclude Include="src\Draw\BranchTexture.h" />
     <ClInclude Include="src\Draw\EverTexture.h" />
