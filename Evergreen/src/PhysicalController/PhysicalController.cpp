@@ -90,7 +90,7 @@ void PhysicalController::updateArduino(){
 			if(sunniness < 0.0) sunniness = 0.0;
 		}
 		if(shakiness > 0.0){
-			shakiness -= 0.01;
+			shakiness -= 0.005;
 			if(shakiness < 0.0) shakiness = 0.0;
 		}
 	}
@@ -149,7 +149,9 @@ int PhysicalController::getPlantType(){
 
 
 void PhysicalController::onNewMessage(string & message){
-	cout << message << endl;
+	if(DEBUG){
+		cout << "INPUT: " << message << endl;
+	}
 	vector<string> input = ofSplitString(message, ":");
 	char type = ofToChar(input.at(0));
 	switch(type){
@@ -172,8 +174,7 @@ void PhysicalController::onNewMessage(string & message){
 		sunniness = ofClamp(ofMap(ofToFloat(input.at(1)), 0, 5, 0.0, 1.0), 0.0, 1.0);
 		break;
 	case SHAKE:
-		//TODO adjust mapping values
-		shakiness = ofClamp(ofMap(ofToFloat(input.at(1)), 0, 5, 0.0, 1.0), 0.0, 1.0);
+		shakiness = ofClamp(ofMap(ofToFloat(input.at(1)), 0, 150, 0.0, 1.0), 0.0, 1.0);
 		break;
 	case PLANT:
 		plantType = ofToInt(input.at(1));
