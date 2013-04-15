@@ -10,7 +10,7 @@ const bool ShiftPWM_balanceLoad = false;
 #define NUM_LIGHTS 5
 #define MIN_BRIGHTNESS 32
 #define MAX_BRIGHTNESS 255
-#define TOUCH_THESHOLD 4
+#define TOUCH_THESHOLD 3
 
 unsigned char pwmFrequency = 75;
 
@@ -61,7 +61,7 @@ Light lights[] = {
 };
 
 void setup(){
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   ShiftPWM.SetAmountOfRegisters(NUM_REGISTERS);
   
