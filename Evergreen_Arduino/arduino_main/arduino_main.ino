@@ -8,41 +8,49 @@
 #define REED_PIN_LEFT 8
 #define REED_PIN_RIGHT 9
 
+#define BUTTON "b:"
+#define WHEEL "w:"
+#define WIND_LEFT "l:"
+#define WIND_RIGHT "r:"
 
-int qe1Move = 0;
+int wheelChange = 0;
 long pLeftTime = 0;
 long pRightTime = 0;
 
 QuadEncoder qe(ROTARY_PIN1,ROTARY_PIN2);
 Button button = Button(BTN_PIN, PULLUP);
+//reed switches can be used just like buttons.
 Button lWindmill = Button(REED_PIN_LEFT, PULLDOWN);
 Button rWindmill = Button(REED_PIN_RIGHT, PULLDOWN);
 
 void setup(){
-  pinMode(buttonLedPin, OUTPUT);
+  pinMode(BTN_LED, OUTPUT);
   
   Serial.begin(115200);  
 }
 
 void loop()
 {
-  qe1Move=qe.tick();
+  wheelChange=qe.tick();
   
   //BUTTON
   if (button.uniquePress()){
     digitalWrite(BTN_LED, LOW);  // turn the button LED off
-    Serial.println("button pushed");
+    Serial.print(BUTTON);
+    Serial.println(1);
   }
   else if(!button.isPressed()){
     digitalWrite(BTN_LED, HIGH);  // turn the button LED on
   }
   
   //SCROLL WHEEL
-  if (qe1Move=='>'){
-    Serial.print(char(qe1Move));
+  if (wheelChange=='>'){
+    Serial.print(WHEEL);
+    Serial.println('+');
   }
-  else if (qe1Move=='<'){
-    Serial.print(char(qe1Move));
+  else if (wheelChange=='<'){
+    Serial.print(WHEEL);
+    Serial.println('-');
   }
   
   //LEFT WINDMILL
@@ -55,8 +63,8 @@ void loop()
       else{
         //1 rotation over time it took
         //typical rpm values will be between 100 - 300
-        float rpm = 1 / msToMin(leftTime - pLeftTime);
-        Serial.print("left rpm: ");
+        int rpm = (int)(1 / msToMin(leftTime - pLeftTime));
+        Serial.print(WIND_LEFT);
         Serial.println(rpm);
         pLeftTime = leftTime;
       }
@@ -76,8 +84,8 @@ void loop()
       else{
         //1 rotation over time it took
         //typical rpm values will be between 100 - 300
-        float rpm = 1 / msToMin(rightTime - pRightTime);
-        Serial.print("right rpm: ");
+        int rpm = (int)(1 / msToMin(rightTime - pRightTime));
+        Serial.print(WIND_RIGHT);
         Serial.println(rpm);
         pRightTime = rightTime;
       }
@@ -87,7 +95,7 @@ void loop()
     }
   }
   
-  delay(1);
+  delay(5);
   return;
 }
 

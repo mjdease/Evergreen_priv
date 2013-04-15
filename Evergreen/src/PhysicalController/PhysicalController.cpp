@@ -1,27 +1,32 @@
-#define DEBUG false
-
 #include "PhysicalController.h"
 
+//enable keybard input & logging
+#define DEBUG true
+
+//may disable some arduinos here
+#define HAS_ARDUINO_MAIN true
+#define HAS_ARDUINO_SUN false
+#define HAS_ARDUINO_GROUND true
+
+//input sources
+#define BUTTON 'b'
+#define WHEEL 'w'
+#define WIND_LEFT 'l'
+#define WIND_RIGHT 'r'
+#define SUN 's'
+#define SHAKE 'k'
+#define PLANT 'p'
+
 PhysicalController::PhysicalController(){
-	buttonLedState = ARD_HIGH;
-	pButtonState = ARD_HIGH;
-	lastButtonChangeTime = 0;
-	debounceDelay = 50;
-	wheelChange = '-';
-	pLeftReedVal = 0;
-	pRightReedVal = 0;
-	pLeftTime = 0;
-	pRightTime = 0;
-	leftWind = 0;
-	rightWind = 0;
-	sunniness = 0;
-	shakiness = 0;
+	wheelChange = 0;
+	leftWind = 0.0;
+	rightWind = 0.0;
+	sunniness = 0.0;
+	shakiness = 0.0;
 	plantType = 0;
+	isButtonUniquePress = false;
 
-	isButtonPressed = false;
-	isButtonEvent = false;
-
-	isSetup	= false;
+	isReady	= false;
 
 	//INIT DEBUG
 	if(DEBUG){
@@ -29,134 +34,100 @@ PhysicalController::PhysicalController(){
 	}
 }
 
-void PhysicalController::init(string serial){
-	ard.connect(serial, 57600);
-
-	// listen for EInitialized notification. this indicates that
-	// the arduino is ready to receive commands and it is safe to
-	// call setupArduino()
-	ofAddListener(ard.EInitialized, this, &PhysicalController::setupArduino);
-}
-
-void PhysicalController::setupArduino(const int & version){
-	ofRemoveListener(ard.EInitialized, this, &PhysicalController::setupArduino);
-	isSetup = true;
-
-	// print firmware name and version to the console
-	cout << ard.getFirmwareName() << endl; 
-	cout << "firmata v" << ard.getMajorFirmwareVersion() << "." << ard.getMinorFirmwareVersion() << endl;
-
-	ard.sendDigitalPinMode(buttonLedPin, ARD_OUTPUT);
-	ard.sendDigitalPinMode(buttonPin, ARD_INPUT);
-	ard.sendDigitalPinMode(windLeftPin, ARD_INPUT);
-	ard.sendDigitalPinMode(windRightPin, ARD_INPUT);
-
-	wheel = QuadEncoder(&ard, rotaryPin1, rotaryPin2);
-
-	ofAddListener(ard.EDigitalPinChanged, this, &PhysicalController::digitalPinChanged);
+void PhysicalController::init(string device_main, string device_sun, string device_ground){
+	bool success = true;
+	if(HAS_ARDUINO_MAIN){
+		if(ardMain.setup(device_main, 115200)){
+			ardMain.startContinuesRead();
+			ofAddListener(ardMain.NEW_MESSAGE, this, &PhysicalController::onNewMessage);
+		}
+		else {
+			success = false;
+			if(DEBUG){
+				cout << "Can't connect to main arduino board" << endl;
+			}
+		}
+	}
+	if(HAS_ARDUINO_SUN){
+		if(ardSun.setup(device_sun, 115200)){
+			ardSun.startContinuesRead();
+			ofAddListener(ardSun.NEW_MESSAGE, this, &PhysicalController::onNewMessage);
+		}
+		else {
+			success = false;
+			if(DEBUG){
+				cout << "Can't connect to sun arduino board" << endl;
+			}
+		}
+	}
+	if(HAS_ARDUINO_GROUND){
+		if(ardGround.setup(device_ground, 115200)){
+			ardGround.startContinuesRead();
+			ofAddListener(ardGround.NEW_MESSAGE, this, &PhysicalController::onNewMessage);
+		}
+		else {
+			success = false;
+			if(DEBUG){
+				cout << "Can't connect to ground arduino board" << endl;
+			}
+		}
+	}
+	isReady = success;
 }
 
 void PhysicalController::updateArduino(){
-	// update the arduino, get any data or messages.
-	ard.update();
-	
-	// do not send anything until the arduino has been set up
-	if (!DEBUG && isSetup) {
-		ard.sendDigital(buttonLedPin, buttonLedState);
-		wheelChange = wheel.tick();
-
-		int leftReedVal = ard.getDigital(windLeftPin);
-		int rightReedVal = ard.getDigital(windRightPin);
-
-		if(leftReedVal == 1 && pLeftReedVal == 0){
-			if(pLeftTime != 0){
-				long leftTime = ofGetElapsedTimeMillis();
-				if(leftTime - pLeftTime > 2000){//ignore changes greater than 2s apart
-					pLeftTime = 0;
-				}
-				else{
-					//half rotation distance over the time it took
-					//typical rpm values will be between 100 - 300 with some noise (averaging will be needed)
-					float rpm = 0.5 / msToMin(leftTime - pLeftTime);
-					leftWind = constrain(rpm / 350, 0, 1);
-					pLeftTime = leftTime;
-				}
-			}
-			else{
-				pLeftTime = ofGetElapsedTimeMillis();
-			}
+	if (!DEBUG && isReady) {
+		if(leftWind > 0.0){
+			leftWind -= 0.01;
+			if(leftWind < 0.0) leftWind = 0.0;
 		}
-
-		if(rightReedVal == 1 && pRightReedVal == 0){
-			if(pLeftTime != 0){
-				long rightTime = ofGetElapsedTimeMillis();
-				if(rightTime - pRightTime > 2000){//ignore changes greater than 2s apart
-					pRightTime = 0;
-				}
-				else{
-					//half rotation distance over the time it took
-					//typical rpm values will be between 100 - 300 with some noise (averaging will be needed)
-					float rpm = 0.5 / msToMin(rightTime - pRightTime);
-					rightWind = constrain(rpm / 350, 0, 1);
-					pLeftTime = rightTime;
-				}
-			}
-			else{
-				pRightTime = ofGetElapsedTimeMillis();
-			}
+		if(rightWind > 0.0){
+			rightWind -= 0.01;
+			if(rightWind < 0.0) rightWind = 0.0;
 		}
-
-
-		pLeftReedVal = leftReedVal;
-		pRightReedVal = rightReedVal;
+		if(sunniness > 0.0){
+			sunniness -= 0.01;
+			if(sunniness < 0.0) sunniness = 0.0;
+		}
+		if(shakiness > 0.0){
+			shakiness -= 0.01;
+			if(shakiness < 0.0) shakiness = 0.0;
+		}
 	}
 	else if(DEBUG){
 		if(!isKeyDown){
-			wheelChange = '-';
-			isButtonPressed = false;
-			buttonLedState = ARD_LOW;
-			rightWind = constrain(rightWind -= 0.005, 0, 1);
-			leftWind = constrain(leftWind -= 0.005, 0, 1);
-			sunniness = constrain(sunniness -= 0.001, 0, 1);
-			shakiness = constrain(shakiness -= 0.01, 0, 1);
+			rightWind = ofClamp(rightWind -= 0.005, 0, 1);
+			leftWind = ofClamp(leftWind -= 0.005, 0, 1);
+			sunniness = ofClamp(sunniness -= 0.001, 0, 1);
+			shakiness = ofClamp(shakiness -= 0.01, 0, 1);
 		}
 	}
 }
 
 //true only when button changes from up to down -- will be true only once per button press
 bool PhysicalController::getButtonPress(){
-	if(isButtonEvent){
-		isButtonEvent = false;
+	if(isButtonUniquePress){
+		isButtonUniquePress = false;
 		return true;
 	}
 	return false;
 }
+
 //any integer, sign indicates direction -> + is scrolling down, - is scrolling up.
-//a quick flick of the wheel generates ~8 step changes (so +/-8) - may want to scale this value to reduce sensitivity
+//a quick flick of the wheel generates ~4 step changes (so +/-4) - may want to scale this value to reduce sensitivity
 int PhysicalController::getScroll(){
-	switch(wheelChange){
-	case '-':
-		return 0;
-	case '<':
-		return -1;
-	case '>':
-		return 1;
-	default:
-		return 0;
-	}
+	int val = wheelChange;
+	wheelChange = 0;
+	return val;
 }
+
 //0..1 magnitude of the wind blowing in from the left side
 float PhysicalController::getLeftWind(){
-	if(!DEBUG && pLeftTime - ofGetElapsedTimeMillis() > 2000){
-		return 0;
-	}
 	return leftWind;
 }
+
 //0..1 magnitude of the wind blowing in from the right side
 float PhysicalController::getRightWind(){
-	if(!DEBUG && pRightTime - ofGetElapsedTimeMillis() > 2000){
-		return 0;
-	}
 	return rightWind;
 }
 
@@ -175,36 +146,40 @@ int PhysicalController::getPlantType(){
 	return plantType;
 }
 
-void PhysicalController::digitalPinChanged(const int & pinNum) {
-	switch(pinNum){
-	case buttonPin:
-		int reading = ard.getDigital(buttonPin);
 
-		if ((ofGetElapsedTimeMillis() - lastButtonChangeTime) > debounceDelay) {
-			buttonState = reading;
-			lastButtonChangeTime = ofGetElapsedTimeMillis();
-			if(reading == ARD_LOW){
-				isButtonEvent = true;
-				isButtonPressed = true;
-				buttonLedState = ARD_HIGH;
-			}
-			if(reading == ARD_HIGH){
-				isButtonPressed = false;
-				buttonLedState = ARD_LOW;
-			}
+
+void PhysicalController::onNewMessage(string & message){
+	cout << message << endl;
+	vector<string> input = ofSplitString(message, ":");
+	char type = ofToChar(input.at(0));
+	switch(type){
+	case BUTTON:
+		if(ofToBool(input.at(1))){
+			isButtonUniquePress = true;
 		}
+		break;
+	case WHEEL:{
+		char dir = ofToChar(input.at(1));
+		wheelChange += (dir == '+') ? 1 : (dir == '-') ? -1 : 0;
+		break;}
+	case WIND_LEFT:
+		leftWind = ofClamp(ofMap(ofToFloat(input.at(1)), 0, 300, 0.0, 1.0), 0.0, 1.0);
+		break;
+	case WIND_RIGHT:
+		rightWind = ofClamp(ofMap(ofToFloat(input.at(1)), 0, 300, 0.0, 1.0), 0.0, 1.0);
+		break;
+	case SUN:
+		sunniness = ofClamp(ofMap(ofToFloat(input.at(1)), 0, 5, 0.0, 1.0), 0.0, 1.0);
+		break;
+	case SHAKE:
+		//TODO adjust mapping values
+		shakiness = ofClamp(ofMap(ofToFloat(input.at(1)), 0, 5, 0.0, 1.0), 0.0, 1.0);
+		break;
+	case PLANT:
+		plantType = ofToInt(input.at(1));
 		break;
 	}
 }
-
-//Utils
-float PhysicalController::msToMin(float millliseconds){
-  return (millliseconds / 1000.0 / 60.0); 
-}
-
-float PhysicalController::constrain(float x, float low, float high) {  
-    return x < low ? low : x > high ? high : x;  
-} 
 
 //DEBUG
 void PhysicalController::debugKeyPress(int key){
@@ -212,27 +187,25 @@ void PhysicalController::debugKeyPress(int key){
 	isKeyDown = true;
 	switch(key){
 	case OF_KEY_UP:
-		wheelChange = '<';
+		wheelChange++;
 		break;
 	case OF_KEY_DOWN:
-		wheelChange = '>';
+		wheelChange--;
 		break;
 	case OF_KEY_RETURN:
-		isButtonEvent = true;
-		isButtonPressed = true;
-		buttonLedState = ARD_HIGH;
+		isButtonUniquePress = true;
 		break;
 	case OF_KEY_RIGHT:
-		leftWind = constrain(leftWind += 0.01, 0, 1);
+		leftWind = ofClamp(leftWind += 0.01, 0, 1);
 		break;
 	case OF_KEY_LEFT:
-		rightWind = constrain(rightWind += 0.01, 0, 1);
+		rightWind = ofClamp(rightWind += 0.01, 0, 1);
 		break;
 	case OF_KEY_F1:
-		sunniness = constrain(sunniness += 0.01, 0, 1);
+		sunniness = ofClamp(sunniness += 0.01, 0, 1);
 		break;
 	case OF_KEY_F2:
-		shakiness = constrain(shakiness += 0.01, 0, 1);
+		shakiness = ofClamp(shakiness += 0.01, 0, 1);
 		break;
 	case OF_KEY_F3:
 		plantType += 1;

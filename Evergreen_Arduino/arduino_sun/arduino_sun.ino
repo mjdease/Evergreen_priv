@@ -11,8 +11,15 @@ const bool ShiftPWM_balanceLoad = false;
 #define MIN_BRIGHTNESS 32
 #define MAX_BRIGHTNESS 255
 #define TOUCH_THESHOLD 3
+#define SERIAL_INTERVAL 50
+
+#define SUN "s:"
 
 unsigned char pwmFrequency = 75;
+
+unsigned long pTime = 0;
+
+int maxSunniness = 0;
 
 struct Light {
   int led0;
@@ -75,6 +82,7 @@ void setup(){
 
 void loop(){
   int sunniness = 0;
+  unsigned long time = millis();
   
   if(DEBUG){
     Serial.print(readCapacitivePin(2));//ne
@@ -94,8 +102,18 @@ void loop(){
     }
   }
   
-  Serial.println(sunniness);
-  delay(10);
+  if(sunniness > maxSunniness){
+    maxSunniness = sunniness;
+  }
+  
+  if(maxSunniness > 0 && time - pTime > SERIAL_INTERVAL){
+    Serial.print(SUN);
+    Serial.println(maxSunniness);
+    maxSunniness = 0;
+    pTime = time;
+  }
+  
+  delay(5);
 }
 
 

@@ -8,7 +8,8 @@ void testApp::setup(){
 	ofSetWindowShape(1280, 800);
 	wind = 0;
 	physicalController = new PhysicalController();
-	physicalController->init("COM4");
+	//  \\\\.\\ must preceed the device string reported by the arduino IDE
+	physicalController->init("\\\\.\\COM4", "\\\\.\\COM6", "\\\\.\\COM8");
 
 	displayManager = new DisplayManager();
 	displayManager->newLayer();
