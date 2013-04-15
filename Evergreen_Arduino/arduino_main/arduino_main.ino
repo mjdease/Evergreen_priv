@@ -1,28 +1,28 @@
 #include <Button.h>
 #include <QuadEncoder.h>
 
-const int buttonLedPin =  4; 
-const int buttonPin = 5;  
-const int rotaryPin1 =  6; 
-const int rotaryPin2 = 7;  
-const int windLeftPin = 8; 
-const int windRightPin = 9;  
+#define BTN_LED 4
+#define BTN_PIN 5
+#define ROTARY_PIN1 6
+#define ROTARY_PIN2 7
+#define REED_PIN_LEFT 8
+#define REED_PIN_RIGHT 9
+
 
 int qe1Move = 0;
 long pLeftTime = 0;
 long pRightTime = 0;
 
-QuadEncoder qe(rotaryPin1,rotaryPin2);
-Button button = Button(5, PULLUP);
-Button lWindmill = Button(8, PULLDOWN);
-Button rWindmill = Button(9, PULLDOWN);
+QuadEncoder qe(ROTARY_PIN1,ROTARY_PIN2);
+Button button = Button(BTN_PIN, PULLUP);
+Button lWindmill = Button(REED_PIN_LEFT, PULLDOWN);
+Button rWindmill = Button(REED_PIN_RIGHT, PULLDOWN);
 
 void setup(){
   pinMode(buttonLedPin, OUTPUT);
   
-  Serial.begin(9600);  
+  Serial.begin(115200);  
 }
-
 
 void loop()
 {
@@ -30,11 +30,11 @@ void loop()
   
   //BUTTON
   if (button.uniquePress()){
-    digitalWrite(buttonLedPin, LOW);  // turn the LED off
+    digitalWrite(BTN_LED, LOW);  // turn the button LED off
     Serial.println("button pushed");
   }
   else if(!button.isPressed()){
-    digitalWrite(buttonLedPin, HIGH);  // turn the LED on
+    digitalWrite(BTN_LED, HIGH);  // turn the button LED on
   }
   
   //SCROLL WHEEL
