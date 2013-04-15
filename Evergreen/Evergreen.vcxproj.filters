@@ -11,7 +11,6 @@
     <ClCompile Include="src\Environment\EverWeather.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PhysicalController\PhysicalController.cpp" />
-    <ClCompile Include="src\PhysicalController\QuadEncoder.cpp" />
     <ClCompile Include="src\testApp.cpp" />
     <ClCompile Include="src\Tree\EverBranch.cpp" />
     <ClCompile Include="src\Tree\EverLeaf.cpp" />
@@ -31,7 +30,6 @@
     <ClInclude Include="src\Environment\EverGround.h" />
     <ClInclude Include="src\Environment\EverWeather.h" />
     <ClInclude Include="src\PhysicalController\PhysicalController.h" />
-    <ClInclude Include="src\PhysicalController\QuadEncoder.h" />
     <ClInclude Include="src\testApp.h" />
     <ClInclude Include="src\Tree\EverBranch.h" />
     <ClInclude Include="src\Tree\EverLeaf.h" />
