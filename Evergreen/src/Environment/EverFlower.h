@@ -8,7 +8,7 @@ class EverFlower : public EverTexture
 public:
 	ofPoint position;
 	ofPoint MAX_SIZE;
-	DisplayManager display;
+	//DisplayManager display;
 	ofImage flowerImg;
 	EverTexture* flower;
 

@@ -1,193 +1,194 @@
-// effective c++ book
 #include "EverBranch.h"
 
-const ofVec3f EverBranch::X_DIRECTION(1,0,0);
-const ofVec3f EverBranch::Y_DIRECTION(0,1,0);
-const float EverBranch::CHILD_DECAY = 0.7f;
-const float EverBranch::GROWTH_DECAY = 0.6f;
-const float EverBranch::BIRTHRATE_DECAY = 0.7f;
-const float EverBranch::MAX_BEND_DECAY = 0.9f;
-const float EverBranch::MIN_BEND_DECAY = 0.9f;
-const float EverBranch::SWAY_DECAY = 0.8f;
-const float EverBranch::BASE_ANGLE = 90.0f;
-const int EverBranch::BRANCH_SEPERATION = 7;
+const float EverBranch::GROWTH_RATE = 0.7f;
+const float EverBranch::BIRTH_DECAY = 0.6f;
+const float EverBranch::CHILD_DECAY = 0.6f;
+const float EverBranch::WIDTH_DECAY = 0.6f;
+const int EverBranch::MAX_DEPTH = 10;
+
 const string EverBranch::TEXTURE_SRC = "bark.bmp";
 
-EverBranch::EverBranch(void): parent(NULL), MAX_CHILDREN(5), GROWTH_RATE(0.05f), BIRTHRATE(0.0025f), MAIN_LIMB(true), MAX_CHILD_BEND(25.0f), MIN_CHILD_BEND(5.0f), SWAY_AMOUNT(1.0f)
-{
-	init();
-	rotationMatrix.makeRotationMatrix(BASE_ANGLE, 0,0,1);
-	clockwise = ((BASE_ANGLE < 0) ? true : false);
+int* EverBranch::GlobalDepth = NULL;
+int* EverBranch::GlobalLimbDepth = NULL;
+float* EverBranch::TreeHealth = NULL;
+float* EverBranch::swayAmount = NULL;
+int* EverBranch::rootSiblingNum = NULL;
+vector <EverBranch*>* EverBranch::siblings = NULL;
+DisplayLayer* EverBranch::layer = NULL;
+
+void EverBranch::updateAngle(){
+	// Adjust sun/ground angle
+	float sunAngle = -globalAngle;
+	float groundAngle = ((globalAngle < 0) ? -180 : 180) - globalAngle;
+
+	baseAngle += (*TreeHealth/100.0f) * sunAngle/(350.0f * depth);
+	if(parent != NULL)
+		baseAngle += (1 - *TreeHealth/100.0f) * groundAngle/(500.0f * depth);
+
+	// Affected by siblings
+	int siblingNum = (parent == NULL) ? *rootSiblingNum : parent->numChildren;
+	for(int i=0; i<siblingNum; i++){
+		EverBranch* sibling = (parent == NULL) ? (*siblings)[i] : parent->children[i];
+		if(sibling == this){
+			continue;
+		}
+
+		float attachDiff = abs(attachPoint - sibling->attachPoint);
+		float angleDiff = baseAngle - sibling->baseAngle;
+		
+		baseAngle += ((1 - attachDiff)/30 + length/500) * 5 / angleDiff;
+	}
+
+	// Adjust for max/min angles
+	if(angleMultiplier * baseAngle < angleMultiplier * minAngle && parent != NULL){
+		baseAngle += (minAngle - baseAngle)/ 500.0f;
+	}
+	else if(angleMultiplier * baseAngle > angleMultiplier * maxAngle){
+		baseAngle += (maxAngle - baseAngle)/ 500.0f;
+	}
+
+	sway();
+
+	angle = baseAngle + swayAngle;
 }
 
-EverBranch::EverBranch(DisplayManager* manager):
-	parent(NULL), MAX_CHILDREN(5),
-	GROWTH_RATE(0.05f),
-	BIRTHRATE(0.0025f),
-	MAIN_LIMB(true),
-	MAX_CHILD_BEND(25.0f),
-	MIN_CHILD_BEND(5.0f),
-	SWAY_AMOUNT(1.0f),
-	displayManager(manager)
-{
-	init();
-	rotationMatrix.makeRotationMatrix(BASE_ANGLE, 0,0,1);
-	clockwise = ((BASE_ANGLE < 0) ? true : false);
-}
-
-EverBranch::EverBranch(EverBranch* parent)
-{
-	init();
-	this->parent = parent;
-	baseMatrix.makeRotationMatrix(ofRandomf()*25, 0,0,1);
-	MAIN_LIMB = false;
-}
-
-void EverBranch::init(){
-	startWidth = endWidth = 2;
-
-	texture = new BranchTexture(&startWidth, &endWidth);
-	texture->loadTexture(TEXTURE_SRC);
-	texture->setResolution(1);
-	
-	direction = ofVec3f(0,1, 0);
-	numChildren = 0;
-	length = 0;
-	time = 0;
+void EverBranch::sway(){
+	swayAngle *= 0.5f;
+	//swayAngle += (sinf(ofGetFrameNum()/(*swayAmount * 200.0f)) * (*swayAmount*depth/2))/500.0f;
+	swayAngle += sinf(ofGetFrameNum() * (*swayAmount) / 300.0f) * (*swayAmount*2.0f) / 10.0f;
 }
 
 void EverBranch::grow(){
-	length = length + GROWTH_RATE;
-
-	if(numChildren == 0){
-		endWidth = 0;
-	} else {
-		endWidth = children[0]->startWidth;
-	}
-
-	startWidth += GROWTH_RATE/10;
-	texture->setAmplitude(startWidth/2);
-}
-
-void EverBranch::adjustLimb(){
-	float yAngle = Y_DIRECTION.angle(direction) -180;
-	angle = ((X_DIRECTION.angle(direction) > 90) ? yAngle : -yAngle);
-
-	if(!MAIN_LIMB || parent == NULL)
-		return;
-
-	float destAngle = parent->angle + ((clockwise) ? -MAX_CHILD_BEND : MAX_CHILD_BEND);
-
-	if(clockwise && destAngle < 0){
-		destAngle = 0;
-	}
-	else if(!clockwise && destAngle > 0){
-		destAngle = 0;
-	}
-	float delta = destAngle - angle;
-
-	adjustmentMatrix.makeRotationMatrix((delta/100)/MAX_CHILD_BEND, 0,0,1);
+	float growthTarget = ((*TreeHealth-50.0f)/100.0f) * (500.0f/depth - length) / 3000.0f;
+	length += growthTarget;
 }
 
 void EverBranch::reproduce(){
-	if(ofRandomuf() < BIRTHRATE){
+	if(numChildren < maxChildren && ofRandomuf() < birthRate && depth < MAX_DEPTH){
 		newChild();
 	}
 }
 
 void EverBranch::update(){
+	if(parent == NULL){ globalAngle = convertAngle(angle); }
+	else{ globalAngle = convertAngle(angle + parent->globalAngle); }
+	updateAngle();
+
 	grow();
 	reproduce();
-	baseMatrix = baseMatrix * adjustmentMatrix;
-	//if(parent == NULL)
-	swayMatrix.makeRotationMatrix(sinf(time/10.0f*GROWTH_RATE)*(SWAY_AMOUNT+3), 0,0,1);
-	direction = Y_DIRECTION * (rotationMatrix * baseMatrix * swayMatrix);
-	endPosition = position + direction * length;
-	weight = length;
-	adjustLimb();
 
-	for(int i=0; i< numChildren; i++){
-		children[i]->setPosition((endPosition - position)*children[i]->ATTACH_POINT+position);
-		children[i]->setRotationMatrix(rotationMatrix * baseMatrix * swayMatrix);
+	for(int i=0; i<numChildren; i++){
 		children[i]->update();
-		weight += children[i]->weight;
 	}
 
-	texture->setStartEnd(position, endPosition);
-
-	time += SWAY_AMOUNT/5 + 1;
-	if(time > 99999999){time = 0;}
+	texture->setStartEnd(ofPoint(0,0), ofPoint(0, length));
 }
 
 void EverBranch::draw(){
-	//texture->draw(position, endPosition);
-	displayManager->addtoLayer(texture, 0);
-
-	for(int i=0; i<numChildren; i++){
-		children[i]->draw();
-	}
-}
-
-void EverBranch::draw(float offset){
-	texture->setStartEnd(position, endPosition);
-	texture->draw(offset);
+	ofRotate(angle);
 	
-	for(int i=0; i<numChildren; i++){
-		children[i]->draw(offset);
+	ofSetColor(0, 255, 0);
+	if(depth < MAX_DEPTH+1){
+		ofSetColor(255, 0, 0);
 	}
-}
+	ofLine(0,0,0,length);
+	//ofCircle(0,0,2);
+	ofSetColor(0, 255, 0);
+	//ofCircle(0,length,2);
+	
 
-void EverBranch::setPosition(ofVec2f position){
-	this->position = position;
-}
-
-void EverBranch::setRotationMatrix(ofMatrix4x4 rotation){
-	rotationMatrix = rotation;
-}
-
-void EverBranch::setBranchAngle(float angle){
-	branchBaseMatrix.makeRotationMatrix(angle, 0,0,1);
-	clockwise = ((angle < 0) ? true : false);
-}
-
-void EverBranch::setSwayAmount(float sway){
-	SWAY_AMOUNT = sway;
+	//layer->addtoDraw(texture);
+	texture->draw(0);
 
 	for(int i=0; i<numChildren; i++){
-		children[i]->setSwayAmount(sway * SWAY_DECAY);
+		ofPushMatrix();
+		ofTranslate(0,length*children[i]->attachPoint, 0);
+		children[i]->draw();
+		ofPopMatrix();
 	}
 }
 
 void EverBranch::newChild(){
-	if(numChildren+1 > MAX_CHILDREN)
-		return;
-
 	EverBranch* temp = new EverBranch(this);
-	temp->GROWTH_RATE = GROWTH_RATE*GROWTH_DECAY;
-	temp->MAX_CHILDREN = MAX_CHILDREN * CHILD_DECAY;
-	temp->BIRTHRATE = BIRTHRATE * BIRTHRATE_DECAY;
-	temp->MAX_CHILD_BEND = MAX_CHILD_BEND * MAX_BEND_DECAY;
-	temp->MIN_CHILD_BEND = MIN_CHILD_BEND * MIN_BEND_DECAY;
-	temp->SWAY_AMOUNT = SWAY_AMOUNT * SWAY_DECAY;
-	temp->clockwise = clockwise;
-	temp->displayManager = displayManager;
-	if(numChildren == 0){
-		temp->ATTACH_POINT = 1;
-		temp->MAIN_LIMB = true;
-	}
-	else{
-		temp->ATTACH_POINT = (float)(ofRandom(BRANCH_SEPERATION-1)+1)/BRANCH_SEPERATION;
-	}
-
 	children.push_back(temp);
-
 	numChildren++;
 }
 
-void EverBranch::adjustGrowthRate(float adjust){
-	GROWTH_RATE += adjust;
+EverBranch::EverBranch(){
+	startWidth = endWidth = 10;
+	texture = new BranchTexture(&startWidth, &endWidth);
+	texture->loadTexture(TEXTURE_SRC);
+	texture->setResolution(1);
 
-	for(int i=0; i<numChildren; i++){
-		children[i]->adjustGrowthRate(adjust * GROWTH_DECAY);
+	depth = 1;
+	parent = NULL;
+	birthRate = 0.003;
+	limbDepth = 1;
+
+	baseAngle = ofRandomf()*60;
+	swayAngle = 0;
+	angle = baseAngle + swayAngle;//ofRandom(60);
+	globalAngle = convertAngle(angle);
+	angleMultiplier = (globalAngle < 0) ? -1 : 1;
+	minAngle = angleMultiplier * ofRandom(10, 10 + 20/depth);
+	maxAngle = angleMultiplier * ofRandom(30, 45 + 30/depth);
+	attachPoint = 1;
+
+	length = 0;
+	depth = 1;
+	numChildren = 0;
+	maxChildren = 5;
+}
+
+EverBranch::EverBranch(EverBranch* parent){
+	startWidth = endWidth = parent->startWidth/limbDepth;
+	texture = new BranchTexture(&startWidth, &endWidth);
+	texture->loadTexture(TEXTURE_SRC);
+	texture->setResolution(1);
+
+	this->parent = parent;
+	depth = parent->depth + 1;
+	if(depth > *GlobalDepth){ *GlobalDepth = depth; }
+
+	if(parent->numChildren >= 1){
+		limbDepth = parent->limbDepth + 1;
+		if(*GlobalLimbDepth < limbDepth) { *GlobalLimbDepth = limbDepth; }
+		birthRate = parent->birthRate * BIRTH_DECAY;
 	}
+	else{
+		birthRate = parent->birthRate;
+		limbDepth = parent->limbDepth;
+	}
+
+	baseAngle = ofRandomf()*60;
+	swayAngle = 0;
+	angle = baseAngle + swayAngle;//ofRandom(60);
+	globalAngle = convertAngle(angle + parent->globalAngle);
+	angleMultiplier = (globalAngle < 0) ? -1 : 1;
+	minAngle = angleMultiplier * ofRandom(10, 10 + 20/depth);
+	maxAngle = angleMultiplier * ofRandom(30, 45 + 30/depth);
+
+	length = 0;
+	attachPoint = (parent->numChildren < 1) ? 1 : ofRandomuf();
+	numChildren = 0;
+	maxChildren = parent->maxChildren * CHILD_DECAY;
+}
+
+void EverBranch::setPointers(float* TreeHealth, int* depth, int* limbDepth, int* rootSiblings, vector <EverBranch*>* siblingBranches, float* swayAmount, DisplayLayer* layer){
+	EverBranch::TreeHealth = TreeHealth;
+	EverBranch::GlobalDepth = depth;
+	EverBranch::rootSiblingNum = rootSiblings;
+	EverBranch::siblings = siblingBranches;
+	EverBranch::GlobalLimbDepth = limbDepth;
+	EverBranch::swayAmount = swayAmount;
+	EverBranch::layer = layer;
+}
+
+EverBranch::~EverBranch(void)
+{
+}
+
+float EverBranch::convertAngle(float angle){
+	angle = fmodf(angle, 360.0f);
+	return ((angle<=180.0f) ? angle : angle-360);
 }

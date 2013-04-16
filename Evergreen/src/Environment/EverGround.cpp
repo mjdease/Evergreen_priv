@@ -17,7 +17,7 @@ EverGround::EverGround(DisplayManager* manager) {
 
 void EverGround::draw(){
 	//deadLayer->draw(0);
-	displayManager->addtoLayer(deadLayer, 0);
+	//displayManager->addtoLayer(deadLayer, 0);
 
 	if(health < 0.5){
 		grassLayers[1]->setOpacity(0);
@@ -29,13 +29,13 @@ void EverGround::draw(){
 	}
 
 	for(int i=0; i<numLayers; i++) {
-		displayManager->addtoLayer(grassLayers[i], 0);
+		//displayManager->addtoLayer(grassLayers[i], 0);
 		grassLayers[i]->setPosition(0, ofGetHeight() - grassLayers[i]->getHeight());
 	}
 
 	addFlowers();
 	for(int i=0; i<numFlowers; i++){
-		displayManager->addtoLayer(flowers[i], 0);
+		//displayManager->addtoLayer(flowers[i], 0);
 	}
 }
 
@@ -44,7 +44,7 @@ void EverGround::addFlowers(){
 		flowers[numFlowers] = new EverFlower(ofPoint(ofRandom(900), 600 + ofRandom(200)));
 		numFlowers++;
 
-		tree->adjustGrowthRate(-0.001);
+		//tree->adjustGrowthRate(-0.001);
 	}
 }
 
