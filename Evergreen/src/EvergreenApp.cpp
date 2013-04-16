@@ -12,8 +12,10 @@ void EvergreenApp::setup(){
 	//ofSetWindowPosition(-1390,215);
 	ofEnableSmoothing();
 	ofNoFill();
-	//physicalController = new PhysicalController();
-	//physicalController->init("COM4");
+
+	physicalController = new PhysicalController();
+	//  \\\\.\\ must preceed the device string reported by the arduino IDE
+	physicalController->init("\\\\.\\COM4", "\\\\.\\COM6", "\\\\.\\COM8");
 
 	displayManager = new DisplayManager(SCREEN_WIDTH, SCREEN_HEIGHT*2, SCREEN_HEIGHT);
 	Foreground = displayManager->newLayer();
@@ -27,6 +29,8 @@ void EvergreenApp::setup(){
 
 //--------------------------------------------------------------
 void EvergreenApp::update(){
+	physicalController->updateArduino();
+
 	//printf("fps: %f\n", ofGetFrameRate());
 	//printf("num children: %d\n", tree->getNumBranches());
 	//printf("depth: %d\n", tree->getDepth());
@@ -75,11 +79,21 @@ void EvergreenApp::keyPressed(int key){
 	printf("Health: %f\n", tree->TREE_HEALTH);
 	printf("fps: %f\n", ofGetFrameRate());
 	printf("\n");
+
+	//up arrow = scroll wheel away from user
+	//down arrow = scroll wheel towards user
+	//enter = button press (don't hold the key)
+	//right arrow = adds easterly wind (from the left windmill)
+	//left arrow = adds westerly wind (from the right windmill)
+	//F1 = increases sunniness
+	//F2 = increases shakiness
+	//F3 = changes through plant type
+	physicalController->debugKeyPress(key);
 }
 
 //--------------------------------------------------------------
 void EvergreenApp::keyReleased(int key){
-
+	physicalController->debugKeyReleased(key);
 }
 
 //--------------------------------------------------------------

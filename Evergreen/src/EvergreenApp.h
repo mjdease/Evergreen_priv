@@ -26,6 +26,7 @@ class EvergreenApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		DisplayManager* displayManager;
+		PhysicalController* physicalController;
 		
 		DisplayLayer* Foreground;
 		DisplayLayer* Midground;
