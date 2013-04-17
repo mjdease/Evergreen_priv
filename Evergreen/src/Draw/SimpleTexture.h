@@ -5,12 +5,12 @@ class SimpleTexture : public EverTexture
 {
 public:
 	float x, y;
-
+	int width, height;
+	
 	void setPosition(float x, float y);
-	void draw(float offset);
+	void setSize(int width, int height);
+	void draw();
 	SimpleTexture(string src);
 	~SimpleTexture(void);
-
-private:
 };
 

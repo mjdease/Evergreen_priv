@@ -3,6 +3,7 @@
 SimpleTexture::SimpleTexture(string src):EverTexture(src)
 {
 	loadTexture(src);
+	width = height = -1;
 }
 
 void SimpleTexture::setPosition(float x, float y){
@@ -10,9 +11,17 @@ void SimpleTexture::setPosition(float x, float y){
 	this->y = y;
 }
 
-void SimpleTexture::draw(float offset){
-	//draw(float x, float y, float w, float h);
-	EverTexture::draw(x, y + offset, width, height);
+void SimpleTexture::setSize(int width, int height){
+	this->width = width;
+	this->height = height;
+}
+
+void SimpleTexture::draw(){
+	if(width == -1){
+		EverTexture::draw(x, y);
+		return;
+	}
+	EverTexture::draw(x, y, width, height);
 }
 
 SimpleTexture::~SimpleTexture(void)

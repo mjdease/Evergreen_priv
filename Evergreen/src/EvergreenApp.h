@@ -7,6 +7,7 @@
 #include "DisplayManager.h"
 #include "PhysicalController/PhysicalController.h"
 #include "Draw/SimpleTexture.h"
+#include "Draw\PauseMenu.h"
 
 class EvergreenApp : public ofBaseApp{
 
@@ -25,13 +26,28 @@ class EvergreenApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+	private:
+		bool paused;
+
+		EverStats* sunStat;
+		EverStats* waterStat;
+		EverStats* nutrientStat;
+		EverStats* tempStat;
+
+		PauseMenu* pauseMenu;
+
 		DisplayManager* displayManager;
 		PhysicalController* physicalController;
 		
+		DisplayLayer* UILayer;
 		DisplayLayer* Foreground;
 		DisplayLayer* Midground;
 		DisplayLayer* Background;
 
-		EverBranch* branch;
 		EverTree* tree;
+
+		EverGround* ground;
+
+		void initUI();
+		void togglePause();
 };

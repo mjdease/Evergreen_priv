@@ -14,7 +14,7 @@ void EverTree::reproduce(){
 }
 
 void EverTree::update(){
-	trunkLength += (TREE_HEALTH/100.0f * 500.0f - trunkLength)/10000.0f;
+	trunkLength += (TREE_HEALTH/100.0f * 350.0f - trunkLength)/10000.0f;
 
 	
 	for(int i=0; i<numChildren; i++){
@@ -36,11 +36,11 @@ void EverTree::draw(){
 
 	ofTranslate(position);
 	ofRotate(180 + swayAngle);
-	/*ofSetColor(0);
+	ofSetColor(0);
 	ofLine(0,0,0,trunkLength);
-	ofCircle(0,0,3);*/
+	ofCircle(0,0,3);
 	//layer->addtoDraw(texture);
-	texture->draw(0);
+	//texture->draw(0);
 
 	ofTranslate(0,trunkLength, 0);
 	for(int i=0; i<numChildren; i++){

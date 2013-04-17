@@ -11,8 +11,12 @@ public:
 	float offset;
 	float parallax;
 	vector<DisplayLayer*> layers;
+	DisplayLayer* interfaceLayer;
 
+	void setPausePointer(float* pausePointer);
+	
 	DisplayLayer* newLayer();
+	DisplayLayer* newUILayer();
 	//void addtoLayer(EverTexture* tx, int layerNumber);
 	//void addtoLayer(EverTexture* tx, DisplayLayer* layer);
 	void drawLayer(int layerIndex);
@@ -27,4 +31,7 @@ public:
 private:
 	int destOffset;
 	int screenHeight;
+	float* pausePosition;
+
+	float scale;
 };

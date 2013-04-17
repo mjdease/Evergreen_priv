@@ -55,7 +55,6 @@ protected:
 	static int* rootSiblingNum;
 	
 private:
-	static const float GROWTH_RATE;
 	static const float BIRTH_DECAY;
 	static const float CHILD_DECAY;
 	static const int MAX_DEPTH;

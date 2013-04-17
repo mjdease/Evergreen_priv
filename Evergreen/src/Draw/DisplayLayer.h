@@ -15,9 +15,13 @@ public:
 	void draw();
 	void setOffset(float offset);
 
-	DisplayLayer(int width, int height, int screenHeight);
+	DisplayLayer(int width, int height, int screenHeight, float* scale);
 	~DisplayLayer(void);
 private:
 	int width, height;
 	int screenOffset;
+	float* scale;
+	float multiplier;
+	float prevScale;
+	int add;
 };

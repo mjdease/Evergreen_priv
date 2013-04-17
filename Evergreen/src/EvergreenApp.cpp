@@ -6,25 +6,57 @@ enum LayerTypes {FOREGROUND, MIDGROUND, BACKGROUND};
 
 //--------------------------------------------------------------
 void EvergreenApp::setup(){
-	//ofSetFrameRate(60);
+	ofSetFrameRate(60);
 	ofSetWindowShape(1280, 800);
 	ofEnableAlphaBlending();
 	//ofSetWindowPosition(-1390,215);
 	ofEnableSmoothing();
-	ofNoFill();
 
 	physicalController = new PhysicalController();
 	//  \\\\.\\ must preceed the device string reported by the arduino IDE
 	physicalController->init("\\\\.\\COM4", "\\\\.\\COM6", "\\\\.\\COM8");
 
+	initUI();
+	
+	paused = false;
+
+	tree = new EverTree(Foreground);//Foreground);
+	tree->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT*2 - 200);
+
+	ground = new EverGround(SCREEN_HEIGHT*2);
+	ground->setTree(tree);
+}
+
+void EvergreenApp::initUI(){
+
+	int positionY = SCREEN_HEIGHT - 50;
+	int positionX = 16;
+	sunStat = new EverStats("ui/sun.png", 50, ofColor(247, 244, 153), ofPoint(positionX, positionY));
+	waterStat = new EverStats("ui/water.png", 50, ofColor(91, 188, 227), ofPoint(positionX + 316,positionY));
+	nutrientStat = new EverStats("ui/nutrients.png", 50, ofColor(91, 227, 93), ofPoint(positionX + 632, positionY));
+	tempStat = new EverStats("ui/temperature.png", 50, ofColor(255, 115, 115), ofPoint(positionX + 948, positionY));
+
+	pauseMenu = new PauseMenu();
+	pauseMenu->setBars(sunStat, waterStat, nutrientStat, tempStat);
+
 	displayManager = new DisplayManager(SCREEN_WIDTH, SCREEN_HEIGHT*2, SCREEN_HEIGHT);
+	displayManager->setPausePointer(pauseMenu->getPositionPointer());
+
+	UILayer = displayManager->newUILayer();
 	Foreground = displayManager->newLayer();
 	Midground = displayManager->newLayer();
 	Background = displayManager->newLayer();
+}
 
-	//branch = new EverBranch(Foreground);
-	tree = new EverTree(Foreground);//Foreground);
-	tree->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT*2 - 100);
+void EvergreenApp::togglePause(){
+	paused = !paused;
+
+	if(paused == true){
+		pauseMenu->show();
+	}
+	else{
+		pauseMenu->hide();
+	}
 }
 
 //--------------------------------------------------------------
@@ -34,17 +66,45 @@ void EvergreenApp::update(){
 	//printf("fps: %f\n", ofGetFrameRate());
 	//printf("num children: %d\n", tree->getNumBranches());
 	//printf("depth: %d\n", tree->getDepth());
-	//branch->setPosition(ofVec2f(ofGetMouseX(), ofGetMouseY()));
 
-	//branch->update();
-	tree->update();
+	if(paused == true){
+
+	}
+	else{
+		tree->update();
+	}
+
 }
 
 //--------------------------------------------------------------
 void EvergreenApp::draw(){
+	
+	Background->begin();
+		ground->drawBackground();
+	Background->end();
+
+	// MIDGROUND LAYER
+	Midground->begin();
+		ground->drawMidground();
+	Midground->end();
+
+	// FOREGROUND LAYER
 	Foreground->begin();
-	tree->draw();
+		ground->draw();
+		tree->draw();
 	Foreground->end();
+
+	// UI LAYER
+	UILayer->begin();
+		pauseMenu->draw();
+
+		if(paused == false){
+			sunStat->draw();
+			waterStat->draw();
+			nutrientStat->draw();
+			tempStat->draw();
+		}
+	UILayer->end();
 
 	displayManager->draw();
 }
@@ -52,6 +112,10 @@ void EvergreenApp::draw(){
 //--------------------------------------------------------------
 void EvergreenApp::keyPressed(int key){
 	switch(key){
+		case 32: // Space
+			togglePause();
+			break;
+
 		case 357: // Up
 			tree->TREE_HEALTH += 0.1f;
 			break;

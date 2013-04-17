@@ -1,18 +1,31 @@
 #include "EverGround.h"
 
-EverGround::EverGround(DisplayManager* manager) {
+EverGround::EverGround(int screenHeight) {
 	health = 1;
 	numFlowers = 0;
 
 	float opacOffset = 0.1;
-	displayManager = manager;
 
 	numLayers = 2;
 	deadLayer = new GrassTexture("environment/foreground/grass_0.png");
 	deadLayer->setPosition(0,0);
 	
 	grassLayers[0] = new GrassTexture("environment/foreground/grass_0.5.png");
+	grassLayers[0]->setPosition(0, screenHeight - grassLayers[0]->getHeight());
+
 	grassLayers[1] = new GrassTexture("environment/foreground/grass_1.png");
+	grassLayers[1]->setPosition(0, screenHeight - grassLayers[1]->getHeight());
+
+	this->screenHeight = screenHeight;
+	
+	midgroundTexture = new SimpleTexture("environment/midground.png");
+	backgroundTexture = new SimpleTexture("environment/background/mountains.png");
+	skyTexture = new SimpleTexture("environment/background/sky.png");
+	
+	midgroundTexture->setPosition(0, screenHeight - midgroundTexture->getHeight());
+	backgroundTexture->setPosition(0, screenHeight - backgroundTexture->getHeight());
+	skyTexture->setPosition(0, 0);
+	skyTexture->setSize(skyTexture->getWidth(), screenHeight);
 }
 
 void EverGround::draw(){
@@ -30,13 +43,23 @@ void EverGround::draw(){
 
 	for(int i=0; i<numLayers; i++) {
 		//displayManager->addtoLayer(grassLayers[i], 0);
-		grassLayers[i]->setPosition(0, ofGetHeight() - grassLayers[i]->getHeight());
+		grassLayers[i]->draw(0);
 	}
 
 	addFlowers();
 	for(int i=0; i<numFlowers; i++){
+		//flowers[i]->draw(0);
 		//displayManager->addtoLayer(flowers[i], 0);
 	}
+}
+
+void EverGround::drawMidground(){
+	midgroundTexture->draw();
+}
+
+void EverGround::drawBackground(){
+	skyTexture->draw();
+	backgroundTexture->draw();
 }
 
 void EverGround::addFlowers(){

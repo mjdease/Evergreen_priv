@@ -1,6 +1,5 @@
 #include "EverBranch.h"
 
-const float EverBranch::GROWTH_RATE = 0.7f;
 const float EverBranch::BIRTH_DECAY = 0.6f;
 const float EverBranch::CHILD_DECAY = 0.6f;
 const float EverBranch::WIDTH_DECAY = 0.6f;
@@ -59,7 +58,7 @@ void EverBranch::sway(){
 }
 
 void EverBranch::grow(){
-	float growthTarget = ((*TreeHealth-50.0f)/100.0f) * (500.0f/depth - length) / 3000.0f;
+	float growthTarget = ((*TreeHealth-50.0f)/100.0f) * (350.0f/depth - length) / 3000.0f;
 	length += growthTarget;
 }
 
@@ -98,7 +97,7 @@ void EverBranch::draw(){
 	
 
 	//layer->addtoDraw(texture);
-	texture->draw(0);
+	//texture->draw(0);
 
 	for(int i=0; i<numChildren; i++){
 		ofPushMatrix();

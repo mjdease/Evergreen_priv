@@ -5,8 +5,23 @@
 class PauseMenu
 {
 public:
+	void toggle();
+	void show();
+	void hide();
+	void setBars(EverStats* sun, EverStats* water, EverStats* nutrient, EverStats* temp);
+
+	float* getPositionPointer();
+
+	void draw(void);
+
 	PauseMenu(void);
 	~PauseMenu(void);
+
+private:
+	int width, height;
+
+	float menuX, destMenuX;
+	float displayX; // For the display manager and how much to scale
 	
 	ofTrueTypeFont fontTitle;
 	ofTrueTypeFont fontSubtitle;
@@ -16,17 +31,16 @@ public:
 	char pause[255];
 	char restart[255];
 
-	ofVec2f posTreeStatsTitle;
-	ofVec2f posEnvStatsTitle;
-	ofVec2f posTreeStats;
-	ofVec2f posEnvStats;
+	ofPoint posTreeStatsTitle;
+	ofPoint posEnvStatsTitle;
+	ofPoint posTreeStats;
+	ofPoint posEnvStats;
 	
-	float sun, water, nutrients, temperature;
+	bool menuDrawn;
 
 	EverStats* eStatsSun;
 	EverStats* eStatsWater;
 	EverStats* eStatsTemperature;
 	EverStats* eStatsNutrients;
 
-	void draw(void);
 };

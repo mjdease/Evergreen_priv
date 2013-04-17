@@ -4,6 +4,17 @@
 class EverStats
 {
 public:
+	void resetPosition();
+	void setPosition(ofPoint pos);
+	void setValue(float val);
+
+	EverStats(string, float, ofColor, ofPoint);
+	~EverStats(void);
+	
+	void draw(void);
+	void drawPaused(void);
+
+private:
 	ofImage barShell;
 
 	float barWidth;
@@ -11,12 +22,9 @@ public:
 
 	ofImage statIcon;
 	float stat;
-	ofVec2f pos;
+	ofPoint pos;
 	ofColor barColor;
 
-	EverStats(string, float, ofColor, ofVec2f);
-	~EverStats(void);
-
-	void draw(void);
+	ofPoint origPosition;
 };
 

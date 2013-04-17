@@ -2,26 +2,22 @@
 
 PauseMenu::PauseMenu(void)
 {
+	width = 400;
+	height = 800;
+
 	fontTitle.loadFont("ui/whitney-bold.ttf", 32);
 	fontSubtitle.loadFont("ui/whitney-bold.ttf", 22);
 	fontBody.loadFont("ui/whitney-book.ttf", 14);
 	
-	posTreeStatsTitle = ofVec2f(50, 120);
-	posTreeStats = ofVec2f(50, 150);
+	posTreeStatsTitle = ofPoint(50, 120);
+	posTreeStats = ofPoint(50, 150);
 
-	posEnvStatsTitle = ofVec2f(50, 400);
-	posEnvStats = ofVec2f(50, 430);
-	
-	// environment statistics
-	sun = 50.0;
-	water = 25.0;
-	nutrients = 25.0;
-	temperature = 75.0;
+	posEnvStatsTitle = ofPoint(50, 400);
+	posEnvStats = ofPoint(50, 430);
 
-	eStatsSun =	new EverStats("ui/sun.png", sun, ofColor(247, 244, 153), ofVec2f(posEnvStats.x, posEnvStats.y));
-	eStatsWater = new EverStats("ui/water.png", water, ofColor(91, 188, 227), ofVec2f(posEnvStats.x, posEnvStats.y + 50));
-	eStatsNutrients = new EverStats("ui/nutrients.png", nutrients, ofColor(91, 227, 93), ofVec2f(posEnvStats.x, posEnvStats.y + 100));
-	eStatsTemperature = new EverStats("ui/temperature.png", temperature, ofColor(255, 115, 115), ofVec2f(posEnvStats.x, posEnvStats.y + 150));
+	menuX = destMenuX = -width;
+
+	menuDrawn = false;
 }
 
 
@@ -29,23 +25,72 @@ PauseMenu::~PauseMenu(void)
 {
 }
 
+float* PauseMenu:: getPositionPointer(){
+	return &displayX;
+}
+
+void PauseMenu::setBars(EverStats* sun, EverStats* water, EverStats* nutrient, EverStats* temp){
+	eStatsSun = sun;
+	eStatsWater = water;
+	eStatsNutrients = nutrient;
+	eStatsTemperature = temp;
+}
+
+void PauseMenu::show(){
+	destMenuX = 0;
+
+	menuDrawn = true;
+}
+
+void PauseMenu::hide(){
+	destMenuX = -width;
+
+	menuDrawn = false;
+}
+
+void PauseMenu::toggle(){
+	if(menuDrawn == false)
+		show();
+	else
+		hide();
+}
+
 void PauseMenu::draw(void) {
+	menuX += (destMenuX - menuX)/5.0f;
+	displayX = width + menuX;
+
+	if(menuX < -width + 5){
+		eStatsSun->resetPosition();
+		eStatsWater->resetPosition();
+		eStatsNutrients->resetPosition();
+		eStatsTemperature->resetPosition();
+		menuX = -width;
+		return;
+	}
+	else{
+		eStatsSun->setPosition(ofPoint(posEnvStats.x + menuX, posEnvStats.y));
+		eStatsWater->setPosition(ofPoint(posEnvStats.x + menuX, posEnvStats.y + 50));
+		eStatsNutrients->setPosition(ofPoint(posEnvStats.x + menuX, posEnvStats.y + 100));
+		eStatsTemperature->setPosition(ofPoint(posEnvStats.x + menuX, posEnvStats.y + 150));
+	}
+
+
 	// black bg
 	ofSetColor(0);
-	ofRect(0, 0, 400, 800);
+	ofRect(menuX, 0, 400, 800);
 
 	// stats
 	ofSetColor(255);
-	fontTitle.drawString("evergreen", 50, 60);
-	fontSubtitle.drawString("tree stats", posTreeStatsTitle.x, posTreeStatsTitle.y);
-	fontSubtitle.drawString("environment stats", posEnvStatsTitle.x, posEnvStatsTitle.y);
+	fontTitle.drawString("evergreen", 50 + menuX, 60);
+	fontSubtitle.drawString("tree stats", posTreeStatsTitle.x + menuX, posTreeStatsTitle.y);
+	fontSubtitle.drawString("environment stats", posEnvStatsTitle.x + menuX, posEnvStatsTitle.y);
 	
-	fontBody.drawString("time elapsed:\ntree height:\ntree health:\nleaf count:\nbranch count:", posTreeStats.x, posTreeStats.y);
+	fontBody.drawString("time elapsed:\ntree height:\ntree health:\nleaf count:\nbranch count:", posTreeStats.x + menuX, posTreeStats.y);
 	char fpsStr[255];
 	
 	sprintf(fpsStr, "%i\n%i\n%i\n%i\n%i", 1,2,3,4,5); // stats here
 
-	fontBody.drawString(fpsStr, posTreeStats.x + 200, posTreeStats.y);
+	fontBody.drawString(fpsStr, posTreeStats.x + menuX + 200, posTreeStats.y);
 
 	// stat bars
 	eStatsSun->draw();
@@ -55,8 +100,8 @@ void PauseMenu::draw(void) {
 
 	// pause and restart buttons
 	sprintf(pause,"pause");
-	fontBody.drawString(pause,50,700);
+	fontBody.drawString(pause,menuX + 50, 700);
 
 	sprintf(restart,"restart");
-	fontBody.drawString(restart,50,750);
+	fontBody.drawString(restart,menuX + 50, 750);
 }

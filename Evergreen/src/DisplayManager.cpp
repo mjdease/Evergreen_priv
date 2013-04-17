@@ -8,19 +8,23 @@ DisplayManager::DisplayManager(int width, int height, int ScreenHeight):parallax
 	this->height = height;
 	screenHeight = ScreenHeight;
 	destOffset = offset = 0;
-}
-/*
-void DisplayManager::addtoLayer(EverTexture* tx, int layerNumber) {
-	layers[layerNumber]->addtoDraw(tx);
+	interfaceLayer = NULL;
 }
 
-void DisplayManager::addtoLayer(EverTexture* tx, DisplayLayer* layer) {
-	layer->addtoDraw(tx);
+void DisplayManager::setPausePointer(float* pausePointer){
+	pausePosition = pausePointer;
 }
-*/
+
 DisplayLayer* DisplayManager::newLayer() {
-	DisplayLayer* temp = new DisplayLayer(width, height, screenHeight);
+	DisplayLayer* temp = new DisplayLayer(width, height, screenHeight, &scale);
 	layers.push_back(temp);
+	return temp;
+}
+
+DisplayLayer* DisplayManager::newUILayer() {
+	DisplayLayer* temp = new DisplayLayer(width, screenHeight, screenHeight, NULL);
+	temp->setOffset(0);
+	interfaceLayer = temp;
 	return temp;
 }
 
@@ -30,6 +34,8 @@ void DisplayManager::drawLayer(int layerIndex) {
 }
 
 void DisplayManager::draw() {
+	scale = (width - *pausePosition) / width;
+
 	ofEnableAlphaBlending();
 
 	offset = (destOffset - offset) / 10 + offset;
@@ -37,8 +43,9 @@ void DisplayManager::draw() {
 		layers[i]->setOffset(offset / (parallax * i + 1));
 		drawLayer(i);
 	}
+	interfaceLayer->draw();
 
-	ofDisableAlphaBlending();  
+	ofDisableAlphaBlending();
 }
 
 void DisplayManager::setOffsetClick(int click){
