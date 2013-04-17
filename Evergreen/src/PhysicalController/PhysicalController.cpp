@@ -104,6 +104,13 @@ void PhysicalController::updateArduino(){
 	}
 }
 
+
+//Call every 100ms with a value 0.0 - 1.0. 
+//0.0 means totally sunny, 0.5 is very heavy clouds (no rain), 1.0 is very heavy rain.
+void PhysicalController::setWeather(float state){
+
+}
+
 //true only when button changes from up to down -- will be true only once per button press
 bool PhysicalController::getButtonPress(){
 	if(isButtonUniquePress){
