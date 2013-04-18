@@ -4,6 +4,8 @@ enum LayerTypes {FOREGROUND, MIDGROUND, BACKGROUND};
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 800
 
+long EverTime=0;
+
 //--------------------------------------------------------------
 void EvergreenApp::setup(){
 	ofSetFrameRate(60);
@@ -23,8 +25,14 @@ void EvergreenApp::setup(){
 	tree = new EverTree(Foreground);//Foreground);
 	tree->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT*2 - 200);
 
-	ground = new EverGround(SCREEN_HEIGHT*2);
+	ground = new EverGround(SCREEN_HEIGHT*2, SCREEN_WIDTH);
 	ground->setTree(tree);
+	ground->setControllerPointer(physicalController->getLeftWind(),
+									physicalController->getRightWind(),
+									physicalController->getSunniness(),
+									physicalController->getShakiness(),
+									physicalController->getPlantType());
+
 }
 
 void EvergreenApp::initUI(){
@@ -71,6 +79,7 @@ void EvergreenApp::update(){
 
 	}
 	else{
+		ground->update();
 		tree->update();
 	}
 
@@ -142,6 +151,7 @@ void EvergreenApp::keyPressed(int key){
 	printf("sway: %f\n", tree->swayAmount);
 	printf("Health: %f\n", tree->TREE_HEALTH);
 	printf("fps: %f\n", ofGetFrameRate());
+	printf("frame: %d\n", EverTime);
 	printf("\n");
 
 	//up arrow = scroll wheel away from user

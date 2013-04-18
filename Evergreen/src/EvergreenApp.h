@@ -34,11 +34,10 @@ class EvergreenApp : public ofBaseApp{
 		EverStats* nutrientStat;
 		EverStats* tempStat;
 
-		PauseMenu* pauseMenu;
-
-		DisplayManager* displayManager;
 		PhysicalController* physicalController;
-		
+
+		PauseMenu* pauseMenu;
+		DisplayManager* displayManager;
 		DisplayLayer* UILayer;
 		DisplayLayer* Foreground;
 		DisplayLayer* Midground;

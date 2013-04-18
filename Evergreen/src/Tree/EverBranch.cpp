@@ -52,7 +52,7 @@ void EverBranch::updateAngle(){
 }
 
 void EverBranch::sway(){
-	swayAngle *= 0.5f;
+	swayAngle *= 0.9f;
 	//swayAngle += (sinf(ofGetFrameNum()/(*swayAmount * 200.0f)) * (*swayAmount*depth/2))/500.0f;
 	swayAngle += sinf(ofGetFrameNum() * (*swayAmount) / 300.0f) * (*swayAmount*2.0f) / 10.0f;
 }
