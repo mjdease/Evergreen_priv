@@ -19,7 +19,7 @@ void EverStats::draw(void) {
 	ofEnableAlphaBlending();
 		ofSetColor(255);
 		barShell.draw(pos.x, pos.y);
-		statIcon.draw(pos.x + 260.0, pos.y);
+		statIcon.draw(pos.x - 40.0, pos.y);
 	ofDisableAlphaBlending();
 }
 

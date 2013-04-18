@@ -30,7 +30,7 @@ void EvergreenApp::setup(){
 void EvergreenApp::initUI(){
 
 	int positionY = SCREEN_HEIGHT - 50;
-	int positionX = 16;
+	int positionX = 56;
 	sunStat = new EverStats("ui/sun.png", 50, ofColor(247, 244, 153), ofPoint(positionX, positionY));
 	waterStat = new EverStats("ui/water.png", 50, ofColor(91, 188, 227), ofPoint(positionX + 316,positionY));
 	nutrientStat = new EverStats("ui/nutrients.png", 50, ofColor(91, 227, 93), ofPoint(positionX + 632, positionY));
