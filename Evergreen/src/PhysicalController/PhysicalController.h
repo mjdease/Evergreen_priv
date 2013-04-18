@@ -16,15 +16,15 @@ public:
 	//-1, 0, 1 -> + is scrolling down, - is scrolling up.
 	int PhysicalController::getScroll();
 	//0..1 magnitude of the wind blowing in from the left side
-	float PhysicalController::getLeftWind();
+	float* PhysicalController::getLeftWind();
 	//0..1 magnitude of the wind blowing in from the right side
-	float PhysicalController::getRightWind();
+	float* PhysicalController::getRightWind();
 	//0..1 magnitude of the sunniness
-	float PhysicalController::getSunniness();
+	float* PhysicalController::getSunniness();
 	//0..1 magnitude of the shakiness
-	float PhysicalController::getShakiness();
+	float* PhysicalController::getShakiness();
 	//0 - nothing, stuff should die. 1 - grass. 2 - flowers. 3 - thorn bushes.
-	int PhysicalController::getPlantType();
+	int* PhysicalController::getPlantType();
 
 	//DEBUG
 	void PhysicalController::debugKeyPress(int key);

@@ -130,28 +130,28 @@ int PhysicalController::getScroll(){
 }
 
 //0..1 magnitude of the wind blowing in from the left side
-float PhysicalController::getLeftWind(){
-	return leftWind;
+float* PhysicalController::getLeftWind(){
+	return &leftWind;
 }
 
 //0..1 magnitude of the wind blowing in from the right side
-float PhysicalController::getRightWind(){
-	return rightWind;
+float* PhysicalController::getRightWind(){
+	return &rightWind;
 }
 
 //0..1 magnitude of the sunniness
-float PhysicalController::getSunniness(){
-	return sunniness;
+float* PhysicalController::getSunniness(){
+	return &sunniness;
 }
 
 //0..1 magnitude of the shakiness
-float PhysicalController::getShakiness(){
-	return shakiness;
+float* PhysicalController::getShakiness(){
+	return &shakiness;
 }
 
 //0 - nothing, stuff should die. 1 - grass. 2 - flowers. 3 - thorn bushes.
-int PhysicalController::getPlantType(){
-	return plantType;
+int* PhysicalController::getPlantType(){
+	return &plantType;
 }
 
 
