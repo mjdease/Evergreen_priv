@@ -22,27 +22,27 @@ void EvergreenApp::setup(){
 	
 	paused = false;
 
-	tree = new EverTree(Foreground);//Foreground);
+	tree = new EverTree();//Foreground);
 	tree->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT*2 - 200);
 
-	ground = new EverGround(SCREEN_HEIGHT*2, SCREEN_WIDTH);
+	ground = new EverGround(SCREEN_HEIGHT*2, SCREEN_WIDTH, &paused);
 	ground->setTree(tree);
 	ground->setControllerPointer(physicalController->getLeftWind(),
 									physicalController->getRightWind(),
 									physicalController->getSunniness(),
 									physicalController->getShakiness(),
 									physicalController->getPlantType());
-
+	ground->setUIBars(sunStat, waterStat, nutrientStat, tempStat);
 }
 
 void EvergreenApp::initUI(){
 
 	int positionY = SCREEN_HEIGHT - 50;
 	int positionX = 56;
-	sunStat = new EverStats("ui/sun.png", 50, ofColor(247, 244, 153), ofPoint(positionX, positionY));
-	waterStat = new EverStats("ui/water.png", 50, ofColor(91, 188, 227), ofPoint(positionX + 316,positionY));
-	nutrientStat = new EverStats("ui/nutrients.png", 50, ofColor(91, 227, 93), ofPoint(positionX + 632, positionY));
-	tempStat = new EverStats("ui/temperature.png", 50, ofColor(255, 115, 115), ofPoint(positionX + 948, positionY));
+	sunStat = new EverStats("ui/sun.png", 0.5, ofColor(247, 244, 153), ofPoint(positionX, positionY));
+	waterStat = new EverStats("ui/water.png", 0.5, ofColor(91, 188, 227), ofPoint(positionX + 316,positionY));
+	nutrientStat = new EverStats("ui/nutrients.png", 0.5, ofColor(91, 227, 93), ofPoint(positionX + 632, positionY));
+	tempStat = new EverStats("ui/temperature.png", 0.5, ofColor(255, 115, 115), ofPoint(positionX + 948, positionY));
 
 	pauseMenu = new PauseMenu();
 	pauseMenu->setBars(sunStat, waterStat, nutrientStat, tempStat);
@@ -76,11 +76,25 @@ void EvergreenApp::update(){
 	//printf("depth: %d\n", tree->getDepth());
 
 	if(paused == true){
-
+		if(physicalController->getButtonPress()){
+			if(pauseMenu->pressButton()){ // Returns false if continue, true if restart
+				tree = new EverTree(); // RESTART THE TREE
+			}
+			togglePause();
+		}
+		if(physicalController->getScroll() != 0){
+			pauseMenu->scroll();
+		}
 	}
 	else{
+		displayManager->setOffsetClick(physicalController->getScroll());
+
 		ground->update();
 		tree->update();
+
+		if(physicalController->getButtonPress()){
+			togglePause();
+		}
 	}
 
 }
@@ -100,7 +114,6 @@ void EvergreenApp::draw(){
 	// FOREGROUND LAYER
 	Foreground->begin();
 		ground->draw();
-		tree->draw();
 	Foreground->end();
 
 	// UI LAYER
@@ -121,10 +134,11 @@ void EvergreenApp::draw(){
 //--------------------------------------------------------------
 void EvergreenApp::keyPressed(int key){
 	switch(key){
+		/*
 		case 32: // Space
 			togglePause();
 			break;
-
+			*/
 		case 357: // Up
 			tree->TREE_HEALTH += 0.1f;
 			break;

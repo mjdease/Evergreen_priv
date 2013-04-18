@@ -14,7 +14,7 @@ void EverStats::setValue(float val){
 
 void EverStats::draw(void) {
 	ofSetColor(barColor);
-	ofRect(pos.x + 3, pos.y + 3, stat * 0.01 * barWidth, barHeight);
+	ofRect(pos.x + 3, pos.y + 3, stat * barWidth, barHeight);
 	
 	ofEnableAlphaBlending();
 		ofSetColor(255);

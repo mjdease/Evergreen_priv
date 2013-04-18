@@ -14,6 +14,9 @@ public:
 
 	void draw(void);
 
+	bool pressButton();
+	void scroll();
+
 	PauseMenu(void);
 	~PauseMenu(void);
 
@@ -43,4 +46,6 @@ private:
 	EverStats* eStatsTemperature;
 	EverStats* eStatsNutrients;
 
+	enum highlight_t {CONTINUE, RESTART};
+	highlight_t highlighted;
 };

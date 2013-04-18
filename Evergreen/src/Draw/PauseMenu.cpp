@@ -18,11 +18,20 @@ PauseMenu::PauseMenu(void)
 	menuX = destMenuX = -width;
 
 	menuDrawn = false;
+
+	highlighted = CONTINUE;
 }
 
-
-PauseMenu::~PauseMenu(void)
-{
+bool PauseMenu::pressButton(){
+	if(highlighted == CONTINUE){
+		return false;
+	}
+	else if(highlighted == RESTART){
+		return true;
+	}
+}
+void PauseMenu::scroll(){
+	highlighted = (highlighted == RESTART) ? CONTINUE : RESTART;
 }
 
 float* PauseMenu:: getPositionPointer(){
@@ -99,9 +108,20 @@ void PauseMenu::draw(void) {
 	eStatsTemperature->draw();
 
 	// pause and restart buttons
-	sprintf(pause,"pause");
+	int continueYPosition = 678;
+	int restartYPosition = 728;
+
+	sprintf(pause,"Continue");
 	fontBody.drawString(pause,menuX + 50, 700);
 
-	sprintf(restart,"restart");
+	sprintf(restart,"Restart");
 	fontBody.drawString(restart,menuX + 50, 750);
+
+	ofNoFill();
+	ofRect(menuX + 43, (highlighted == RESTART)?restartYPosition:continueYPosition, 100, 30);
+	ofFill();
+}
+
+PauseMenu::~PauseMenu(void)
+{
 }

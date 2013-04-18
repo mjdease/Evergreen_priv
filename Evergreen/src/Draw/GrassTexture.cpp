@@ -10,9 +10,9 @@ void GrassTexture::setPosition(float x, float y){
 	this->y = y;
 }
 
-void GrassTexture::draw(float offset){
+void GrassTexture::draw(){
 	//draw(float x, float y, float w, float h);
-	EverTexture::draw(x, y + offset, width, height);
+	EverTexture::draw(x, y, width, height);
 }
 
 GrassTexture::~GrassTexture(void)

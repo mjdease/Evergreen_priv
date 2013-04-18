@@ -2,9 +2,13 @@
 #include "ofMain.h"
 #include "../Draw/GrassTexture.h"
 #include "../Tree/EverTree.h"
-#include "EverFlower.h"
+#include "EverPlant.h"
+#include "EverRiver.h"
+#include "EverCloud.h"
 #include "../DisplayManager.h"
 #include "../Draw/SimpleTexture.h"
+#include "../Draw/EverStats.h"
+#include "../Draw/RainTexture.h"
 
 class EverGround
 {
@@ -12,14 +16,10 @@ public:
 
 	ofPoint position;
 
-	float health;
+	float grassHealth;
 	int numLayers;
 
-	int numFlowers;
-
-	void setHealth(float health);
-
-	void addFlowers();
+	void setHealth(float grassHealth);
 	
 	void update();
 
@@ -27,33 +27,63 @@ public:
 	void drawMidground();
 	void drawBackground();
 
+	void setUIBars(EverStats* sun, EverStats* water, EverStats* nutrient, EverStats* temp);
 	void setControllerPointer(float* lWind, float* rWind, float* sun, float* shaky, int* plant);
 
 	void setTree(EverTree* tree);
 
-	EverGround(int screenHeight, int screenWidth);
+	EverGround(int screenHeight, int screenWidth, bool* paused);
 	~EverGround(void);
 private:
+	bool* paused;
+
+	// Sunniness, water, nutrient, temperature
 	float temperature;
+	float wind;
+	float waterLevel;
+	float nutrientLevel;
+
+	float cloudLevel;
+
+	int rainLevel;
 
 	float* leftWind;
 	float* rightWind;
 	float* sunniness;
 	float* shakiness;
 	int* plantType;
-
-	EverFlower* flowers[100];
+	
+	EverPlant* flowers[50];
+	EverPlant* thorns[20];
 
 	EverTree* tree;
 	GrassTexture* grassLayers[2];
 	GrassTexture* deadLayer;
+
+	EverCloud* clouds[30];
 
 	int screenHeight, screenWidth;
 
 	SimpleTexture* midgroundTexture;
 	SimpleTexture* backgroundTexture;
 	SimpleTexture* skyTexture;
+	
+	EverStats* sunStat;
+	EverStats* waterStat;
+	EverStats* nutrientStat;
+	EverStats* tempStat;
+	void updateUIBars();
+
+	EverRiver* river;
+
+	int numFlowers, numThorns;
+
+	void addPlants(bool thorn);
 
 	void drawSun();
+
+	RainTexture* rain;
+	float rainAmount;
+	void makeItRain();
 };
 

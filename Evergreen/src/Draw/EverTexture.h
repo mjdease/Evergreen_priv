@@ -20,6 +20,7 @@ public:
 
 	float getHeight();
 	float getWidth();
+	float opacity;
 
 protected:
 	string src;
@@ -27,6 +28,5 @@ protected:
 	ofTexture texture;
 	float width;
 	float height;
-	float opacity;
 };
 

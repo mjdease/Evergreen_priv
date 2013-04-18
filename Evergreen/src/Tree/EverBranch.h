@@ -20,8 +20,7 @@ public:
 		int* limbDepth,
 		int* rootSiblings,
 		vector <EverBranch*>* siblingBranches,
-		float* swayAmount,
-		DisplayLayer* layer);
+		float* swayAmount);
 
 	static int* GlobalDepth;
 	static int* GlobalLimbDepth;
@@ -61,7 +60,6 @@ private:
 	static const string TEXTURE_SRC;
 	static float* swayAmount;
 	static const float WIDTH_DECAY;
-	static DisplayLayer* layer;
 
 	BranchTexture* texture;
 

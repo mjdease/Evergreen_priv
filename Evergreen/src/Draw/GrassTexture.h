@@ -7,7 +7,7 @@ public:
 	float x, y;
 
 	void setPosition(float x, float y);
-	void draw(float offset);
+	void draw();
 	GrassTexture(string src);
 	~GrassTexture(void);
 

@@ -15,13 +15,12 @@ public:
 	float TREE_HEALTH;
 	float swayAmount;
 
-	EverTree(DisplayLayer* layer);
+	EverTree();
 	~EverTree(void);
 
 private:
 	static const int MAX_CHILDREN;
 	static const string TEXTURE_SRC;
-	static DisplayLayer* layer;
 	int depth;
 	int limbDepth;
 

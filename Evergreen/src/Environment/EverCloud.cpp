@@ -4,17 +4,15 @@
 EverCloud::EverCloud(void)
 {
 	cloud = new EverTexture("environment/background/clouds/cloud_01.png");
-	spd = 0.1;
+	speed = 0.1;
 	posx = ofRandomuf() * 1280;
-	posy = 300 - ofRandomuf() * 2700;
+	posy = ofRandomuf() * 1600 - 300;
 }
 
-void EverCloud::draw(float offset) {
-
-	posx -= spd;
+void EverCloud::draw() {
+	posx += speed;
 	if(posx < 0) posx = 1280;
-	cloud->draw(posx, posy+offset);
-
+	cloud->draw(posx, posy);
 }
 
 

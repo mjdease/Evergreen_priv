@@ -103,7 +103,7 @@ void EverTexture::drawTexture(ofPoint p1, ofPoint p2, ofPoint p3, ofPoint p4){
 }
 
 void EverTexture::setOpacity(float alpha){
-	opacity = alpha;
+	opacity = ofClamp(alpha, 0, 255);
 }
 
 float EverTexture::getWidth(){

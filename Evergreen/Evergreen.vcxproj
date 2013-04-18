@@ -25,7 +25,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
@@ -108,11 +108,13 @@
     <ClCompile Include="src\Draw\EverTexture.cpp" />
     <ClCompile Include="src\Draw\GrassTexture.cpp" />
     <ClCompile Include="src\Draw\PauseMenu.cpp" />
+    <ClCompile Include="src\Draw\RainTexture.cpp" />
     <ClCompile Include="src\Draw\SimpleTexture.cpp" />
     <ClCompile Include="src\Environment\EverCloud.cpp" />
     <ClCompile Include="src\Environment\EverEnvironment.cpp" />
-    <ClCompile Include="src\Environment\EverFlower.cpp" />
     <ClCompile Include="src\Environment\EverGround.cpp" />
+    <ClCompile Include="src\Environment\EverPlant.cpp" />
+    <ClCompile Include="src\Environment\EverRiver.cpp" />
     <ClCompile Include="src\Environment\EverWeather.cpp" />
     <ClCompile Include="src\EvergreenApp.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -130,11 +132,13 @@
     <ClInclude Include="src\Draw\EverTexture.h" />
     <ClInclude Include="src\Draw\GrassTexture.h" />
     <ClInclude Include="src\Draw\PauseMenu.h" />
+    <ClInclude Include="src\Draw\RainTexture.h" />
     <ClInclude Include="src\Draw\SimpleTexture.h" />
     <ClInclude Include="src\Environment\EverCloud.h" />
     <ClInclude Include="src\Environment\EverEnvironment.h" />
-    <ClInclude Include="src\Environment\EverFlower.h" />
     <ClInclude Include="src\Environment\EverGround.h" />
+    <ClInclude Include="src\Environment\EverPlant.h" />
+    <ClInclude Include="src\Environment\EverRiver.h" />
     <ClInclude Include="src\Environment\EverWeather.h" />
     <ClInclude Include="src\EvergreenApp.h" />
     <ClInclude Include="src\PhysicalController\PhysicalController.h" />

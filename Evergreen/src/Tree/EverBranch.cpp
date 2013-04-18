@@ -13,7 +13,6 @@ float* EverBranch::TreeHealth = NULL;
 float* EverBranch::swayAmount = NULL;
 int* EverBranch::rootSiblingNum = NULL;
 vector <EverBranch*>* EverBranch::siblings = NULL;
-DisplayLayer* EverBranch::layer = NULL;
 
 void EverBranch::updateAngle(){
 	// Adjust sun/ground angle
@@ -54,7 +53,7 @@ void EverBranch::updateAngle(){
 void EverBranch::sway(){
 	swayAngle *= 0.9f;
 	//swayAngle += (sinf(ofGetFrameNum()/(*swayAmount * 200.0f)) * (*swayAmount*depth/2))/500.0f;
-	swayAngle += sinf(ofGetFrameNum() * (*swayAmount) / 300.0f) * (*swayAmount*2.0f) / 10.0f;
+	swayAngle += (sinf(ofGetFrameNum() * (*swayAmount) / 300.0f) * (*swayAmount*2.0f) / 10.0f + (*swayAmount*2.0f) / 10.0f)/(depth*1.5);
 }
 
 void EverBranch::grow(){
@@ -173,14 +172,13 @@ EverBranch::EverBranch(EverBranch* parent){
 	maxChildren = parent->maxChildren * CHILD_DECAY;
 }
 
-void EverBranch::setPointers(float* TreeHealth, int* depth, int* limbDepth, int* rootSiblings, vector <EverBranch*>* siblingBranches, float* swayAmount, DisplayLayer* layer){
+void EverBranch::setPointers(float* TreeHealth, int* depth, int* limbDepth, int* rootSiblings, vector <EverBranch*>* siblingBranches, float* swayAmount){
 	EverBranch::TreeHealth = TreeHealth;
 	EverBranch::GlobalDepth = depth;
 	EverBranch::rootSiblingNum = rootSiblings;
 	EverBranch::siblings = siblingBranches;
 	EverBranch::GlobalLimbDepth = limbDepth;
 	EverBranch::swayAmount = swayAmount;
-	EverBranch::layer = layer;
 }
 
 EverBranch::~EverBranch(void)

@@ -1,6 +1,5 @@
 #include "EverTree.h"
 const int EverTree::MAX_CHILDREN= 3;
-DisplayLayer* EverTree::layer = NULL;
 const string EverTree::TEXTURE_SRC = "bark.bmp";
 
 void EverTree::reproduce(){
@@ -21,8 +20,8 @@ void EverTree::update(){
 		children[i]->update();
 	}
 
-	swayAngle *= 0.5f;
-	swayAngle += sinf(ofGetFrameNum() * (swayAmount) / 300.0f) * (swayAmount*2.0f) / 10.0f;
+	swayAngle *= 0.9f;
+	swayAngle += sinf(ofGetFrameNum() * (swayAmount) / 300.0f) * (swayAmount*2.0f) / 7.0f + (swayAmount*2.0f) / 7.0f;
 
 	reproduce();
 
@@ -58,14 +57,13 @@ void EverTree::setPosition(float x, float y){
 }
 
 
-EverTree::EverTree(DisplayLayer* layer)
+EverTree::EverTree()
 {
 	startWidth = endWidth = 10;
 	texture = new BranchTexture(&startWidth, &endWidth);
 	texture->loadTexture(TEXTURE_SRC);
 	texture->setResolution(1);
 
-	this->layer = layer;
 	TREE_HEALTH = 100.0f;
 	depth = 0;
 	limbDepth = 0;
@@ -73,7 +71,7 @@ EverTree::EverTree(DisplayLayer* layer)
 	birthRate = 0.001f;
 	numChildren = 0;
 	swayAmount = 1.0f;
-	EverBranch::setPointers(&TREE_HEALTH, &depth, &limbDepth, &numChildren, &children, &swayAmount, layer);
+	EverBranch::setPointers(&TREE_HEALTH, &depth, &limbDepth, &numChildren, &children, &swayAmount);
 }
 
 EverTree::~EverTree(void)

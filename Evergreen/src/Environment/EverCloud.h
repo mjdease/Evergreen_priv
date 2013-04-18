@@ -4,12 +4,12 @@ class EverCloud :public EverTexture
 {
 public:
 	EverTexture* cloud;
-	
-	float spd;
+
+	float speed;
 	float posy;
 	float posx;
 
-	void draw(float offset);
+	void draw();
 
 	EverCloud(void);
 	~EverCloud(void);
