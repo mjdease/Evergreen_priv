@@ -1,12 +1,12 @@
 #include "PhysicalController.h"
 
 //enable keybard input & logging
-#define DEBUG true
+#define DEBUG false
 
 //may disable some arduinos here
 #define HAS_ARDUINO_MAIN true
 #define HAS_ARDUINO_SUN false
-#define HAS_ARDUINO_GROUND true
+#define HAS_ARDUINO_GROUND false
 
 //input sources
 #define BUTTON 'b'
@@ -108,7 +108,8 @@ void PhysicalController::updateArduino(){
 //Call every 100ms with a value 0.0 - 1.0. 
 //0.0 means totally sunny, 0.5 is very heavy clouds (no rain), 1.0 is very heavy rain.
 void PhysicalController::setWeather(float state){
-
+	string message = "t" + ofToString(state);
+	ardMain.writeString(message);
 }
 
 //true only when button changes from up to down -- will be true only once per button press
@@ -218,6 +219,9 @@ void PhysicalController::debugKeyPress(int key){
 	case OF_KEY_F3:
 		plantType += 1;
 		plantType %= 4;
+		break;
+	case OF_KEY_F4:
+		PhysicalController::setWeather(ofRandom(1.0));
 		break;
 	}
 }
