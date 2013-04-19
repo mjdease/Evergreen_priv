@@ -2,6 +2,7 @@
 #include "../ofMain.h"
 #include "../Draw/EverTexture.h"
 #include "../DisplayManager.h"
+#include "../Audio.h"
 
 class EverRiver
 {
@@ -14,6 +15,7 @@ public:
 	~EverRiver(void);
 
 private:
+	Audio* riverSound;
 	int frameNum;
 	int frameDir;
 

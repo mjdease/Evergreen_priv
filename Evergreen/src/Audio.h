@@ -10,7 +10,7 @@ public:
 	void start(void);
 	void stop(void);
 	void setVol(string);
-	// void setVol(float);
+	void setVol(float);
 
 	Audio(string);
 	~Audio(void);
