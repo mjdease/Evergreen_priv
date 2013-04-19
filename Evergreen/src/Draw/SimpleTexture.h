@@ -11,6 +11,7 @@ public:
 	void setPosition(float x, float y);
 	void setSize(int width, int height);
 	void draw();
+	void draw(float width, float height);
 	SimpleTexture(string src);
 	~SimpleTexture(void);
 };

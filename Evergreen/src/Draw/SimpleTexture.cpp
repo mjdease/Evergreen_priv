@@ -24,6 +24,10 @@ void SimpleTexture::draw(){
 	EverTexture::draw(x, y, width, height);
 }
 
+void SimpleTexture::draw(float width, float height){
+	EverTexture::draw(x, y, width, height);
+}
+
 SimpleTexture::~SimpleTexture(void)
 {
 }

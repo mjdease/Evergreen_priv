@@ -14,6 +14,8 @@ void EverTree::reproduce(){
 }
 
 void EverTree::update(){
+	swayAmount = swayAmount + (wind - swayAmount)/((wind - swayAmount < 0) ? 700 : 300);
+
 	// Health
 	float targetHealth = 0;
 	if(*sun > 0.1 && *water > 0.1 && *nutrient > 0.1)
@@ -23,9 +25,9 @@ void EverTree::update(){
 
 	// Set all the other values
 	trunkLength += (TREE_HEALTH/100.0f * 350.0f - trunkLength)/10000.0f;
-	startWidth = trunkLength/ 5 * (TREE_HEALTH/70 + 1);
+	startWidth = trunkLength/ 7 * (TREE_HEALTH/70 + 1);
 	if(numChildren == 0){
-		endWidth = 1;
+		endWidth = 1; 
 	}
 	else{
 		endWidth = startWidth/2;
@@ -35,8 +37,10 @@ void EverTree::update(){
 		children[i]->update();
 	}
 
-	swayAngle *= 0.9f;
-	swayAngle += sinf(ofGetFrameNum() * (swayAmount) / 300.0f) * (swayAmount*2.0f) / 7.0f + (swayAmount*2.0f) / 7.0f;
+	swayAngle = sinf(ofGetFrameNum() * (swayAmount) / 300.0f) * (swayAmount) + swayAmount;
+
+	//swayAngle *= 0.9f;
+	//swayAngle += sinf(ofGetFrameNum() * (swayAmount) / 300.0f) * (swayAmount*2.0f) / 7.0f + (swayAmount*2.0f) / 7.0f;
 
 	reproduce();
 
@@ -72,6 +76,10 @@ void EverTree::draw(){
 void EverTree::setPosition(float x, float y){
 	position.x = x;
 	position.y = y;
+}
+
+void EverTree::setSway(float sway){
+	wind = sway;
 }
 
 void EverTree::getEnvPointers(float* sun, float* water, float* nutrient, float* temperature){

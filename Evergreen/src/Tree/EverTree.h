@@ -11,11 +11,12 @@ public:
 	ofPoint position;
 
 	void setPosition(float x, float y);
+	void setSway(float sway);
+	float wind;
 
 	void getEnvPointers(float* sun, float* water, float* nutrient, float* temperature);
 
 	float TREE_HEALTH;
-	float swayAmount;
 
 	EverTree();
 	~EverTree(void);
@@ -27,6 +28,8 @@ private:
 	int limbDepth;
 
 	float trunkLength;
+
+	float swayAmount;
 
 	vector <EverBranch*> children;
 	int numChildren;

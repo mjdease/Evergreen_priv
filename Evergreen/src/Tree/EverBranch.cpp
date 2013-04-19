@@ -47,15 +47,16 @@ void EverBranch::updateAngle(){
 		baseAngle += (maxAngle - baseAngle)/ 500.0f;
 	}
 
-	//sway();
+	sway();
 
 	angle = baseAngle + swayAngle;
 }
 
 void EverBranch::sway(){
-	swayAngle *= 0.9f;
+	swayAngle = (sinf(ofGetFrameNum() * (*swayAmount) / 300.0f) * (*swayAmount) + *swayAmount) * (limbDepth/2 + 1);
+	//swayAngle *= 0.9f;
 	//swayAngle += (sinf(ofGetFrameNum()/(*swayAmount * 200.0f)) * (*swayAmount*depth/2))/500.0f;
-	swayAngle += (sinf(ofGetFrameNum() * (*swayAmount) / 300.0f) * (*swayAmount*2.0f) / 10.0f + (*swayAmount*2.0f) / 10.0f)/(depth*1.5);
+	//swayAngle += (sinf(ofGetFrameNum() * (*swayAmount) / 300.0f) * (*swayAmount*2.0f) / 10.0f + (*swayAmount*2.0f) / 10.0f)/(depth*1.5);
 }
 
 void EverBranch::grow(){
@@ -108,14 +109,17 @@ void EverBranch::update(){
 	}
 
 	texture->setStartEnd(ofPoint(0,0), ofPoint(0, length));
+
+	leaf->setPosition(length);
+
+	if(startWidth > 1 && endWidth >= 0)
+		leaf->update();
 }
 
 void EverBranch::draw(){
 	ofRotate(angle);
 
 	texture->draw(0);
-	ofSetColor(0, 255, 0);
-	ofCircle(0,length,2);
 	/*ofSetColor(0, 255, 0);
 	if(depth < MAX_DEPTH+1){
 		ofSetColor(255, 0, 0);
@@ -123,7 +127,6 @@ void EverBranch::draw(){
 	ofLine(0,0,0,length);
 	//ofCircle(0,0,2);
 	ofSetColor(0, 255, 0);*/
-	//ofCircle(0,length,2);
 	
 
 	//layer->addtoDraw(texture);
@@ -135,6 +138,7 @@ void EverBranch::draw(){
 		children[i]->draw();
 		ofPopMatrix();
 	}
+	leaf->draw();
 }
 
 void EverBranch::newChild(){
@@ -171,6 +175,7 @@ EverBranch::EverBranch(){
 	mainBranch = true;
 
 	baseStartWidth = NULL;
+	leaf = new EverLeaf(1);
 }
 
 EverBranch::EverBranch(EverBranch* parent){
@@ -209,6 +214,7 @@ EverBranch::EverBranch(EverBranch* parent){
 	maxChildren = parent->maxChildren * CHILD_DECAY;
 
 	baseStartWidth = NULL;
+	leaf = new EverLeaf(2);
 }
 
 void EverBranch::setPointers(float* TreeHealth, int* depth, int* limbDepth, int* rootSiblings, vector <EverBranch*>* siblingBranches, float* swayAmount){

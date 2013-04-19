@@ -2,6 +2,7 @@
 #include "../ofMain.h"
 #include "../Draw/BranchTexture.h"
 #include "../DisplayManager.h"
+#include "EverLeaf.h"
 
 class EverBranch
 {
@@ -66,6 +67,7 @@ private:
 	static const float WIDTH_DECAY;
 
 	BranchTexture* texture;
+	EverLeaf* leaf;
 
 	// Update
 	void updateAngle();

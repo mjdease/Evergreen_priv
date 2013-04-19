@@ -8,7 +8,7 @@ long EverTime=0;
 
 //--------------------------------------------------------------
 void EvergreenApp::setup(){
-	//ofSetFrameRate(60);
+	ofSetFrameRate(60);
 	ofSetWindowShape(1280, 800);
 	ofEnableAlphaBlending();
 	//ofSetWindowPosition(-1390,215);
@@ -148,13 +148,6 @@ void EvergreenApp::keyPressed(int key){
 		case 359: // Down
 			break;
 
-		case 356: // Left
-			tree->swayAmount -= 0.1f;
-			break;
-		case 358: // Right
-			tree->swayAmount += 0.1f;
-			break;
-
 		case 360: // page up
 			tree->TREE_HEALTH += 0.1f;
 			break;
@@ -164,7 +157,7 @@ void EvergreenApp::keyPressed(int key){
 	}
 	
 	printf("Key: %d\n", key);
-	printf("sway: %f\n", tree->swayAmount);
+	printf("sway: %f\n", tree->wind);
 	printf("Health: %f\n", tree->TREE_HEALTH);
 	printf("fps: %f\n", ofGetFrameRate());
 	printf("frame: %d\n", EverTime);

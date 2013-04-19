@@ -86,7 +86,7 @@ void EverGround::update(){
 
 	wind = ofClamp(wind + (*leftWind - *rightWind)/2, -100 , 100);
 		
-	tree->swayAmount = wind/6.66f;
+	tree->setSway(wind/13.0f);
 
 	// clouds/rain
 	if(abs(wind) > 10.0f+temperaturePercent*10){

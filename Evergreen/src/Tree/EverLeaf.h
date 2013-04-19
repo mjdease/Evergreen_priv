@@ -4,12 +4,20 @@
 class EverLeaf
 {
 public:
+	void update();
 	void draw();
 
-	EverLeaf(void);
+	void setPosition(float length);
+
+	EverLeaf(int leafType);
 	~EverLeaf(void);
 
 private:
+	float width, height;
+	float oWidth, oHeight;
+
+	float length;
+
 	SimpleTexture* drawLeaf;
 
 	static SimpleTexture* leaf1;
@@ -19,6 +27,6 @@ private:
 	static SimpleTexture* leaf5;
 	static SimpleTexture* leaf6;
 
-	void loadImages();
+	void loadImages(int leafType);
 };
 
