@@ -16,7 +16,8 @@ void EvergreenApp::setup(){
 
 	physicalController = new PhysicalController();
 	//  \\\\.\\ must preceed the device string reported by the arduino IDE
-	physicalController->init("\\\\.\\COM4", "\\\\.\\COM6", "\\\\.\\COM8");
+	//physicalController->init("\\\\.\\COM4", "\\\\.\\COM6", "\\\\.\\COM8");
+	physicalController->init("\\\\.\\COM3", "\\\\.\\COM8", "\\\\.\\COM10");
 
 	initUI();
 	

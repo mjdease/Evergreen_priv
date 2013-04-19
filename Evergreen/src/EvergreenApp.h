@@ -8,6 +8,7 @@
 #include "PhysicalController/PhysicalController.h"
 #include "Draw/SimpleTexture.h"
 #include "Draw\PauseMenu.h"
+#include "Audio.h"
 
 class EvergreenApp : public ofBaseApp{
 
