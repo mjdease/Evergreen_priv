@@ -1,12 +1,12 @@
 #include "PhysicalController.h"
 
 //enable keybard input & logging
-#define DEBUG false
+#define DEBUG true
 
 //may disable some arduinos here
 #define HAS_ARDUINO_MAIN true
-#define HAS_ARDUINO_SUN false
-#define HAS_ARDUINO_GROUND false
+#define HAS_ARDUINO_SUN true
+#define HAS_ARDUINO_GROUND true
 
 //input sources
 #define BUTTON 'b'
@@ -105,10 +105,11 @@ void PhysicalController::updateArduino(){
 }
 
 
-//Call every 100ms with a value 0.0 - 1.0. 
-//0.0 means totally sunny, 0.5 is very heavy clouds (no rain), 1.0 is very heavy rain.
-void PhysicalController::setWeather(float state){
-	string message = "t" + ofToString(state);
+//Call every 100ms with a value 0 - 100. 
+//0 means totally sunny, 50 is very heavy clouds (no rain), 100 is very heavy rain.
+void PhysicalController::setWeather(int state){
+	float val = (float)state / 100.0f;
+	string message = "t" + ofToString(val);
 	ardMain.writeString(message);
 }
 

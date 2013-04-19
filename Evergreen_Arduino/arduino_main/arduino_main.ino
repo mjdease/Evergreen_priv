@@ -17,7 +17,7 @@
 #define WIND_LEFT "l:"
 #define WIND_RIGHT "r:"
 
-int wheelChange = 0;
+char wheelChange = 0;
 unsigned long pLeftTime = 0;
 unsigned long pRightTime = 0;
 unsigned long pWeatherTime = 0;

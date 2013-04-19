@@ -21,8 +21,8 @@ const bool ShiftPWM_balanceLoad = false;
 #define THORN_VAL 3
 
 //increase the threshold as the interval decreases
-#define RFID_INTERVAL 100
-#define EMPTY_RFID_THRESHOLD 6
+#define RFID_INTERVAL 200
+#define EMPTY_RFID_THRESHOLD 10
 
 #define ACC_PIN A0
 #define ACC_INTERVAL 300
@@ -32,8 +32,7 @@ unsigned char pwmFrequency = 75;
 int numRegisters = 2;
 
 //white, green, red, yellow
-//note anything less than fully on or off will interfere with the RFID reading
-// & the LEDs will flicker
+//note anything less than fully on or off will interfere with the RFID reading & the LEDs will flicker
 unsigned int r[4] = {255,   0,     255, 255};
 unsigned int g[4] = {255,   255,   0,   255};
 unsigned int b[4] = {255,   0,     0,   0};
