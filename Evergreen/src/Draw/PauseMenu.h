@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "EverStats.h"
+#include <ctime>
 
 class PauseMenu
 {
@@ -9,6 +10,7 @@ public:
 	void show();
 	void hide();
 	void setBars(EverStats* sun, EverStats* water, EverStats* nutrient, EverStats* temp);
+	void setStats(clock_t* time, int* branches, float* health);
 
 	float* getPositionPointer();
 
@@ -48,4 +50,8 @@ private:
 
 	enum highlight_t {CONTINUE, RESTART};
 	highlight_t highlighted;
+
+	clock_t* startTime;
+	int* numBranches;
+	float* treeHealth;
 };

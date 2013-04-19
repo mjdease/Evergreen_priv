@@ -20,12 +20,12 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
@@ -100,7 +100,9 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Evergreen\Evergreen\src\Audio.cpp" />
     <ClCompile Include="src\addons\ofxSimpleSerial\src\ofxSimpleSerial.cpp" />
+    <ClCompile Include="src\Audio.cpp" />
     <ClCompile Include="src\DisplayManager.cpp" />
     <ClCompile Include="src\Draw\BranchTexture.cpp" />
     <ClCompile Include="src\Draw\DisplayLayer.cpp" />
@@ -124,7 +126,9 @@
     <ClCompile Include="src\Tree\EverTree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Evergreen\Evergreen\src\Audio.h" />
     <ClInclude Include="src\addons\ofxSimpleSerial\src\ofxSimpleSerial.h" />
+    <ClInclude Include="src\Audio.h" />
     <ClInclude Include="src\DisplayManager.h" />
     <ClInclude Include="src\Draw\BranchTexture.h" />
     <ClInclude Include="src\Draw\DisplayLayer.h" />

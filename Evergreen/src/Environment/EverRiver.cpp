@@ -2,6 +2,9 @@
 
 EverRiver::EverRiver(float x, float y, float* water)
 {
+	riverSound = new Audio("audio/RiverInOut.mp3");
+	riverSound->start();
+
 	this->x = x;
 	this->y = y;
 
@@ -13,6 +16,8 @@ EverRiver::EverRiver(float x, float y, float* water)
 }
 
 void EverRiver::update(){
+	riverSound->setVol(*waterLevel / 100);
+
 	if(*waterLevel < 25)
 		drawnFg = fgRiver1;
 	else if(*waterLevel < 50)

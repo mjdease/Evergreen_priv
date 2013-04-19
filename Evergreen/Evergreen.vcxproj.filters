@@ -23,6 +23,8 @@
     <ClCompile Include="src\Environment\EverPlant.cpp" />
     <ClCompile Include="src\Environment\EverRiver.cpp" />
     <ClCompile Include="src\Draw\RainTexture.cpp" />
+    <ClCompile Include="..\..\..\..\Evergreen\Evergreen\src\Audio.cpp" />
+    <ClCompile Include="src\Audio.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\addons\ofxSimpleSerial\src\ofxSimpleSerial.h" />
@@ -46,6 +48,8 @@
     <ClInclude Include="src\Environment\EverPlant.h" />
     <ClInclude Include="src\Environment\EverRiver.h" />
     <ClInclude Include="src\Draw\RainTexture.h" />
+    <ClInclude Include="..\..\..\..\Evergreen\Evergreen\src\Audio.h" />
+    <ClInclude Include="src\Audio.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

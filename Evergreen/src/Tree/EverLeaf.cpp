@@ -35,6 +35,8 @@ void EverLeaf::loadImages(int leafType){
 		leaf4 = new SimpleTexture("tree/leaves/leaf04.png");
 		leaf5 = new SimpleTexture("tree/leaves/leaf05.png");
 		leaf6 = new SimpleTexture("tree/leaves/leaf06.png");
+
+		leaf5->setSize(leaf5->getWidth()/2,leaf5->getHeight()/2);
 	}
 	
 	if(leafType == 1){

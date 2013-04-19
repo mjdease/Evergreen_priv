@@ -26,9 +26,9 @@ void Audio::setVol(string volumeLevel) {
 		audio.setVolume(0.2);
 }
 
-//void Audio::setVol(float vol) {
-//	audio.setVolume(vol);
-//}
+void Audio::setVol(float vol) {
+	audio.setVolume(vol);
+}
 
 
 Audio::~Audio(void)

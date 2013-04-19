@@ -94,10 +94,10 @@ void PauseMenu::draw(void) {
 	fontSubtitle.drawString("tree stats", posTreeStatsTitle.x + menuX, posTreeStatsTitle.y);
 	fontSubtitle.drawString("environment stats", posEnvStatsTitle.x + menuX, posEnvStatsTitle.y);
 	
-	fontBody.drawString("time elapsed:\ntree height:\ntree health:\nleaf count:\nbranch count:", posTreeStats.x + menuX, posTreeStats.y);
+	fontBody.drawString("time elapsed:\ntree health:\nbranch count:", posTreeStats.x + menuX, posTreeStats.y);
 	char fpsStr[255];
 	
-	sprintf(fpsStr, "%i\n%i\n%i\n%i\n%i", 1,2,3,4,5); // stats here
+	sprintf(fpsStr, "%i minutes\n%i\n%i", (int)(clock() - *startTime)/60/CLOCKS_PER_SEC,(int)*treeHealth,*numBranches); // stats here
 
 	fontBody.drawString(fpsStr, posTreeStats.x + menuX + 200, posTreeStats.y);
 
@@ -114,12 +114,18 @@ void PauseMenu::draw(void) {
 	sprintf(pause,"Continue");
 	fontBody.drawString(pause,menuX + 50, 700);
 
-	sprintf(restart,"Restart");
+	sprintf(restart,"Exit");
 	fontBody.drawString(restart,menuX + 50, 750);
 
 	ofNoFill();
 	ofRect(menuX + 43, (highlighted == RESTART)?restartYPosition:continueYPosition, 100, 30);
 	ofFill();
+}
+
+void PauseMenu::setStats(clock_t* time, int* branches, float* health){
+	startTime = time;
+	numBranches = branches;
+	treeHealth = health;
 }
 
 PauseMenu::~PauseMenu(void)
