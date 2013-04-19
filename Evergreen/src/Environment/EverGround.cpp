@@ -74,7 +74,6 @@ void EverGround::update(){
 	temperature = ofClamp(temperature + (sunLevel - (temperature-5)/35)/5, 5, 40);
 	temperaturePercent =  (temperature-5)/35;
 
-	// Nutrients
 	nutrientLevel = ofClamp(nutrientLevel - (numFlowers+numThorns + 3)/200.0f, 0, 100);
 
 	// Water Level

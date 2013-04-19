@@ -19,7 +19,7 @@ void EvergreenApp::setup(){
 	ofSetWindowShape(1280, 800);
 	ofEnableAlphaBlending();
 	//ofSetWindowPosition(-1390,215);
-	ofSetFullscreen(true);
+	//ofSetFullscreen(true);
 	ofEnableSmoothing();
 
 	physicalController = new PhysicalController();
