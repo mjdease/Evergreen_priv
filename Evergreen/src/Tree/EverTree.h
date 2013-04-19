@@ -18,6 +18,8 @@ public:
 
 	float TREE_HEALTH;
 
+	int numBranches;
+
 	EverTree();
 	~EverTree(void);
 

@@ -11,13 +11,13 @@ int EverGround::getWeather(){
 
 EverGround::EverGround(int screenHeight, int screenWidth, bool* paused) {
 	this->paused = paused;
-	grassHealth = 0;
+	grassHealth = 1;
 	numFlowers = numThorns = 0;
 
 	temperature = 20;
-	wind = -40;
-	waterLevel = 1.0f;
-	nutrientLevel = 50;
+	wind = 10;
+	waterLevel = 100;
+	nutrientLevel = 100;
 
 	float opacOffset = 0.1;
 
@@ -71,14 +71,14 @@ void EverGround::update(){
 	sunLevel = ofClamp(*sunniness/2 + 0.5 - overcastLevel, 0, 1);
 
 	// Temperature
-	temperature = ofClamp(temperature + (sunLevel - 0.5)/10, 5, 40);
+	temperature = ofClamp(temperature + (sunLevel - (temperature-5)/35)/5, 5, 40);
 	temperaturePercent =  (temperature-5)/35;
 
 	// Nutrients
-	nutrientLevel = ofClamp(nutrientLevel - (numFlowers+numThorns)/200.0f, 0, 100);
+	nutrientLevel = ofClamp(nutrientLevel - (numFlowers+numThorns + 3)/100.0f, 0, 100);
 
 	// Water Level
-	waterLevel = ofClamp(waterLevel - (temperaturePercent)/100, 0, 100);
+	waterLevel = ofClamp(waterLevel - (sunPercent)/10, 0, 100);
 
 	// Wind
 	if(abs(*leftWind - *rightWind) < 0.05 || ((*leftWind - *rightWind) > 0 && wind < 0) || ((*leftWind - *rightWind) < 0 && wind > 0) )
@@ -134,16 +134,18 @@ void EverGround::update(){
 
 	// Plants
 	if(*plantType == 0){ // NOthing
-		grassHealth = (grassHealth > 0) ? grassHealth - (*sunniness - waterLevel) / 5000.0f : 0;
+		grassHealth = (grassHealth > 0) ? grassHealth - 1 / (*sunniness + waterLevel + 1) / 500.0f : 0;
 	}
 	else if(*plantType == 1){ // Grass
 		grassHealth = (grassHealth < 1) ? grassHealth + (waterLevel - *sunniness) / 2000.0f : 1;
 	}
 	else if(*plantType == 2){ // Flowers
 		addPlants(false);
+		grassHealth = (grassHealth > 0) ? grassHealth - (*sunniness - waterLevel) / 7000.0f : 0;
 	}
 	else if(*plantType == 3){ // thorns
 		addPlants(true);
+		grassHealth = (grassHealth > 0) ? grassHealth - (*sunniness - waterLevel) / 7000.0f : 0;
 	}
 
 	river->update();
@@ -159,7 +161,7 @@ void EverGround::makeItRain(){
 	rain->update();
 
 	waterLevel = ofClamp(waterLevel + rainLevel/300, 0, 100);
-	nutrientLevel = ofClamp(nutrientLevel + rainLevel/600 + 0.5, 0, 100);
+	nutrientLevel = ofClamp(nutrientLevel + rainLevel/600, 0, 100);
 }
 
 void EverGround::draw(){
@@ -245,13 +247,13 @@ void EverGround::drawSun(){
 }
 
 void EverGround::addPlants(bool thorn){
-	if(thorn && numThorns < 20 && ofRandomuf() < (1 - grassHealth)/100){
+	if(thorn && numThorns < 20 && ofRandomuf() < (1 - grassHealth)/70){
 		printf("thorns");
 		thorns[numThorns] = new EverPlant(ofPoint(ofRandom(screenWidth-400) + 100, screenHeight-ofRandom(150)), true);
 		numThorns++;
 	}
 
-	else if(!thorn && ofRandomuf() < (grassHealth+1)/100){
+	else if(!thorn && ofRandomuf() < (grassHealth+1)/70){
 		printf("flowers");
 		flowers[numFlowers] = new EverPlant(ofPoint(ofRandom(screenWidth-400) + 100, screenHeight-ofRandom(150)), false);
 		numFlowers++;

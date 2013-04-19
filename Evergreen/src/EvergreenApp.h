@@ -9,6 +9,10 @@
 #include "Draw/SimpleTexture.h"
 #include "Draw\PauseMenu.h"
 #include "Audio.h"
+<<<<<<< Updated upstream
+=======
+#include <ctime>
+>>>>>>> Stashed changes
 
 class EvergreenApp : public ofBaseApp{
 
@@ -29,6 +33,9 @@ class EvergreenApp : public ofBaseApp{
 
 	private:
 		bool paused;
+
+		Audio* musicSound;
+		Audio* ambientSound;
 
 		EverStats* sunStat;
 		EverStats* waterStat;
@@ -52,4 +59,6 @@ class EvergreenApp : public ofBaseApp{
 
 		void initUI();
 		void togglePause();
+
+		clock_t startTime;
 };

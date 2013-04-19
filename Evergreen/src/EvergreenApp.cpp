@@ -8,23 +8,37 @@ long EverTime=0;
 
 //--------------------------------------------------------------
 void EvergreenApp::setup(){
+	// audio
+	musicSound = new Audio("audio/Music.mp3");
+	ambientSound = new Audio("audio/AmbientNoise.mp3");
+	musicSound->start();
+	ambientSound->start();
+
+	startTime = clock();
 	ofSetFrameRate(60);
 	ofSetWindowShape(1280, 800);
 	ofEnableAlphaBlending();
 	//ofSetWindowPosition(-1390,215);
+	//ofSetFullscreen(true);
 	ofEnableSmoothing();
 
 	physicalController = new PhysicalController();
 	//  \\\\.\\ must preceed the device string reported by the arduino IDE
+<<<<<<< Updated upstream
 	//physicalController->init("\\\\.\\COM4", "\\\\.\\COM6", "\\\\.\\COM8");
 	physicalController->init("\\\\.\\COM3", "\\\\.\\COM8", "\\\\.\\COM10");
 
 	initUI();
+=======
+	physicalController->init("\\\\.\\COM4", "\\\\.\\COM6", "\\\\.\\COM8");
+>>>>>>> Stashed changes
 	
 	paused = false;
 
 	tree = new EverTree();//Foreground);
 	tree->setPosition(SCREEN_WIDTH/2, SCREEN_HEIGHT*2 - 200);
+
+	initUI();
 
 	ground = new EverGround(SCREEN_HEIGHT*2, SCREEN_WIDTH, &paused);
 	ground->setTree(tree);
@@ -49,6 +63,7 @@ void EvergreenApp::initUI(){
 
 	pauseMenu = new PauseMenu();
 	pauseMenu->setBars(sunStat, waterStat, nutrientStat, tempStat);
+	pauseMenu->setStats(&startTime, &tree->numBranches, &tree->TREE_HEALTH);
 
 	displayManager = new DisplayManager(SCREEN_WIDTH, SCREEN_HEIGHT*2, SCREEN_HEIGHT);
 	displayManager->setPausePointer(pauseMenu->getPositionPointer());
@@ -81,7 +96,8 @@ void EvergreenApp::update(){
 	if(paused == true){
 		if(physicalController->getButtonPress()){
 			if(pauseMenu->pressButton()){ // Returns false if continue, true if restart
-				tree = new EverTree(); // RESTART THE TREE
+				//tree = new EverTree(); // RESTART THE TREE
+				ofExit(0);
 			}
 			togglePause();
 		}

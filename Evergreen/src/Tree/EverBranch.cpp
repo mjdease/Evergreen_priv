@@ -16,6 +16,12 @@ float* EverBranch::swayAmount = NULL;
 int* EverBranch::rootSiblingNum = NULL;
 vector <EverBranch*>* EverBranch::siblings = NULL;
 
+float* EverBranch::sun = NULL;
+float* EverBranch::water = NULL;
+float* EverBranch::nutrient = NULL;
+float* EverBranch::temperature = NULL;
+int* EverBranch::numBranches = NULL;
+
 void EverBranch::updateAngle(){
 	// Adjust sun/ground angle
 	float sunAngle = -globalAngle;
@@ -86,7 +92,7 @@ void EverBranch::grow(){
 		endWidth = 1;
 	}
 	else{
-		endWidth = startWidth/2;
+		endWidth = startWidth/2 + 1;
 	}
 }
 
@@ -142,6 +148,7 @@ void EverBranch::draw(){
 }
 
 void EverBranch::newChild(){
+	*numBranches++;
 	EverBranch* temp = new EverBranch(this);
 	children.push_back(temp);
 	numChildren++;
@@ -175,7 +182,23 @@ EverBranch::EverBranch(){
 	mainBranch = true;
 
 	baseStartWidth = NULL;
-	leaf = new EverLeaf(1);
+	
+	int leafType = 2;
+
+	if(*water < 0.1){
+		leafType = rand() %2 + 3;
+	}
+	else if(*nutrient < 0.3){
+		leafType = 6;
+	}
+	else if(*temperature < 0.2){
+		leafType = 5;
+	}
+	else{
+		leafType = rand() % 2 + 1;
+	}
+
+	leaf = new EverLeaf(leafType);
 }
 
 EverBranch::EverBranch(EverBranch* parent){
@@ -214,16 +237,33 @@ EverBranch::EverBranch(EverBranch* parent){
 	maxChildren = parent->maxChildren * CHILD_DECAY;
 
 	baseStartWidth = NULL;
-	leaf = new EverLeaf(2);
+	
+	int leafType = 2;
+
+	if(*water < 0.1){
+		leafType = rand() %2 + 3;
+	}
+	else if(*nutrient < 0.3){
+		leafType = 6;
+	}
+	else if(*temperature < 0.2){
+		leafType = 5;
+	}
+	else{
+		leafType = rand() % 2 + 1;
+	}
+
+	leaf = new EverLeaf(leafType);
 }
 
-void EverBranch::setPointers(float* TreeHealth, int* depth, int* limbDepth, int* rootSiblings, vector <EverBranch*>* siblingBranches, float* swayAmount){
+void EverBranch::setPointers(float* TreeHealth, int* depth, int* limbDepth, int* rootSiblings, vector <EverBranch*>* siblingBranches, float* swayAmount, int* numBranches){
 	EverBranch::TreeHealth = TreeHealth;
 	EverBranch::GlobalDepth = depth;
 	EverBranch::rootSiblingNum = rootSiblings;
 	EverBranch::siblings = siblingBranches;
 	EverBranch::GlobalLimbDepth = limbDepth;
 	EverBranch::swayAmount = swayAmount;
+	EverBranch::numBranches = numBranches;
 }
 
 EverBranch::~EverBranch(void)
@@ -237,4 +277,11 @@ float EverBranch::convertAngle(float angle){
 
 void EverBranch::setStartWidth(float* start){
 	baseStartWidth = start;
+}
+
+void EverBranch::setEnvPointers(float* sun, float* water, float* nutrient, float* temperature){
+	EverBranch::sun = sun;
+	EverBranch::water = water;
+	EverBranch::nutrient = nutrient;
+	EverBranch::temperature = temperature;
 }

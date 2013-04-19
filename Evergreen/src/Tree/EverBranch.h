@@ -13,6 +13,8 @@ public:
 	void addWind();
 	
 	void setStartWidth(float* start);
+	static void setEnvPointers(float* sun, float* water, float* nutrient, float* temperature);
+
 	EverBranch();
 	EverBranch(EverBranch* parent);
 	~EverBranch(void);
@@ -22,11 +24,13 @@ public:
 		int* limbDepth,
 		int* rootSiblings,
 		vector <EverBranch*>* siblingBranches,
-		float* swayAmount);
+		float* swayAmount,
+		int* numBranches);
 
 	static int* GlobalDepth;
 	static int* GlobalLimbDepth;
 	static float* TreeHealth;
+	static int* numBranches;
 
 protected:
 	// Drawing
@@ -77,5 +81,11 @@ private:
 	void newChild();
 
 	static float convertAngle(float angle);
+
+	// Env pointers
+	static float* sun;
+	static float* water;
+	static float* nutrient;
+	static float* temperature;
 };
 

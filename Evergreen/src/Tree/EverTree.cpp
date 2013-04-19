@@ -8,6 +8,7 @@ void EverTree::reproduce(){
 		branch->setStartWidth(&endWidth);
 		children.push_back(branch);
 		numChildren++;
+		numBranches++;
 		if(limbDepth < 1)
 			limbDepth = 1;
 	}
@@ -18,10 +19,16 @@ void EverTree::update(){
 
 	// Health
 	float targetHealth = 0;
-	if(*sun > 0.1 && *water > 0.1 && *nutrient > 0.1)
-		targetHealth = (*sun + *water + *nutrient)/3 *100;
-	else
+	if(*sun < 0.1 && *water < 0.1 && *nutrient < 0.1)
 		targetHealth = (*sun + *water + *nutrient)/5 * 100;
+	else if (*nutrient < 0.5)
+		targetHealth =  (*nutrient * 0.5 + 0.5) * (*sun + *water)/3 *100;
+	else if (*water < 0.5)
+		targetHealth =  (*water * 0.5 + 0.5) * (*sun + *nutrient)/3 *100;
+	else if (*sun < 0.1)
+		targetHealth =  (*sun * 0.5 + 0.5) * (*water + *nutrient)/3 *100;
+	else
+		targetHealth = (*sun * 3 + *water + *nutrient)/4 *100;
 
 	// Set all the other values
 	trunkLength += (TREE_HEALTH/100.0f * 350.0f - trunkLength)/10000.0f;
@@ -87,11 +94,12 @@ void EverTree::getEnvPointers(float* sun, float* water, float* nutrient, float* 
 	this->water = water;
 	this->nutrient = nutrient;
 	this->temperature = temperature;
+	EverBranch::setEnvPointers(sun, water, nutrient, temperature);
 }
-
 
 EverTree::EverTree()
 {
+	numBranches = 0;
 	startWidth = 3;
 	endWidth = 1;
 	texture = new BranchTexture(&startWidth, &endWidth);
@@ -105,7 +113,7 @@ EverTree::EverTree()
 	birthRate = 0.001f;
 	numChildren = 0;
 	swayAmount = 1.0f;
-	EverBranch::setPointers(&TREE_HEALTH, &depth, &limbDepth, &numChildren, &children, &swayAmount);
+	EverBranch::setPointers(&TREE_HEALTH, &depth, &limbDepth, &numChildren, &children, &swayAmount, &numBranches);
 }
 
 EverTree::~EverTree(void)
