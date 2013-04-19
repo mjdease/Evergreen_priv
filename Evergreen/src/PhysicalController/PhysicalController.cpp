@@ -1,7 +1,7 @@
 #include "PhysicalController.h"
 
 //enable keybard input & logging
-#define DEBUG true
+#define DEBUG false
 
 //may disable some arduinos here
 #define HAS_ARDUINO_MAIN true
