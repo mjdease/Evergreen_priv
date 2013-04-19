@@ -21,7 +21,7 @@ const bool ShiftPWM_balanceLoad = false;
 #define THORN_VAL 3
 
 //increase the threshold as the interval decreases
-#define RFID_INTERVAL 200
+#define RFID_INTERVAL 250
 #define EMPTY_RFID_THRESHOLD 10
 
 #define ACC_PIN A0
@@ -99,7 +99,7 @@ void loop(){
         while(bytesread < 10){  
           val = RFID.read(); 
           // if header or stop bytes before the 10 digit reading stop reading 
-          if((val == 10)||(val == 13)){
+          if((val == 10)||(val == 13)||(val == -1)){
             break;
           } 
           code[bytesread] = val;     
@@ -143,7 +143,7 @@ void loop(){
       }
     }
   }
-  delay(10);
+  delay(30);
 } 
 
 void clearSerial(){
