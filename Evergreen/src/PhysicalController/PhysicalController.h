@@ -38,6 +38,7 @@ private:
 	bool isReady, isButtonUniquePress;
 	int wheelChange, plantType;
 	float leftWind, rightWind, sunniness, shakiness;
+	unsigned long long sendTime;
 
 	void PhysicalController::onNewMessage(string & message);
 	

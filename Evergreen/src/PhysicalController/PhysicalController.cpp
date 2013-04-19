@@ -24,6 +24,7 @@ PhysicalController::PhysicalController(){
 	sunniness = 0.0;
 	shakiness = 0.0;
 	plantType = 0;
+	sendTime = 0;
 	isButtonUniquePress = false;
 
 	isReady	= false;
@@ -108,9 +109,13 @@ void PhysicalController::updateArduino(){
 //Call every 100ms with a value 0 - 100. 
 //0 means totally sunny, 50 is very heavy clouds (no rain), 100 is very heavy rain.
 void PhysicalController::setWeather(int state){
-	float val = (float)state / 100.0f;
-	string message = "t" + ofToString(val);
-	ardMain.writeString(message);
+	unsigned long long time = ofGetElapsedTimeMillis();
+	if(time - sendTime > 200){
+		sendTime = time;
+		float val = (float)state / 100.0f;
+		string message = "t" + ofToString(val);
+		ardMain.writeString(message);
+	}
 }
 
 //true only when button changes from up to down -- will be true only once per button press
