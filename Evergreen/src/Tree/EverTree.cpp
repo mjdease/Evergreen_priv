@@ -5,6 +5,7 @@ const string EverTree::TEXTURE_SRC = "bark.bmp";
 void EverTree::reproduce(){
 	if(numChildren < MAX_CHILDREN && ofRandomuf() < birthRate){
 		EverBranch* branch = new EverBranch();
+		branch->setStartWidth(&endWidth);
 		children.push_back(branch);
 		numChildren++;
 		if(limbDepth < 1)
@@ -13,8 +14,22 @@ void EverTree::reproduce(){
 }
 
 void EverTree::update(){
-	trunkLength += (TREE_HEALTH/100.0f * 350.0f - trunkLength)/10000.0f;
+	// Health
+	float targetHealth = 0;
+	if(*sun > 0.1 && *water > 0.1 && *nutrient > 0.1)
+		targetHealth = (*sun + *water + *nutrient)/3 *100;
+	else
+		targetHealth = (*sun + *water + *nutrient)/5 * 100;
 
+	// Set all the other values
+	trunkLength += (TREE_HEALTH/100.0f * 350.0f - trunkLength)/10000.0f;
+	startWidth = trunkLength/ 5 * (TREE_HEALTH/70 + 1);
+	if(numChildren == 0){
+		endWidth = 1;
+	}
+	else{
+		endWidth = startWidth/2;
+	}
 	
 	for(int i=0; i<numChildren; i++){
 		children[i]->update();
@@ -35,9 +50,12 @@ void EverTree::draw(){
 
 	ofTranslate(position);
 	ofRotate(180 + swayAngle);
+	texture->draw(0);
+	/*
 	ofSetColor(0);
 	ofLine(0,0,0,trunkLength);
 	ofCircle(0,0,3);
+	*/
 	//layer->addtoDraw(texture);
 	//texture->draw(0);
 
@@ -56,10 +74,18 @@ void EverTree::setPosition(float x, float y){
 	position.y = y;
 }
 
+void EverTree::getEnvPointers(float* sun, float* water, float* nutrient, float* temperature){
+	this->sun = sun;
+	this->water = water;
+	this->nutrient = nutrient;
+	this->temperature = temperature;
+}
+
 
 EverTree::EverTree()
 {
-	startWidth = endWidth = 10;
+	startWidth = 3;
+	endWidth = 1;
 	texture = new BranchTexture(&startWidth, &endWidth);
 	texture->loadTexture(TEXTURE_SRC);
 	texture->setResolution(1);

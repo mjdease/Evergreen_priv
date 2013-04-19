@@ -24,9 +24,6 @@ void EverTexture::loadTexture(string src){
 	texture.bind();
 	glGenerateMipmap(GL_TEXTURE_2D);
 	texture.unbind();
-
-
-	//ofLoadImage(texture, src);
 }
 
 

@@ -20,6 +20,8 @@ public:
 	int numLayers;
 
 	void setHealth(float grassHealth);
+
+	int getWeather();
 	
 	void update();
 
@@ -37,15 +39,18 @@ public:
 private:
 	bool* paused;
 
+	// Send to tree
+	float temperaturePercent;
+	float waterPercent;
+	float nutrientPercent;
+	float sunPercent;
+
 	// Sunniness, water, nutrient, temperature
 	float temperature;
 	float wind;
 	float waterLevel;
 	float nutrientLevel;
-
-	float cloudLevel;
-
-	int rainLevel;
+	float sunLevel;
 
 	float* leftWind;
 	float* rightWind;
@@ -82,8 +87,11 @@ private:
 
 	void drawSun();
 
+	float overcastLevel;
 	RainTexture* rain;
-	float rainAmount;
+	float rainLevel;
 	void makeItRain();
+	SimpleTexture* stormCloudLeft;
+	SimpleTexture* stormCloudRight;
 };
 

@@ -47,6 +47,8 @@ class EvergreenApp : public ofBaseApp{
 
 		EverGround* ground;
 
+		float* shakeAmount;
+
 		void initUI();
 		void togglePause();
 };

@@ -1,5 +1,7 @@
 #include "EverBranch.h"
 
+#define minStuntLength 20
+
 const float EverBranch::BIRTH_DECAY = 0.6f;
 const float EverBranch::CHILD_DECAY = 0.6f;
 const float EverBranch::WIDTH_DECAY = 0.6f;
@@ -45,7 +47,7 @@ void EverBranch::updateAngle(){
 		baseAngle += (maxAngle - baseAngle)/ 500.0f;
 	}
 
-	sway();
+	//sway();
 
 	angle = baseAngle + swayAngle;
 }
@@ -57,8 +59,34 @@ void EverBranch::sway(){
 }
 
 void EverBranch::grow(){
-	float growthTarget = ((*TreeHealth-50.0f)/100.0f) * (350.0f/depth - length) / 3000.0f;
-	length += growthTarget;
+	float healthMult = (*TreeHealth-50.0f)/100.0f;
+	float growthTarget;
+	growthTarget = (healthMult * (350.0f/depth - length)) / 3000.0f;
+
+	if(healthMult > 0)
+		length += growthTarget;
+	else if(healthMult < 0 && length < minStuntLength/(limbDepth/5 + 1)){
+	}
+	else if(healthMult < 0){
+		length = ofClamp(length + growthTarget, minStuntLength/(limbDepth/5 + 1), length);
+	}
+
+	if(mainBranch == false){
+		startWidth = parent->endWidth/(limbDepth/2 + 1);
+	}
+	else if(parent != NULL){
+		startWidth = parent->endWidth;
+	}
+	else if(baseStartWidth != NULL){
+		startWidth = *baseStartWidth;
+	}
+
+	if(numChildren == 0){
+		endWidth = 1;
+	}
+	else{
+		endWidth = startWidth/2;
+	}
 }
 
 void EverBranch::reproduce(){
@@ -84,14 +112,17 @@ void EverBranch::update(){
 
 void EverBranch::draw(){
 	ofRotate(angle);
-	
+
+	texture->draw(0);
 	ofSetColor(0, 255, 0);
+	ofCircle(0,length,2);
+	/*ofSetColor(0, 255, 0);
 	if(depth < MAX_DEPTH+1){
 		ofSetColor(255, 0, 0);
 	}
 	ofLine(0,0,0,length);
 	//ofCircle(0,0,2);
-	ofSetColor(0, 255, 0);
+	ofSetColor(0, 255, 0);*/
 	//ofCircle(0,length,2);
 	
 
@@ -113,7 +144,8 @@ void EverBranch::newChild(){
 }
 
 EverBranch::EverBranch(){
-	startWidth = endWidth = 10;
+	startWidth = 10;
+	endWidth = 1;
 	texture = new BranchTexture(&startWidth, &endWidth);
 	texture->loadTexture(TEXTURE_SRC);
 	texture->setResolution(1);
@@ -136,13 +168,12 @@ EverBranch::EverBranch(){
 	depth = 1;
 	numChildren = 0;
 	maxChildren = 5;
+	mainBranch = true;
+
+	baseStartWidth = NULL;
 }
 
 EverBranch::EverBranch(EverBranch* parent){
-	startWidth = endWidth = parent->startWidth/limbDepth;
-	texture = new BranchTexture(&startWidth, &endWidth);
-	texture->loadTexture(TEXTURE_SRC);
-	texture->setResolution(1);
 
 	this->parent = parent;
 	depth = parent->depth + 1;
@@ -152,11 +183,17 @@ EverBranch::EverBranch(EverBranch* parent){
 		limbDepth = parent->limbDepth + 1;
 		if(*GlobalLimbDepth < limbDepth) { *GlobalLimbDepth = limbDepth; }
 		birthRate = parent->birthRate * BIRTH_DECAY;
+		mainBranch = false;
 	}
 	else{
 		birthRate = parent->birthRate;
 		limbDepth = parent->limbDepth;
+		mainBranch = true;
 	}
+
+	texture = new BranchTexture(&startWidth, &endWidth);
+	texture->loadTexture(TEXTURE_SRC);
+	texture->setResolution(1);
 
 	baseAngle = ofRandomf()*60;
 	swayAngle = 0;
@@ -170,6 +207,8 @@ EverBranch::EverBranch(EverBranch* parent){
 	attachPoint = (parent->numChildren < 1) ? 1 : ofRandomuf();
 	numChildren = 0;
 	maxChildren = parent->maxChildren * CHILD_DECAY;
+
+	baseStartWidth = NULL;
 }
 
 void EverBranch::setPointers(float* TreeHealth, int* depth, int* limbDepth, int* rootSiblings, vector <EverBranch*>* siblingBranches, float* swayAmount){
@@ -188,4 +227,8 @@ EverBranch::~EverBranch(void)
 float EverBranch::convertAngle(float angle){
 	angle = fmodf(angle, 360.0f);
 	return ((angle<=180.0f) ? angle : angle-360);
+}
+
+void EverBranch::setStartWidth(float* start){
+	baseStartWidth = start;
 }

@@ -12,6 +12,8 @@ public:
 
 	void setPosition(float x, float y);
 
+	void getEnvPointers(float* sun, float* water, float* nutrient, float* temperature);
+
 	float TREE_HEALTH;
 	float swayAmount;
 
@@ -34,4 +36,9 @@ private:
 	float swayAngle;
 	BranchTexture* texture;
 	float startWidth, endWidth;
+
+	float* sun;
+	float* water;
+	float* nutrient;
+	float* temperature;
 };

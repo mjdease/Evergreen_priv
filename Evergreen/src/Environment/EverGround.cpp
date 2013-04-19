@@ -4,15 +4,18 @@
 #define flowerNum 50
 #define thornNum 20
 
+
+int EverGround::getWeather(){
+	return ofClamp(abs(wind)*2, 0, 100);
+}
+
 EverGround::EverGround(int screenHeight, int screenWidth, bool* paused) {
 	this->paused = paused;
 	grassHealth = 0;
 	numFlowers = numThorns = 0;
 
 	temperature = 20;
-	wind = 10;
-	cloudLevel = 0; 
-	rainAmount = 0;
+	wind = -40;
 	waterLevel = 1.0f;
 	nutrientLevel = 50;
 
@@ -53,40 +56,83 @@ EverGround::EverGround(int screenHeight, int screenWidth, bool* paused) {
 	}
 
 	rain = new RainTexture();
+
+	stormCloudLeft = new SimpleTexture("environment/background/stormcloudLeft.png");
+	stormCloudLeft->setPosition(-screenWidth, -420);
+	stormCloudRight = new SimpleTexture("environment/background/stormcloudRight.png");
+	stormCloudRight->setPosition(screenWidth, -420);
 }
 
 void EverGround::update(){
 	if(*paused == true)
 		return;
 
-	// Temperature
-	temperature = ofClamp(temperature + (*sunniness - 0.5)/10, 5, 40);
-
 	// Sunniness
+	sunLevel = ofClamp(*sunniness/2 + 0.5 - overcastLevel, 0, 1);
+
+	// Temperature
+	temperature = ofClamp(temperature + (sunLevel - 0.5)/10, 5, 40);
+	temperaturePercent =  (temperature-5)/35;
+
+	// Nutrients
+	nutrientLevel = ofClamp(nutrientLevel - (numFlowers+numThorns)/200.0f, 0, 100);
+
+	// Water Level
+	waterLevel = ofClamp(waterLevel - (temperaturePercent)/100, 0, 100);
 
 	// Wind
-	if(wind > 10 || wind < -10)
-		wind *= 0.99;
-	wind = ofClamp(wind + (*leftWind - *rightWind), -100 , 100);
+	if(abs(*leftWind - *rightWind) < 0.05 || ((*leftWind - *rightWind) > 0 && wind < 0) || ((*leftWind - *rightWind) < 0 && wind > 0) )
+		wind *= 0.98;
 
+	wind = ofClamp(wind + (*leftWind - *rightWind)/2, -100 , 100);
+		
 	tree->swayAmount = wind/6.66f;
 
 	// clouds/rain
-	if(abs(cloudLevel) > 20.0f){
+	if(abs(wind) > 10.0f+temperaturePercent*10){
 		for(int i=0; i<cloudNum; i++){
-			clouds[i]->speed = wind/200;
-			clouds[i]->setOpacity((cloudLevel-20)/60 * 255);
+			clouds[i]->speed = wind/50;
+			clouds[i]->setOpacity((abs(wind)-10)/20.0f * 255);// At 30 they become fully opaque
+			clouds[i]->update();
 		}
 	}
 
-	cloudLevel += (wind - cloudLevel)/1000.0f + (((abs(wind) - abs(cloudLevel)) > 0) ? (wind-cloudLevel)/300 : 0);
-	//printf("wind: %f, Cloud: %f\n", wind, cloudLevel);
+	// if wind > 15. Scaled from 15 - 35
+	overcastLevel = ofClamp((abs(wind)-15-temperaturePercent*10)/20, 0 ,1);
 
-	// Nutrients
+	// 25 the rain will start to come, at 50 the light rain will max, at 75 the heavy rain will max
+	rainLevel = ofClamp((abs(wind)-25-temperaturePercent*10)/50 * 100, 0, 100);
 
+	if(abs(wind) > 50.0f+temperaturePercent*10){
+		stormCloudLeft->show = true;
+		stormCloudRight->show = true;
+		if(wind > 0)
+			stormCloudLeft->x += (-100 - stormCloudLeft->x)/500.0f;
+		else if(wind < 0)
+			stormCloudRight->x += (100 - stormCloudRight->x)/500.0f;
+	}
+	else{
+		if(stormCloudLeft->x != -screenWidth){
+			stormCloudLeft->x += (-100 - stormCloudLeft->x)/500.0f;
+			stormCloudLeft->opacity -= 2;
+			if(stormCloudLeft->opacity < 0){
+				stormCloudLeft->x = -screenWidth;
+				stormCloudLeft->opacity = 255;
+				stormCloudLeft->show = false;
+			}
+		}
+		if(stormCloudRight->x != screenWidth){
+			stormCloudRight->x += (100 - stormCloudRight->x)/500.0f;
+			stormCloudRight->opacity -= 2;
+			if(stormCloudRight->opacity < 0){
+				stormCloudRight->x = screenWidth;
+				stormCloudRight->opacity = 255;
+					stormCloudRight->show = false;
+			}
+		}
+	}
 
 	// Plants
-	*plantType = 3;
 	if(*plantType == 0){ // NOthing
 		grassHealth = (grassHealth > 0) ? grassHealth - (*sunniness - waterLevel) / 5000.0f : 0;
 	}
@@ -101,18 +147,19 @@ void EverGround::update(){
 	}
 
 	river->update();
-	makeItRain();
+
+	if(rainLevel > 0)
+		makeItRain();
 
 	updateUIBars();
 }
 
 void EverGround::makeItRain(){
-	rainAmount += 0.1;
-	rain->setAmount(rainAmount);
+	rain->setAmount(rainLevel);
 	rain->update();
 
-	waterLevel = ofClamp(waterLevel + rainAmount/300, 0, 100);
-	nutrientLevel = ofClamp(nutrientLevel + rainAmount/600 + 0.5, 0, 100);
+	waterLevel = ofClamp(waterLevel + rainLevel/300, 0, 100);
+	nutrientLevel = ofClamp(nutrientLevel + rainLevel/600 + 0.5, 0, 100);
 }
 
 void EverGround::draw(){
@@ -120,18 +167,18 @@ void EverGround::draw(){
 	//displayManager->addtoLayer(deadLayer, 0);
 
 	river->drawForeground();
-
 	if(grassHealth < 0.5){
 		grassLayers[1]->setOpacity(0);
-		grassLayers[0]->setOpacity(grassHealth/0.5 * 255);
+		grassLayers[0]->setOpacity(grassHealth*2 * 255);
 		deadLayer->draw();
+		grassLayers[0]->draw();
 	}
 	else{
 		grassLayers[0]->setOpacity(255);
-		grassLayers[1]->setOpacity((grassHealth-0.5)/0.5 * 255);
-	}
-	for(int i=0; i<numLayers; i++) {
-		grassLayers[i]->draw();
+		grassLayers[1]->setOpacity((grassHealth-0.5)*2 * 255);
+		
+		grassLayers[0]->draw();
+		grassLayers[1]->draw();
 	}
 
 	tree->draw();
@@ -147,9 +194,11 @@ void EverGround::draw(){
 			thorns[i]->draw();
 		}
 	}
-
-	rain->draw();
-	rain->drawDroplets(0, screenHeight);
+	
+	if(rainLevel > 0){
+		rain->draw();
+		rain->drawDroplets(0, screenHeight);
+	}
 }
 
 void EverGround::drawMidground(){
@@ -161,13 +210,24 @@ void EverGround::drawMidground(){
 void EverGround::drawBackground(){
 	skyTexture->draw();
 	drawSun();
+	ofEnableAlphaBlending();
+	if(overcastLevel > 0){
+		ofSetColor(200, 200, 200, ofClamp(overcastLevel * 230, 0, 200));
+		ofRect(0,0, screenWidth, screenHeight);
+	}
+	
+	if(stormCloudLeft->show == true || stormCloudRight->show == true){
+		stormCloudLeft->draw();
+		stormCloudRight->draw();
+	}
 	backgroundTexture->draw();
 	
-	if(cloudLevel > 20.0f){
+	if(abs(wind) > 10 + temperaturePercent*10){
 		for(int i=0; i<cloudNum; i++){
 			clouds[i]->draw();
 		}
 	}
+	ofDisableAlphaBlending();
 }
 
 void EverGround::drawSun(){
@@ -206,10 +266,15 @@ void EverGround::setUIBars(EverStats* sun, EverStats* water, EverStats* nutrient
 }
 
 void EverGround::updateUIBars(){
-	sunStat->setValue(*sunniness);
+	sunStat->setValue(sunLevel);
 	tempStat->setValue((temperature - 5)/35.0f);
 	waterStat->setValue(waterLevel/100);
 	nutrientStat->setValue(nutrientLevel/100);
+
+	// temperatue Percent
+	waterPercent = waterLevel/100;
+	nutrientPercent = nutrientLevel/100;
+	sunPercent = sunLevel;
 }
 
 void EverGround::setControllerPointer(float* lWind, float* rWind, float* sun, float* shaky, int* plant){
@@ -222,6 +287,7 @@ void EverGround::setControllerPointer(float* lWind, float* rWind, float* sun, fl
 
 void EverGround::setTree(EverTree* tree){
 	this->tree = tree;
+	tree->getEnvPointers(&sunPercent, &waterPercent, &nutrientPercent, &temperaturePercent);
 }
 
 

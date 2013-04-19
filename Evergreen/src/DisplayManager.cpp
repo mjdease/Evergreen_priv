@@ -9,6 +9,7 @@ DisplayManager::DisplayManager(int width, int height, int ScreenHeight):parallax
 	screenHeight = ScreenHeight;
 	destOffset = offset = 0;
 	interfaceLayer = NULL;
+	shakeAmount = 0;
 }
 
 void DisplayManager::setPausePointer(float* pausePointer){
@@ -38,7 +39,7 @@ void DisplayManager::draw() {
 
 	ofEnableAlphaBlending();
 
-	offset = (destOffset - offset) / 10 + offset;
+	offset = ofClamp((destOffset - offset) / 10 + offset + shakeAmount, 0, screenHeight);
 	for(int i = layers.size()-1; i >= 0; i--) {
 		layers[i]->setOffset(offset / (parallax * i + 1));
 		drawLayer(i);
@@ -49,6 +50,8 @@ void DisplayManager::draw() {
 }
 
 void DisplayManager::setOffsetClick(int click){
+	if((this->offsetClick+click) * clickAmount > screenHeight)
+		return;
 	this->offsetClick += click;
 	offsetClick = ((offsetClick < 0)?0:offsetClick);
 	setOffset(this->offsetClick * clickAmount);
@@ -56,6 +59,10 @@ void DisplayManager::setOffsetClick(int click){
 
 void DisplayManager::setOffset(float destOffset){
 	this->destOffset = destOffset;
+}
+
+void DisplayManager::setShake(float shake){
+	shakeAmount = ofRandom(-shake, shake);
 }
 
 DisplayManager::~DisplayManager(void)

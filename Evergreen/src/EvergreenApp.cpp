@@ -8,7 +8,7 @@ long EverTime=0;
 
 //--------------------------------------------------------------
 void EvergreenApp::setup(){
-	ofSetFrameRate(60);
+	//ofSetFrameRate(60);
 	ofSetWindowShape(1280, 800);
 	ofEnableAlphaBlending();
 	//ofSetWindowPosition(-1390,215);
@@ -33,6 +33,8 @@ void EvergreenApp::setup(){
 									physicalController->getShakiness(),
 									physicalController->getPlantType());
 	ground->setUIBars(sunStat, waterStat, nutrientStat, tempStat);
+
+	shakeAmount = physicalController->getShakiness();
 }
 
 void EvergreenApp::initUI(){
@@ -87,7 +89,8 @@ void EvergreenApp::update(){
 		}
 	}
 	else{
-		displayManager->setOffsetClick(physicalController->getScroll());
+		displayManager->setOffsetClick(-physicalController->getScroll());
+		displayManager->setShake(*shakeAmount*5);
 
 		ground->update();
 		tree->update();
@@ -97,6 +100,7 @@ void EvergreenApp::update(){
 		}
 	}
 
+	physicalController->setWeather(ground->getWeather());
 }
 
 //--------------------------------------------------------------
@@ -140,10 +144,8 @@ void EvergreenApp::keyPressed(int key){
 			break;
 			*/
 		case 357: // Up
-			tree->TREE_HEALTH += 0.1f;
 			break;
 		case 359: // Down
-			tree->TREE_HEALTH -= 0.1f;
 			break;
 
 		case 356: // Left
@@ -154,10 +156,10 @@ void EvergreenApp::keyPressed(int key){
 			break;
 
 		case 360: // page up
-			displayManager->setOffsetClick(1);
+			tree->TREE_HEALTH += 0.1f;
 			break;
 		case 361: // page down
-			displayManager->setOffsetClick(-1);
+			tree->TREE_HEALTH -= 0.1f;
 			break;
 	}
 	

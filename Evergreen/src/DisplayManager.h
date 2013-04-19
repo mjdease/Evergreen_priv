@@ -8,6 +8,7 @@ public:
 	int offsetClick;
 	int width, height;
 	float clickAmount;
+	float shakeAmount;
 	float offset;
 	float parallax;
 	vector<DisplayLayer*> layers;
@@ -24,6 +25,7 @@ public:
 	
 	void setOffset(float offset);
 	void setOffsetClick(int offset);
+	void setShake(float shake);
 
 	DisplayManager(int width, int height, int ScreenHeight);
 	~DisplayManager(void);

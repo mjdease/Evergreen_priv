@@ -11,6 +11,7 @@ public:
 
 	void addWind();
 	
+	void setStartWidth(float* start);
 	EverBranch();
 	EverBranch(EverBranch* parent);
 	~EverBranch(void);
@@ -32,6 +33,7 @@ protected:
 	float angle; // Displayed angle
 	float attachPoint;
 	float startWidth, endWidth;
+	float* baseStartWidth;
 
 	// Calculations
 	float baseAngle;
@@ -52,6 +54,8 @@ protected:
 	int numChildren;
 	static vector <EverBranch*>* siblings; // only to be used by root branches
 	static int* rootSiblingNum;
+
+	bool mainBranch;
 	
 private:
 	static const float BIRTH_DECAY;

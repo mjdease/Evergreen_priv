@@ -7,12 +7,25 @@ EverCloud::EverCloud(void)
 	speed = 0.1;
 	posx = ofRandomuf() * 1280;
 	posy = ofRandomuf() * 1600 - 300;
+
+	sizePercent = ofRandom(1.0, 5.0);
+	width = cloud->getWidth() * sizePercent;
+	height = cloud->getHeight() * sizePercent;
+}
+
+void EverCloud::update(){
+	if(posx < -width) posx = 1280;
+	if(posx > 1280) posx = -width;
+
+	posx += speed;
 }
 
 void EverCloud::draw() {
-	posx += speed;
-	if(posx < 0) posx = 1280;
-	cloud->draw(posx, posy);
+	cloud->draw(posx, posy, width, height);
+}
+
+void EverCloud::setOpacity(float alpha){
+	cloud->setOpacity(alpha);
 }
 
 
