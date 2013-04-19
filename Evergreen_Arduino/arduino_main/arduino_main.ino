@@ -22,11 +22,12 @@ unsigned long pLeftTime = 0;
 unsigned long pRightTime = 0;
 unsigned long pWeatherTime = 0;
 
-float weather = 0.7f;
+float weather = 0.0f;
 
 LPD8806 strip = LPD8806(64);
 
 QuadEncoder qe(ROTARY_PIN1,ROTARY_PIN2);
+
 Button button = Button(BTN_PIN, PULLUP);
 //reed switches can be used just like buttons.
 Button lWindmill = Button(REED_PIN_LEFT, PULLDOWN);
@@ -131,6 +132,7 @@ void loop(){
   }
   
   //SCROLL WHEEL
+  wheelChange = qe.tick();
   if (wheelChange=='>'){
     Serial.print(WHEEL);
     Serial.println('+');
@@ -208,6 +210,7 @@ float msToMin(float millliseconds){
   return (millliseconds / 1000.0 / 60.0); 
 }
 
+//code adapated from http://arduino.cc/forum/index.php/topic,3922.0.html 
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
 {
   return (float)(x - in_min) * (out_max - out_min) / (float)(in_max - in_min) + out_min;
